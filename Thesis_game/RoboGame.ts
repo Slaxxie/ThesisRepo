@@ -22,9 +22,10 @@ namespace RoboGame {
 
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(31);
-        cmpCamera.mtxPivot.translateY(10);
+        //cmpCamera.mtxPivot.translateY(10);
         cmpCamera.mtxPivot.rotateY(180);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
+        player.addComponent(cmpCamera);
         console.log(gameNode);
 
         
@@ -52,7 +53,7 @@ namespace RoboGame {
 
     function update(_event: Event): void {
         hndKey();
-        //checkCollision();
+        checkCollision();
 
         viewport.draw();
     }

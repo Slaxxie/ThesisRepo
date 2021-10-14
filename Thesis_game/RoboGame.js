@@ -18,9 +18,10 @@ var RoboGame;
         viewportNode.addChild(RoboGame.player);
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(31);
-        cmpCamera.mtxPivot.translateY(10);
+        //cmpCamera.mtxPivot.translateY(10);
         cmpCamera.mtxPivot.rotateY(180);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
+        RoboGame.player.addComponent(cmpCamera);
         console.log(gameNode);
         console.log(RoboGame.player);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
@@ -42,7 +43,7 @@ var RoboGame;
     }
     function update(_event) {
         hndKey();
-        //checkCollision();
+        RoboGame.checkCollision();
         viewport.draw();
     }
 })(RoboGame || (RoboGame = {}));

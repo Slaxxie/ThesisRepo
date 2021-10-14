@@ -12,7 +12,7 @@ namespace RoboGame {
     export let masterVolume: number = 1;
     export class SFX {
         public cmpAudioSoundtrack: ƒ.ComponentAudio;
-        
+
         private audioExplosion: ƒ.Audio;
         private audioGameStart: ƒ.Audio;
         private audioLooting: ƒ.Audio;
@@ -72,7 +72,7 @@ namespace RoboGame {
             this.cmpAudioSoundtrack = new ƒ.ComponentAudio(this.audioSoundtrack, false, false);
             this.cmpAudioSoundtrack.connect(true);
             this.cmpAudioSoundtrack.volume = 0.6 * masterVolume;
-            
+
             this.audioHit = new ƒ.Audio("./sounds/hit.wav");
             this.cmpAudioHit = new ƒ.ComponentAudio(this.audioHit, false, false);
             this.cmpAudioHit.connect(true);
@@ -102,7 +102,7 @@ namespace RoboGame {
                 case SFXs.hitSound:
                     this.cmpAudioHit.play(true);
                     break;
-            
+
             }
         }
         public soundTrack(_OnOff: boolean): void {
@@ -121,5 +121,11 @@ namespace RoboGame {
                 this.cmpAudioMainMenu.play(_OnOff);
             }
         }
+    }
+    export function changeMasterVolume(_event: Event): void {
+        let slider: HTMLInputElement = <HTMLInputElement>_event.target;
+        masterVolume = parseInt(slider.value) / 100;
+        ƒ.AudioManager.default.volume = masterVolume;
+        ƒ.AudioManager.default.gain.gain.value = masterVolume;
     }
 }
