@@ -5,57 +5,57 @@ namespace RoboGame {
     let gameNode: ƒ.Node = new ƒ.Node("Game");
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
-    export let player: Player;
-    export let movementSpeed: number = 15;
-    export let leftBorder: number = -16.5;
-    export let rightBorder: number = 16.5;
-    export let topBorder: number = 19;
-    export let bottomBorder: number = 1;
+    export let movementSpeed: number = 10;
+    export let robots: Robot;
+
 
     gameNode.appendChild(viewportNode);
 
     function init(_event: Event): void {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
-        player = Player.getInstance();
-        viewportNode.addChild(player);
+        spawnWorld();
+        viewportNode.addChild(objects);
+        viewportNode.addChild(robots);
+
+
 
 
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(31);
-        //cmpCamera.mtxPivot.translateY(10);
+        cmpCamera.mtxPivot.translateY(10);
         cmpCamera.mtxPivot.rotateY(180);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
-        player.addComponent(cmpCamera);
         console.log(gameNode);
 
-        
-        console.log(player);
 
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
         ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
 
     }
 
-    function hndKey(): void {
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D]) && Player.getInstance().mtxLocal.translation.x <= rightBorder || ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_RIGHT]) && Player.getInstance().mtxLocal.translation.x <= rightBorder ) {
-            player.moveRight();
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A]) && Player.getInstance().mtxLocal.translation.x >= leftBorder || ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_LEFT]) && Player.getInstance().mtxLocal.translation.x >= leftBorder ) {
-            player.moveLeft();
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W]) && Player.getInstance().mtxLocal.translation.y <= topBorder || ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_UP]) && Player.getInstance().mtxLocal.translation.y <= topBorder ) {
-            player.moveUp();
-        }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S]) && Player.getInstance().mtxLocal.translation.y >= bottomBorder || ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.ARROW_DOWN]) && Player.getInstance().mtxLocal.translation.y >= bottomBorder ) {
-            player.moveDown();
-        }
-    }
 
     function update(_event: Event): void {
-        hndKey();
-        checkCollision();
+        movementTimer++;
+        if (movementTimer == 300) {
+            movementTimer = 0;
 
+            for (let robotEntity of robots.getChildren() as Robot[]) {
+                robotEntity.moveToNewField(); //move every robot to new field
+                if (!robotAlive) {
+                    robots.removeChild(robotEntity);
+                }
+            }
+        }
         viewport.draw();
+    }
+
+    export function spawnWorld(): void {
+        let posObject: ƒ.Vector2 = new ƒ.Vector2();
+        let terminal: ƒ.Node = new Object("Terminal", posObject);
+        posObject.x = 10;
+        posObject.y = 22;
+        objects.addChild(terminal);
+        console.log(viewportNode);
     }
 
 }

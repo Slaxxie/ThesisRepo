@@ -19,18 +19,13 @@ namespace RoboGame {
         let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(QuadNode.mesh);
         cmpMesh.mtxPivot.scaleX(_scale.x);
         cmpMesh.mtxPivot.scaleY(_scale.y);
+        
         this.addComponent(cmpMesh);
+        
   
         /* this.addComponent(new ƒ.ComponentMaterial(QuadNode.material)); */
       }
   
-      public checkCollision(_target: QuadNode): boolean {
-        return this.rect.collides(_target.rect);
-      }
-  
-      public setRectPosition(): void {
-        this.rect.position.x = this.mtxLocal.translation.x - this.rect.size.y / 2;
-        this.rect.position.y = this.mtxLocal.translation.y - this.rect.size.y / 2;
-      }
+      
     }
   }
