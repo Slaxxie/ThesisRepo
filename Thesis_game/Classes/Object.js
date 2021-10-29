@@ -7,7 +7,7 @@ var RoboGame;
         constructor(_name, _pos) {
             let scale = new ƒ.Vector2(1, 1);
             super(_name, _pos, scale);
-            let material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureShip));
+            let material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.texturePlains));
             this.addComponent(new ƒ.ComponentMaterial(material));
         }
     }

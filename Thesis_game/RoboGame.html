@@ -8,12 +8,16 @@
     <link rel="shortcut icon" href="#">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="RoboGame.css">
-    <script src='../FudgeCore/FudgeCore.js'></script>
-    <script src='./Classes/SFX.js'></script>
+    <script src='../FudgeCore/Build/FudgeCore.js'></script>
     <script src='./Classes/QuadNode.js'></script>
-    <script src='./Classes/Object.js'></script>
-    <script src='./Classes/TextureLoader.js'></script>
     <script src='./Classes/Player.js'></script>
+    <script src='./Classes/SFX.js'></script>
+    <script src='./Classes/FieldAttribute.js'></script>
+    <script src='./Classes/TextureLoader.js'></script>
+    <script src='./Classes/WorldMapTile.js'></script>
+    <script src='./Classes/Object.js'></script>
+    <script src='./Classes/Robot.js'></script>
+    <script src='./Classes/Enemy.js'></script>
     <script src='RoboGame.js'></script>
 
 
@@ -22,7 +26,8 @@
 <body>
     <canvas width="1600" height="900" id="game_canvas"></canvas>
     <div class="hidden" id="mainMenu">
-        <button id="start"></button>
+        <button id="saveWorld">Save</button>
+        <button id="createWorld">Create</button>
     </div>
 
 </body>

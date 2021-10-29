@@ -6,7 +6,7 @@ namespace RoboGame {
         constructor(_name: string, _pos: ƒ.Vector2) {
             let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
             super(_name, _pos, scale);
-            let material: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureShip));
+            let material: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), texturePlains));
             this.addComponent(new ƒ.ComponentMaterial(material));
             
         }

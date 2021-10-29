@@ -1,0 +1,11 @@
+World borders
+Alle Ressourcenfelder
+Ressourcenfunktionen
+Roboter customizen
+enemy/quest funktionen
+Roboter zurück zur Basis
+Kampffunktion
+isInteracting
+Spielerbasis definieren
+Bereiche mit mehr Gegnern
+weiter außen auf der Karte mehr Wasser/Berge

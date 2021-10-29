@@ -9,12 +9,8 @@ var RoboGame;
         FIELDATTRIBUTE[FIELDATTRIBUTE["FOREST"] = 3] = "FOREST";
         FIELDATTRIBUTE[FIELDATTRIBUTE["MOUNTAIN"] = 4] = "MOUNTAIN";
         FIELDATTRIBUTE[FIELDATTRIBUTE["QUEST"] = 5] = "QUEST";
-        FIELDATTRIBUTE[FIELDATTRIBUTE["ENEMY"] = 6] = "ENEMY";
-        FIELDATTRIBUTE[FIELDATTRIBUTE["WATER"] = 7] = "WATER";
-        FIELDATTRIBUTE[FIELDATTRIBUTE["WRECKAGE"] = 8] = "WRECKAGE";
+        FIELDATTRIBUTE[FIELDATTRIBUTE["WATER"] = 6] = "WATER";
+        FIELDATTRIBUTE[FIELDATTRIBUTE["WRECKAGE"] = 7] = "WRECKAGE";
     })(FIELDATTRIBUTE = RoboGame.FIELDATTRIBUTE || (RoboGame.FIELDATTRIBUTE = {}));
-    class WorldMap {
-    }
-    RoboGame.WorldMap = WorldMap;
 })(RoboGame || (RoboGame = {}));
-//# sourceMappingURL=WorldMap.js.map
+//# sourceMappingURL=FieldAttribute.js.map

@@ -17,19 +17,62 @@ var RoboGame;
     let isInteracting = false;
     let previousField;
     RoboGame.robotAlive = true;
-    let ressouceScrap; // austauschen
+    let nextDirection;
+    let scale = new ƒ.Vector2(1, 1);
+    //let ressouceScrap: number; // austauschen
     class Robot extends RoboGame.QuadNode {
-        constructor(_name, _pos, _id) {
-            let robotID = _id;
-            let scale = new ƒ.Vector2(1, 1);
-            super("Robot: " + robotID, _pos, scale);
-            let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureShip));
+        constructor(_name, _pos) {
+            super("Robot: ", _pos, scale);
+            this.fieldOfView = 1; //switch case für andere köpfe einbauen
+            let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
         moveToNewField() {
             if (moduleMovement || moduleFlying) {
-                console.log("Moving to: ");
-                this.interactWithField();
+                //getFieldInformation();
+                previousField = new ƒ.Vector2(this.mtxLocal.translation.x, this.mtxLocal.translation.y);
+                nextDirection = Math.floor((Math.random() * 8)) + 1;
+                switch (nextDirection) {
+                    case 1: {
+                        this.mtxLocal.translateX(-1);
+                        this.mtxLocal.translateY(+1);
+                        break;
+                    }
+                    case 2: {
+                        this.mtxLocal.translateY(+1);
+                        break;
+                    }
+                    case 3: {
+                        this.mtxLocal.translateX(+1);
+                        this.mtxLocal.translateY(+1);
+                        break;
+                    }
+                    case 4: {
+                        this.mtxLocal.translateX(-1);
+                        break;
+                    }
+                    case 5: {
+                        this.mtxLocal.translateX(+1);
+                        break;
+                    }
+                    case 6: {
+                        this.mtxLocal.translateX(-1);
+                        this.mtxLocal.translateY(-1);
+                        break;
+                    }
+                    case 7: {
+                        this.mtxLocal.translateY(-1);
+                        break;
+                    }
+                    case 8: {
+                        this.mtxLocal.translateX(1);
+                        this.mtxLocal.translateY(-1);
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
             }
         }
         moveToPreviousField() {
@@ -53,21 +96,17 @@ var RoboGame;
         fightEnemy() {
             let newEnemy = new RoboGame.Enemy(5);
             if (RoboGame.damageValue > newEnemy.damageOfEnemy) {
-                ressouceScrap += newEnemy.scrapsDropped;
+                //ressouceScrap += newEnemy.scrapsDropped;
                 isInteracting = false;
             }
             else {
                 RoboGame.robotAlive = !RoboGame.robotAlive;
             }
         }
-        interactWithField() {
+        interactWithField(_tile) {
             if (!isInteracting) {
-                switch (newFieldAttribute) {
-                    case "Quest": {
-                        this.obtainQuest();
-                        break;
-                    }
-                    case "Forest": {
+                switch (_tile.attribute) {
+                    case RoboGame.FIELDATTRIBUTE.FOREST: {
                         if (!moduleScout) {
                             if (moduleLumberjack) {
                                 this.collectWood();
@@ -75,17 +114,17 @@ var RoboGame;
                         }
                         break;
                     }
-                    case "Plains": {
+                    case RoboGame.FIELDATTRIBUTE.PLAINS: {
                         //statements; 
                         break;
                     }
-                    case "Mountain": {
+                    case RoboGame.FIELDATTRIBUTE.MOUNTAIN: {
                         if (!moduleFlying) {
                             this.moveToPreviousField();
                         }
                         break;
                     }
-                    case "Ore": {
+                    case RoboGame.FIELDATTRIBUTE.ORE: {
                         if (!moduleScout) {
                             if (moduleMiner) {
                                 this.collectOre();
@@ -93,7 +132,7 @@ var RoboGame;
                         }
                         break;
                     }
-                    case "Oil": {
+                    case RoboGame.FIELDATTRIBUTE.OIL: {
                         if (!moduleScout) {
                             if (moduleOil) {
                                 this.collectOil();
@@ -101,22 +140,21 @@ var RoboGame;
                         }
                         break;
                     }
-                    case "Enemy": {
-                        if (!moduleRetreat) {
-                            this.fightEnemy();
-                        }
-                        else {
-                            this.moveToPreviousField();
-                        }
-                        break;
-                    }
-                    case "Water": {
+                    /*  case "Enemy": {
+                         if (!moduleRetreat) {
+                             this.fightEnemy();
+                         } else {
+                             this.moveToPreviousField();
+                         }
+                         break;
+                     } */
+                    case RoboGame.FIELDATTRIBUTE.WATER: {
                         if (!moduleFlying) {
                             this.moveToPreviousField();
                         }
                         break;
                     }
-                    case "Wreckage": {
+                    case RoboGame.FIELDATTRIBUTE.WRECKAGE: {
                         if (!moduleScout) {
                             if (moduleInteraction) {
                                 this.collectScrap();

@@ -11,31 +11,73 @@ namespace RoboGame {
     let moduleRetreat: boolean = false;
     let moduleScout: boolean = false;
     let moduleBuild: boolean = false;
-    let newFieldAttribute: string;
     let isInteracting: boolean = false;
     let previousField: ƒ.Vector2;
     export let robotAlive: boolean = true;
     export let damageValue: number;
-
-    let ressouceScrap: number; // austauschen
-
-
+    let nextDirection: number;
+    let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
+    
+    //let ressouceScrap: number; // austauschen
+    
+    
     export class Robot extends QuadNode {
-        constructor(_name: string, _pos: ƒ.Vector2, _id: number) {
-            let robotID: number = _id;
-            let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
-            super("Robot: " + robotID, _pos, scale);
-            let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureShip));
+        public fieldOfView: number = 1; //switch case für andere köpfe einbauen
+        constructor(_name: string, _pos: ƒ.Vector2) {
+            super("Robot: ", _pos, scale);
+            let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
         moveToNewField(): void {
             if (moduleMovement || moduleFlying) {
-                console.log("Moving to: ");
-                this.interactWithField();
+                //getFieldInformation();
+                previousField = new ƒ.Vector2(this.mtxLocal.translation.x, this.mtxLocal.translation.y);
+                nextDirection = Math.floor((Math.random() * 8)) + 1;
+                switch (nextDirection) {
+                    case 1: {
+                        this.mtxLocal.translateX(-1);
+                        this.mtxLocal.translateY(+1);
+                        break;
+                    }
+                    case 2: {
+                        this.mtxLocal.translateY(+1);
+                        break;
+                    }
+                    case 3: {
+                        this.mtxLocal.translateX(+1);
+                        this.mtxLocal.translateY(+1);
+                        break;
+                    }
+                    case 4: {
+                        this.mtxLocal.translateX(-1);
+                        break;
+                    }
+                    case 5: {
+                        this.mtxLocal.translateX(+1);
+                        break;
+                    }
+                    case 6: {
+                        this.mtxLocal.translateX(-1);
+                        this.mtxLocal.translateY(-1);
+                        break;
+                    }
+                    case 7: {
+                        this.mtxLocal.translateY(-1);
+                        break;
+                    }
+                    case 8: {
+                        this.mtxLocal.translateX(1);
+                        this.mtxLocal.translateY(-1);
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
             }
         }
         moveToPreviousField(): void {
-            this.mtxLocal.translation = new ƒ.Vector3 (previousField.x, previousField.y, 0);
+            this.mtxLocal.translation = new ƒ.Vector3(previousField.x, previousField.y, 0);
         }
         obtainQuest(): void {
             console.log("placeholder" + moduleBuild);
@@ -54,23 +96,25 @@ namespace RoboGame {
         }
 
         fightEnemy(): void {
-            let newEnemy: Enemy = new Enemy(5);
-            if (damageValue > newEnemy.damageOfEnemy) {
-                ressouceScrap += newEnemy.scrapsDropped;
-                isInteracting = false;
+            if (moduleRetreat) {
+                
+                this.moveToPreviousField();
             } else {
-                robotAlive = !robotAlive;
+                let newEnemy: Enemy = new Enemy(5);
+                if (damageValue > newEnemy.damageOfEnemy) {
+                    //ressouceScrap += newEnemy.scrapsDropped;
+                    isInteracting = false;
+                } else {
+                    robotAlive = false;
+                }
             }
         }
-    
-        interactWithField(): void {
+
+        interactWithField(_tile: WorldMapTile): void {
             if (!isInteracting) {
-                switch (newFieldAttribute) {
-                    case "Quest": {
-                        this.obtainQuest();
-                        break;
-                    }
-                    case "Forest": {
+                switch (_tile.attribute) {
+                    
+                    case FIELDATTRIBUTE.FOREST: {
                         if (!moduleScout) {
                             if (moduleLumberjack) {
                                 this.collectWood();
@@ -78,17 +122,17 @@ namespace RoboGame {
                         }
                         break;
                     }
-                    case "Plains": {
+                    case FIELDATTRIBUTE.PLAINS: {
                         //statements; 
                         break;
                     }
-                    case "Mountain": {
+                    case FIELDATTRIBUTE.MOUNTAIN: {
                         if (!moduleFlying) {
                             this.moveToPreviousField();
                         }
                         break;
                     }
-                    case "Ore": {
+                    case FIELDATTRIBUTE.ORE: {
                         if (!moduleScout) {
                             if (moduleMiner) {
                                 this.collectOre();
@@ -96,7 +140,7 @@ namespace RoboGame {
                         }
                         break;
                     }
-                    case "Oil": {
+                    case FIELDATTRIBUTE.OIL: {
                         if (!moduleScout) {
                             if (moduleOil) {
                                 this.collectOil();
@@ -104,21 +148,13 @@ namespace RoboGame {
                         }
                         break;
                     }
-                    case "Enemy": {
-                        if (!moduleRetreat) {
-                            this.fightEnemy();
-                        } else {
-                            this.moveToPreviousField();
-                        }
-                        break;
-                    }
-                    case "Water": {
+                    case FIELDATTRIBUTE.WATER: {
                         if (!moduleFlying) {
                             this.moveToPreviousField();
                         }
                         break;
                     }
-                    case "Wreckage": {
+                    case FIELDATTRIBUTE.WRECKAGE: {
                         if (!moduleScout) {
                             if (moduleInteraction) {
                                 this.collectScrap();
@@ -126,7 +162,7 @@ namespace RoboGame {
                         }
                         break;
                     }
-    
+
                     default: {
                         //statements; 
                         break;
