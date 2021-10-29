@@ -68,7 +68,7 @@ var RoboGame;
                 if (!RoboGame.robotAlive) {
                     RoboGame.robots.removeChild(robotEntity);
                 }
-                robotEntity.moveToNewField(); //move every robot to new field
+                robotEntity.moveToNewField();
                 let minX = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
                 if (minX < 0) {
                     minX = 0;
@@ -94,7 +94,6 @@ var RoboGame;
                         }
                     }
                 }
-                //}
             }
         }
         viewport.draw();

@@ -13,7 +13,6 @@ var RoboGame;
     let moduleRetreat = false;
     let moduleScout = false;
     let moduleBuild = false;
-    let newFieldAttribute;
     let isInteracting = false;
     let previousField;
     RoboGame.robotAlive = true;
@@ -94,13 +93,18 @@ var RoboGame;
             console.log("placeholder");
         }
         fightEnemy() {
-            let newEnemy = new RoboGame.Enemy(5);
-            if (RoboGame.damageValue > newEnemy.damageOfEnemy) {
-                //ressouceScrap += newEnemy.scrapsDropped;
-                isInteracting = false;
+            if (moduleRetreat) {
+                this.moveToPreviousField();
             }
             else {
-                RoboGame.robotAlive = !RoboGame.robotAlive;
+                let newEnemy = new RoboGame.Enemy(5);
+                if (RoboGame.damageValue > newEnemy.damageOfEnemy) {
+                    //ressouceScrap += newEnemy.scrapsDropped;
+                    isInteracting = false;
+                }
+                else {
+                    RoboGame.robotAlive = false;
+                }
             }
         }
         interactWithField(_tile) {
@@ -140,14 +144,6 @@ var RoboGame;
                         }
                         break;
                     }
-                    /*  case "Enemy": {
-                         if (!moduleRetreat) {
-                             this.fightEnemy();
-                         } else {
-                             this.moveToPreviousField();
-                         }
-                         break;
-                     } */
                     case RoboGame.FIELDATTRIBUTE.WATER: {
                         if (!moduleFlying) {
                             this.moveToPreviousField();
