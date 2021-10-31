@@ -1,11 +1,16 @@
 --- World borders als Felder
-Alle Ressourcenfelder
-Ressourcenfunktionen
+--- Alle Ressourcenfelder
+--- Ressourcenfunktionen
+
+ressourcen werden im roboter gelagert bis dieser voll ist. dann kehrt der roboter zurück
+ressourcen icons und balancing
+Roboter zurück zur Basis / lossenden 
+
+
 Roboter customizen
 enemy/quest funktionen
-Roboter zurück zur Basis
 Kampffunktion
-isInteracting
-Spielerbasis definieren
+--- isInteracting
+--- Spielerbasis definieren
 Bereiche mit mehr Gegnern
 weiter außen auf der Karte mehr Wasser/Berge

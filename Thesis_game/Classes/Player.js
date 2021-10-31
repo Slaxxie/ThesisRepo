@@ -7,7 +7,6 @@ var RoboGame;
             let pos = new ƒ.Vector2(0, 0);
             let scale = new ƒ.Vector2(1, 1);
             super("Player", pos, scale);
-            /* let texture: ƒ.TextureImage = new ƒ.TextureImage("player2.png"); */
         }
         static getInstance() {
             if (this.instance == null)

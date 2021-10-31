@@ -64,36 +64,49 @@ var RoboGame;
     function update(_event) {
         hndKey();
         RoboGame.movementTimer++;
-        if (RoboGame.movementTimer == 2) {
-            RoboGame.movementTimer = 0;
+        RoboGame.harvestTimer++;
+        if (RoboGame.harvestTimer == 60) {
+            RoboGame.harvestTimer = 0;
             // Hier alle map tiles deaktivieren
             for (let robotEntity of RoboGame.robots.getChildren()) {
-                if (!RoboGame.robotAlive) {
+                if (!robotEntity.robotAlive) {
                     RoboGame.robots.removeChild(robotEntity);
                 }
-                robotEntity.moveToNewField();
-                let minX = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
-                if (minX < 0) {
-                    minX = 0;
+                if (robotEntity.isInteracting) {
+                    robotEntity.collectRessource(RoboGame.mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
+                    //console.log("i'm harvesting");
                 }
-                let maxX = robotEntity.mtxLocal.translation.x + robotEntity.fieldOfView;
-                if (maxX > RoboGame.worldSize) {
-                    maxX = RoboGame.worldSize;
-                }
-                let minY = robotEntity.mtxLocal.translation.y - robotEntity.fieldOfView;
-                if (minY < 0) {
-                    minY = 0;
-                }
-                let maxY = robotEntity.mtxLocal.translation.y + robotEntity.fieldOfView;
-                if (maxY > RoboGame.worldSize) {
-                    maxY = RoboGame.worldSize;
-                }
-                for (let x = minX; x <= maxX; x++) {
-                    for (let y = minY; y <= maxY; y++) {
-                        let tile = RoboGame.mapHelperArray[x][y];
-                        tile.activate(true);
-                        if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
-                            robotEntity.interactWithField(tile);
+                //console.log(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
+            }
+        }
+        if (RoboGame.movementTimer == 120) {
+            RoboGame.movementTimer = 0;
+            for (let robotEntity of RoboGame.robots.getChildren()) {
+                if (!robotEntity.isInteracting) {
+                    robotEntity.moveToNewField();
+                    let minX = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
+                    if (minX < 0) {
+                        minX = 0;
+                    }
+                    let maxX = robotEntity.mtxLocal.translation.x + robotEntity.fieldOfView;
+                    if (maxX > RoboGame.worldSize) {
+                        maxX = RoboGame.worldSize;
+                    }
+                    let minY = robotEntity.mtxLocal.translation.y - robotEntity.fieldOfView;
+                    if (minY < 0) {
+                        minY = 0;
+                    }
+                    let maxY = robotEntity.mtxLocal.translation.y + robotEntity.fieldOfView;
+                    if (maxY > RoboGame.worldSize) {
+                        maxY = RoboGame.worldSize;
+                    }
+                    for (let x = minX; x <= maxX; x++) {
+                        for (let y = minY; y <= maxY; y++) {
+                            let tile = RoboGame.mapHelperArray[x][y];
+                            tile.activate(true);
+                            if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
+                                robotEntity.interactWithField(tile);
+                            }
                         }
                     }
                 }

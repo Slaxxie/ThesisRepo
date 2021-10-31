@@ -8,28 +8,54 @@ var RoboGame;
         constructor(_pos) {
             super("Field: " + (_pos.x + 1) + " / " + (_pos.y + 1), _pos, WorldMapTile.scale);
             this.hasEnemy = false;
+            this.ressourceAmount = 0;
             this.enemyRnd = Math.random();
             let mapValue = JSON.parse(localStorage.getItem("Map"));
             let val = mapValue[_pos.x][_pos.y];
+            let randomizedInt = Math.random();
             if (this.mtxLocal.translation.x == 0 || this.mtxLocal.translation.x == (RoboGame.worldSize - 1) || this.mtxLocal.translation.y == 0 || this.mtxLocal.translation.y == (RoboGame.worldSize - 1)) {
                 this.addComponent(new ƒ.ComponentMaterial(RoboGame.borderMaterial));
                 this.attribute = RoboGame.FIELDATTRIBUTE.WORLDBORDER;
             }
+            else if (this.mtxLocal.translation.x == Math.floor(RoboGame.worldSize / 2) && this.mtxLocal.translation.y == Math.floor(RoboGame.worldSize / 2)) {
+                this.addComponent(new ƒ.ComponentMaterial(RoboGame.factoryMaterial));
+                this.attribute = RoboGame.FIELDATTRIBUTE.FACTORY;
+            }
             else {
                 switch (true) {
                     case (-1 <= val && val < -0.5): {
-                        this.addComponent(new ƒ.ComponentMaterial(RoboGame.waterMaterial));
-                        this.attribute = RoboGame.FIELDATTRIBUTE.WATER;
+                        if (randomizedInt < 0.9) {
+                            this.addComponent(new ƒ.ComponentMaterial(RoboGame.waterMaterial));
+                            this.attribute = RoboGame.FIELDATTRIBUTE.WATER;
+                        }
+                        else {
+                            this.addComponent(new ƒ.ComponentMaterial(RoboGame.oilMaterial));
+                            this.attribute = RoboGame.FIELDATTRIBUTE.OIL;
+                            this.ressourceAmount = Math.floor(Math.random() * 200) * RoboGame.increaseOil;
+                        }
                         break;
                     }
                     case (-0.5 <= val && val < 0.1): {
-                        this.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
-                        this.attribute = RoboGame.FIELDATTRIBUTE.PLAINS;
+                        if (randomizedInt <= 0.7) {
+                            this.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
+                            this.attribute = RoboGame.FIELDATTRIBUTE.PLAINS;
+                        }
+                        else if (randomizedInt > 0.7 && randomizedInt <= 0.9) {
+                            this.addComponent(new ƒ.ComponentMaterial(RoboGame.oreMaterial));
+                            this.attribute = RoboGame.FIELDATTRIBUTE.ORE;
+                            this.ressourceAmount = Math.floor(Math.random() * 100) * RoboGame.increaseMetal;
+                        }
+                        else {
+                            this.addComponent(new ƒ.ComponentMaterial(RoboGame.wreckageMaterial));
+                            this.attribute = RoboGame.FIELDATTRIBUTE.WRECKAGE;
+                            this.ressourceAmount = Math.floor(Math.random() * 10) * RoboGame.increaseScrap;
+                        }
                         break;
                     }
                     case (0.1 <= val && val < 0.45): {
                         this.addComponent(new ƒ.ComponentMaterial(RoboGame.forestMaterial));
                         this.attribute = RoboGame.FIELDATTRIBUTE.FOREST;
+                        this.ressourceAmount = Math.floor(Math.random() * 25) * RoboGame.increaseBioMass;
                         break;
                     }
                     case (0.45 <= val && val <= 1): {
@@ -43,6 +69,33 @@ var RoboGame;
                 }
                 if (this.enemyRnd <= 0.05) {
                     this.hasEnemy = true;
+                }
+            }
+        }
+        refreshTile() {
+            switch (this.attribute) {
+                case RoboGame.FIELDATTRIBUTE.ORE: {
+                    this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
+                    this.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
+                    break;
+                }
+                case RoboGame.FIELDATTRIBUTE.OIL: {
+                    this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
+                    this.addComponent(new ƒ.ComponentMaterial(RoboGame.waterMaterial));
+                    break;
+                }
+                case RoboGame.FIELDATTRIBUTE.FOREST: {
+                    this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
+                    this.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
+                    break;
+                }
+                case RoboGame.FIELDATTRIBUTE.WRECKAGE: {
+                    this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
+                    this.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
+                    break;
+                }
+                default: {
+                    break;
                 }
             }
         }

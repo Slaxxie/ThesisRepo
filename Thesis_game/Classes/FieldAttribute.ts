@@ -5,9 +5,9 @@ namespace RoboGame {
         OIL,
         FOREST,
         MOUNTAIN,
-        QUEST,
         WATER,
         WRECKAGE,
-        WORLDBORDER
+        WORLDBORDER,
+        FACTORY
     }
 }

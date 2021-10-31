@@ -14,5 +14,13 @@ var RoboGame;
     RoboGame.robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureRobot));
     RoboGame.textureBorder = new ƒ.TextureImage("./Art/FoW.png");
     RoboGame.borderMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureBorder));
+    RoboGame.textureFactory = new ƒ.TextureImage("./Art/factory.png");
+    RoboGame.factoryMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureFactory));
+    RoboGame.textureOre = new ƒ.TextureImage("./Art/factory.png");
+    RoboGame.oreMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureOre));
+    RoboGame.textureOil = new ƒ.TextureImage("./Art/factory.png");
+    RoboGame.oilMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureOil));
+    RoboGame.textureWreckage = new ƒ.TextureImage("./Art/factory.png");
+    RoboGame.wreckageMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureWreckage));
 })(RoboGame || (RoboGame = {}));
 //# sourceMappingURL=TextureLoader.js.map

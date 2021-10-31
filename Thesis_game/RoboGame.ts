@@ -75,42 +75,57 @@ namespace RoboGame {
     function update(_event: Event): void {
         hndKey();
         movementTimer++;
-        if (movementTimer == 2) {
-            movementTimer = 0;
+        harvestTimer++;
+        
+        if (harvestTimer == 60) {
+            harvestTimer = 0;
 
             // Hier alle map tiles deaktivieren
 
             for (let robotEntity of robots.getChildren() as Robot[]) {
-                if (!robotAlive) {
+                if (!robotEntity.robotAlive) {
                     robots.removeChild(robotEntity);
                 }
+                if (robotEntity.isInteracting) {
+                    robotEntity.collectRessource(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
 
-                robotEntity.moveToNewField();
-
-                let minX: number = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
-                if (minX < 0) {
-                    minX = 0;
+                    //console.log("i'm harvesting");
                 }
-                let maxX: number = robotEntity.mtxLocal.translation.x + robotEntity.fieldOfView;
-                if (maxX > worldSize) {
-                    maxX = worldSize;
-                }
-                let minY: number = robotEntity.mtxLocal.translation.y - robotEntity.fieldOfView;
-                if (minY < 0) {
-                    minY = 0;
-                }
-                let maxY: number = robotEntity.mtxLocal.translation.y + robotEntity.fieldOfView;
-                if (maxY > worldSize) {
-                    maxY = worldSize;
-                }
+                //console.log(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
+            }
+        }
+        if (movementTimer == 120) {
+            movementTimer = 0;
+            for (let robotEntity of robots.getChildren() as Robot[]) {
+                if (!robotEntity.isInteracting) {
+                    robotEntity.moveToNewField();
 
 
-                for (let x: number = minX; x <= maxX; x++) {
-                    for (let y: number = minY; y <= maxY; y++) {
-                        let tile: WorldMapTile = mapHelperArray[x][y];
-                        tile.activate(true);
-                        if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
-                            robotEntity.interactWithField(tile);
+                    let minX: number = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
+                    if (minX < 0) {
+                        minX = 0;
+                    }
+                    let maxX: number = robotEntity.mtxLocal.translation.x + robotEntity.fieldOfView;
+                    if (maxX > worldSize) {
+                        maxX = worldSize;
+                    }
+                    let minY: number = robotEntity.mtxLocal.translation.y - robotEntity.fieldOfView;
+                    if (minY < 0) {
+                        minY = 0;
+                    }
+                    let maxY: number = robotEntity.mtxLocal.translation.y + robotEntity.fieldOfView;
+                    if (maxY > worldSize) {
+                        maxY = worldSize;
+                    }
+
+
+                    for (let x: number = minX; x <= maxX; x++) {
+                        for (let y: number = minY; y <= maxY; y++) {
+                            let tile: WorldMapTile = mapHelperArray[x][y];
+                            tile.activate(true);
+                            if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
+                                robotEntity.interactWithField(tile);
+                            }
                         }
                     }
                 }

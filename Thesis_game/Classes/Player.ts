@@ -6,10 +6,9 @@ namespace RoboGame {
         private constructor() {
             let pos: ƒ.Vector2 = new ƒ.Vector2(0, 0);
             let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
-            super("Player", pos, scale);
-            /* let texture: ƒ.TextureImage = new ƒ.TextureImage("player2.png"); */
-            
+            super("Player", pos, scale);           
         }
+        
         static getInstance(): Player {
             if (this.instance == null) this.instance = new Player();
             return this.instance;
