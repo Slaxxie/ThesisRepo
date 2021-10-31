@@ -30,6 +30,14 @@ namespace RoboGame {
             this.setRectPosition();
             Player.getInstance().mtxLocal.translateY((- movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
+        public moveCameraDown(): void {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateZ((- movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
+        public moveCameraUp(): void {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateZ(( movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
     }
     
 }

@@ -6,24 +6,24 @@ var RoboGame;
     let gameNode = new ƒ.Node("Game");
     let viewportNode = new ƒ.Node("Viewport");
     let viewport = new ƒ.Viewport();
+    let player;
     RoboGame.movementSpeed = 10;
     RoboGame.robots = new ƒ.Node("Robots");
     RoboGame.worldTilesNode = new ƒ.Node("Worldmap");
-    let player;
     RoboGame.mapHelperArray = [];
     gameNode.appendChild(viewportNode);
     function init(_event) {
         const canvas = document.querySelector("canvas");
         player = RoboGame.Player.getInstance();
-        //createWorld();
         viewportNode.addChild(RoboGame.objects);
         viewportNode.addChild(RoboGame.robots);
         viewportNode.addChild(RoboGame.worldTilesNode);
         viewportNode.addChild(player);
-        RoboGame.robots.addChild(new RoboGame.Robot("Robot #" + RoboGame.robots.getChildren.length, new ƒ.Vector2(16, 10)));
-        RoboGame.robots.addChild(new RoboGame.Robot("Robot #" + RoboGame.robots.getChildren.length, new ƒ.Vector2(10, 16)));
+        for (let i = 0; i < 5; i++) {
+            RoboGame.robots.addChild(new RoboGame.Robot("Robot #" + RoboGame.robots.getChildren.length, new ƒ.Vector2(RoboGame.worldSize / 2, RoboGame.worldSize / 2)));
+        }
         let cmpCamera = new ƒ.ComponentCamera();
-        cmpCamera.mtxPivot.translateZ(30);
+        cmpCamera.mtxPivot.translateZ(50);
         cmpCamera.mtxPivot.translateY(9);
         cmpCamera.mtxPivot.translateX(16);
         cmpCamera.mtxPivot.rotateY(180);
@@ -40,9 +40,6 @@ var RoboGame;
             RoboGame.saveNoisemap();
         });
         viewport.draw();
-        /* for (let mapTile of worldTilesNode.getChildren() as WorldMapTile[]) {
-            console.log(mapTile.mtxLocal.translation.y);
-        } */
     }
     function hndKey() {
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
@@ -57,11 +54,17 @@ var RoboGame;
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S])) {
             player.moveDown();
         }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])) {
+            player.moveCameraUp();
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
+            player.moveCameraDown();
+        }
     }
     function update(_event) {
         hndKey();
         RoboGame.movementTimer++;
-        if (RoboGame.movementTimer == 120) {
+        if (RoboGame.movementTimer == 2) {
             RoboGame.movementTimer = 0;
             // Hier alle map tiles deaktivieren
             for (let robotEntity of RoboGame.robots.getChildren()) {

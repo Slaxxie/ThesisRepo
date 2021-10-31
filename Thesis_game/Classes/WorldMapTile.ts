@@ -10,43 +10,44 @@ namespace RoboGame {
         public hasEnemy: boolean = false;
         private enemyRnd: number;
         constructor(_pos: ƒ.Vector2) {
-            //eventlistener
 
             super("Field: " + (_pos.x + 1) + " / " + (_pos.y + 1), _pos, WorldMapTile.scale);
 
-            //switchcase einfügen
-
-            //let val: number = noiseMap.sample(_pos.x, _pos.y);
             this.enemyRnd = Math.random();
             let mapValue: number[][] = JSON.parse(localStorage.getItem("Map"));
             let val: number = mapValue[_pos.x][_pos.y];
-            switch (true) {
-                case (-1 <= val && val < -0.5): {
-                    this.addComponent(new ƒ.ComponentMaterial(waterMaterial));
-                    this.attribute = FIELDATTRIBUTE.WATER;
-                    break;
+            if (this.mtxLocal.translation.x == 0 || this.mtxLocal.translation.x == (worldSize - 1) || this.mtxLocal.translation.y == 0 || this.mtxLocal.translation.y == (worldSize - 1)) {
+                this.addComponent(new ƒ.ComponentMaterial(borderMaterial));
+                this.attribute = FIELDATTRIBUTE.WORLDBORDER;
+            } else {
+                switch (true) {
+                    case (-1 <= val && val < -0.5): {
+                        this.addComponent(new ƒ.ComponentMaterial(waterMaterial));
+                        this.attribute = FIELDATTRIBUTE.WATER;
+                        break;
+                    }
+                    case (-0.5 <= val && val < 0.1): {
+                        this.addComponent(new ƒ.ComponentMaterial(plainsMaterial));
+                        this.attribute = FIELDATTRIBUTE.PLAINS;
+                        break;
+                    }
+                    case (0.1 <= val && val < 0.45): {
+                        this.addComponent(new ƒ.ComponentMaterial(forestMaterial));
+                        this.attribute = FIELDATTRIBUTE.FOREST;
+                        break;
+                    }
+                    case (0.45 <= val && val <= 1): {
+                        this.addComponent(new ƒ.ComponentMaterial(mountainMaterial));
+                        this.attribute = FIELDATTRIBUTE.MOUNTAIN;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
-                case (-0.5 <= val && val < 0.1): {
-                    this.addComponent(new ƒ.ComponentMaterial(plainsMaterial));
-                    this.attribute = FIELDATTRIBUTE.PLAINS;
-                    break;
+                if (this.enemyRnd <= 0.05) {
+                    this.hasEnemy = true;
                 }
-                case (0.1 <= val && val < 0.45): {
-                    this.addComponent(new ƒ.ComponentMaterial(forestMaterial));
-                    this.attribute = FIELDATTRIBUTE.FOREST;
-                    break;
-                }
-                case (0.45 <= val && val <= 1): {
-                    this.addComponent(new ƒ.ComponentMaterial(mountainMaterial));
-                    this.attribute = FIELDATTRIBUTE.MOUNTAIN;
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-            if (this.enemyRnd <= 0.05) {
-                this.hasEnemy = true;
             }
         }
     }
@@ -79,8 +80,3 @@ namespace RoboGame {
 
 
 
-/* export function getFieldInformation(): void {
-    if (!fieldRevealed) {
-
-    }
-} */

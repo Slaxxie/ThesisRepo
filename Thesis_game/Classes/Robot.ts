@@ -17,10 +17,10 @@ namespace RoboGame {
     export let damageValue: number;
     let nextDirection: number;
     let scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
-    
+
     //let ressouceScrap: number; // austauschen
-    
-    
+
+
     export class Robot extends QuadNode {
         public fieldOfView: number = 1; //switch case für andere köpfe einbauen
         constructor(_name: string, _pos: ƒ.Vector2) {
@@ -29,45 +29,62 @@ namespace RoboGame {
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
         moveToNewField(): void {
+            let thisX: number = this.mtxLocal.translation.x;
+            let thisY: number = this.mtxLocal.translation.y;
+            previousField = new ƒ.Vector2(thisX, thisY);
             if (moduleMovement || moduleFlying) {
-                //getFieldInformation();
-                previousField = new ƒ.Vector2(this.mtxLocal.translation.x, this.mtxLocal.translation.y);
                 nextDirection = Math.floor((Math.random() * 8)) + 1;
                 switch (nextDirection) {
                     case 1: {
-                        this.mtxLocal.translateX(-1);
-                        this.mtxLocal.translateY(+1);
+                        if (mapHelperArray[thisX - 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(-1);
+                            this.mtxLocal.translateY(+1);
+                        }
                         break;
                     }
                     case 2: {
-                        this.mtxLocal.translateY(+1);
+                        if (mapHelperArray[thisX][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateY(+1);
+                        }
                         break;
                     }
                     case 3: {
-                        this.mtxLocal.translateX(+1);
-                        this.mtxLocal.translateY(+1);
+                        if (mapHelperArray[thisX + 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(+1);
+                            this.mtxLocal.translateY(+1);
+                        }
                         break;
                     }
                     case 4: {
-                        this.mtxLocal.translateX(-1);
+                        if (mapHelperArray[thisX - 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(-1);
+                        }
                         break;
                     }
                     case 5: {
-                        this.mtxLocal.translateX(+1);
+                        if (mapHelperArray[thisX + 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(+1);
+                        }
                         break;
                     }
                     case 6: {
-                        this.mtxLocal.translateX(-1);
-                        this.mtxLocal.translateY(-1);
+                        if (mapHelperArray[thisX - 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(-1);
+                            this.mtxLocal.translateY(-1);
+                        }
                         break;
                     }
                     case 7: {
-                        this.mtxLocal.translateY(-1);
+                        if (mapHelperArray[thisX][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateY(-1);
+                        }
                         break;
                     }
                     case 8: {
-                        this.mtxLocal.translateX(1);
-                        this.mtxLocal.translateY(-1);
+                        if (mapHelperArray[thisX + 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(+1);
+                            this.mtxLocal.translateY(-1);
+                        }
                         break;
                     }
                     default: {
@@ -97,7 +114,7 @@ namespace RoboGame {
 
         fightEnemy(): void {
             if (moduleRetreat) {
-                
+
                 this.moveToPreviousField();
             } else {
                 let newEnemy: Enemy = new Enemy(5);
@@ -113,7 +130,7 @@ namespace RoboGame {
         interactWithField(_tile: WorldMapTile): void {
             if (!isInteracting) {
                 switch (_tile.attribute) {
-                    
+
                     case FIELDATTRIBUTE.FOREST: {
                         if (!moduleScout) {
                             if (moduleLumberjack) {
@@ -162,7 +179,6 @@ namespace RoboGame {
                         }
                         break;
                     }
-
                     default: {
                         //statements; 
                         break;

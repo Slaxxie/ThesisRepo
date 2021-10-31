@@ -11,5 +11,7 @@ namespace RoboGame {
     export let forestMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureForest));
     export let textureRobot: ƒ.TextureImage = new ƒ.TextureImage("./Art/enemy_icon.png");
     export let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
+    export let textureBorder: ƒ.TextureImage = new ƒ.TextureImage("./Art/FoW.png");
+    export let borderMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureBorder));
 
 }

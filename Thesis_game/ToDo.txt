@@ -1,4 +1,4 @@
-World borders
+--- World borders als Felder
 Alle Ressourcenfelder
 Ressourcenfunktionen
 Roboter customizen

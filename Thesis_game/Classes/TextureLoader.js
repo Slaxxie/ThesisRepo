@@ -12,5 +12,7 @@ var RoboGame;
     RoboGame.forestMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureForest));
     RoboGame.textureRobot = new ƒ.TextureImage("./Art/enemy_icon.png");
     RoboGame.robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureRobot));
+    RoboGame.textureBorder = new ƒ.TextureImage("./Art/FoW.png");
+    RoboGame.borderMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureBorder));
 })(RoboGame || (RoboGame = {}));
 //# sourceMappingURL=TextureLoader.js.map

@@ -27,45 +27,62 @@ var RoboGame;
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
         moveToNewField() {
+            let thisX = this.mtxLocal.translation.x;
+            let thisY = this.mtxLocal.translation.y;
+            previousField = new ƒ.Vector2(thisX, thisY);
             if (moduleMovement || moduleFlying) {
-                //getFieldInformation();
-                previousField = new ƒ.Vector2(this.mtxLocal.translation.x, this.mtxLocal.translation.y);
                 nextDirection = Math.floor((Math.random() * 8)) + 1;
                 switch (nextDirection) {
                     case 1: {
-                        this.mtxLocal.translateX(-1);
-                        this.mtxLocal.translateY(+1);
+                        if (RoboGame.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(-1);
+                            this.mtxLocal.translateY(+1);
+                        }
                         break;
                     }
                     case 2: {
-                        this.mtxLocal.translateY(+1);
+                        if (RoboGame.mapHelperArray[thisX][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateY(+1);
+                        }
                         break;
                     }
                     case 3: {
-                        this.mtxLocal.translateX(+1);
-                        this.mtxLocal.translateY(+1);
+                        if (RoboGame.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(+1);
+                            this.mtxLocal.translateY(+1);
+                        }
                         break;
                     }
                     case 4: {
-                        this.mtxLocal.translateX(-1);
+                        if (RoboGame.mapHelperArray[thisX - 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(-1);
+                        }
                         break;
                     }
                     case 5: {
-                        this.mtxLocal.translateX(+1);
+                        if (RoboGame.mapHelperArray[thisX + 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(+1);
+                        }
                         break;
                     }
                     case 6: {
-                        this.mtxLocal.translateX(-1);
-                        this.mtxLocal.translateY(-1);
+                        if (RoboGame.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(-1);
+                            this.mtxLocal.translateY(-1);
+                        }
                         break;
                     }
                     case 7: {
-                        this.mtxLocal.translateY(-1);
+                        if (RoboGame.mapHelperArray[thisX][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateY(-1);
+                        }
                         break;
                     }
                     case 8: {
-                        this.mtxLocal.translateX(1);
-                        this.mtxLocal.translateY(-1);
+                        if (RoboGame.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                            this.mtxLocal.translateX(+1);
+                            this.mtxLocal.translateY(-1);
+                        }
                         break;
                     }
                     default: {

@@ -30,6 +30,14 @@ var RoboGame;
             this.setRectPosition();
             Player.getInstance().mtxLocal.translateY((-RoboGame.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
+        moveCameraDown() {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateZ((-RoboGame.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
+        moveCameraUp() {
+            this.setRectPosition();
+            Player.getInstance().mtxLocal.translateZ((RoboGame.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+        }
     }
     RoboGame.Player = Player;
 })(RoboGame || (RoboGame = {}));
