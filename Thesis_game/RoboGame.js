@@ -19,9 +19,6 @@ var RoboGame;
         viewportNode.addChild(RoboGame.robots);
         viewportNode.addChild(RoboGame.worldTilesNode);
         viewportNode.addChild(player);
-        for (let i = 0; i < 5; i++) {
-            RoboGame.robots.addChild(new RoboGame.Robot("Robot #" + RoboGame.robots.getChildren.length, new ƒ.Vector2(RoboGame.worldSize / 2, RoboGame.worldSize / 2)));
-        }
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(50);
         cmpCamera.mtxPivot.translateY(9);
@@ -38,6 +35,45 @@ var RoboGame;
         });
         document.getElementById("saveWorld").addEventListener("click", () => {
             RoboGame.saveNoisemap();
+        });
+        document.getElementById("modMovement").addEventListener("click", () => {
+            RoboGame.saveNoisemap();
+        });
+        document.getElementById("modHover").addEventListener("click", () => {
+            RoboGame.saveNoisemap();
+        });
+        document.getElementById("modScrap").addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
+        });
+        document.getElementById("modLumberer").addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "lumberer");
+        });
+        document.getElementById("modMiner").addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "miner");
+        });
+        document.getElementById("modOil").addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "oiler");
+        });
+        document.getElementById("modFighter").addEventListener("click", () => {
+            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "fight");
+        });
+        document.getElementById("modRetreat").addEventListener("click", () => {
+            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
+        });
+        document.getElementById("modScout").addEventListener("click", () => {
+            RoboGame.saveNoisemap();
+        });
+        document.getElementById("isAuto").addEventListener("click", () => {
+            RoboGame.saveNoisemap();
+        });
+        document.getElementById("createRobot").addEventListener("click", () => {
+            RoboGame.createRobot();
+        });
+        document.getElementById("spawnRobot").addEventListener("click", () => {
+            RoboGame.spawnRobot();
+        });
+        document.getElementById("activateRobot").addEventListener("click", () => {
+            RoboGame.activateRobot(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
         });
         viewport.draw();
     }
@@ -65,7 +101,7 @@ var RoboGame;
         hndKey();
         RoboGame.movementTimer++;
         RoboGame.harvestTimer++;
-        if (RoboGame.harvestTimer == 60) {
+        if (RoboGame.harvestTimer == 2) {
             RoboGame.harvestTimer = 0;
             // Hier alle map tiles deaktivieren
             for (let robotEntity of RoboGame.robots.getChildren()) {
@@ -79,7 +115,7 @@ var RoboGame;
                 //console.log(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
             }
         }
-        if (RoboGame.movementTimer == 120) {
+        if (RoboGame.movementTimer == 4) {
             RoboGame.movementTimer = 0;
             for (let robotEntity of RoboGame.robots.getChildren()) {
                 if (!robotEntity.isInteracting) {

@@ -22,11 +22,6 @@ namespace RoboGame {
         viewportNode.addChild(worldTilesNode);
         viewportNode.addChild(player);
 
-        for (let i: number = 0; i < 5; i++) {
-            robots.addChild(new Robot("Robot #" + robots.getChildren.length, new ƒ.Vector2(worldSize / 2, worldSize / 2)));
-        }
-
-
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(50);
         cmpCamera.mtxPivot.translateY(9);
@@ -46,6 +41,45 @@ namespace RoboGame {
         });
         document.getElementById("saveWorld").addEventListener("click", () => {
             saveNoisemap();
+        });
+        document.getElementById("modMovement").addEventListener("click", () => {
+            saveNoisemap();
+        });
+        document.getElementById("modHover").addEventListener("click", () => {
+            saveNoisemap();
+        });
+        document.getElementById("modScrap").addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
+        });
+        document.getElementById("modLumberer").addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
+        });
+        document.getElementById("modMiner").addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
+        });
+        document.getElementById("modOil").addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
+        });
+        document.getElementById("modFighter").addEventListener("click", () => {
+            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
+        });
+        document.getElementById("modRetreat").addEventListener("click", () => {
+            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
+        });
+        document.getElementById("modScout").addEventListener("click", () => {
+            saveNoisemap();
+        });
+        document.getElementById("isAuto").addEventListener("click", () => {
+            saveNoisemap();
+        });
+        document.getElementById("createRobot").addEventListener("click", () => {
+            createRobot();
+        });
+        document.getElementById("spawnRobot").addEventListener("click", () => {
+            spawnRobot();
+        });
+        document.getElementById("activateRobot").addEventListener("click", () => {
+            activateRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
         });
         viewport.draw();
     }
@@ -76,8 +110,8 @@ namespace RoboGame {
         hndKey();
         movementTimer++;
         harvestTimer++;
-        
-        if (harvestTimer == 60) {
+
+        if (harvestTimer == 2) {
             harvestTimer = 0;
 
             // Hier alle map tiles deaktivieren
@@ -94,7 +128,7 @@ namespace RoboGame {
                 //console.log(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
             }
         }
-        if (movementTimer == 120) {
+        if (movementTimer == 4) {
             movementTimer = 0;
             for (let robotEntity of robots.getChildren() as Robot[]) {
                 if (!robotEntity.isInteracting) {

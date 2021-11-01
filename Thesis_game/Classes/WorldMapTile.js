@@ -2,8 +2,9 @@
 var RoboGame;
 (function (RoboGame) {
     var ƒ = FudgeCore;
-    RoboGame.worldSize = 64;
+    RoboGame.worldSize = 32;
     RoboGame.noiseMap = new ƒ.Noise2(Math.random);
+    RoboGame.playerBase = new ƒ.Vector3(Math.floor(RoboGame.worldSize / 2), Math.floor(RoboGame.worldSize / 2), 0);
     class WorldMapTile extends RoboGame.QuadNode {
         constructor(_pos) {
             super("Field: " + (_pos.x + 1) + " / " + (_pos.y + 1), _pos, WorldMapTile.scale);
@@ -18,13 +19,14 @@ var RoboGame;
                 this.attribute = RoboGame.FIELDATTRIBUTE.WORLDBORDER;
             }
             else if (this.mtxLocal.translation.x == Math.floor(RoboGame.worldSize / 2) && this.mtxLocal.translation.y == Math.floor(RoboGame.worldSize / 2)) {
+                //} else if (this.mtxLocal.translation == playerBase) {
                 this.addComponent(new ƒ.ComponentMaterial(RoboGame.factoryMaterial));
                 this.attribute = RoboGame.FIELDATTRIBUTE.FACTORY;
             }
             else {
                 switch (true) {
                     case (-1 <= val && val < -0.5): {
-                        if (randomizedInt < 0.9) {
+                        if (randomizedInt < 0.85) {
                             this.addComponent(new ƒ.ComponentMaterial(RoboGame.waterMaterial));
                             this.attribute = RoboGame.FIELDATTRIBUTE.WATER;
                         }
@@ -36,16 +38,16 @@ var RoboGame;
                         break;
                     }
                     case (-0.5 <= val && val < 0.1): {
-                        if (randomizedInt <= 0.7) {
+                        if (randomizedInt <= 0.85) {
                             this.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
                             this.attribute = RoboGame.FIELDATTRIBUTE.PLAINS;
                         }
-                        else if (randomizedInt > 0.7 && randomizedInt <= 0.9) {
+                        else if (randomizedInt > 0.85 && randomizedInt <= 0.92) {
                             this.addComponent(new ƒ.ComponentMaterial(RoboGame.oreMaterial));
                             this.attribute = RoboGame.FIELDATTRIBUTE.ORE;
                             this.ressourceAmount = Math.floor(Math.random() * 100) * RoboGame.increaseMetal;
                         }
-                        else {
+                        else if (randomizedInt > 0.92) {
                             this.addComponent(new ƒ.ComponentMaterial(RoboGame.wreckageMaterial));
                             this.attribute = RoboGame.FIELDATTRIBUTE.WRECKAGE;
                             this.ressourceAmount = Math.floor(Math.random() * 10) * RoboGame.increaseScrap;

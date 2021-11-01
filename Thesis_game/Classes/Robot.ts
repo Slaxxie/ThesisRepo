@@ -2,161 +2,112 @@ namespace RoboGame {
     import ƒ = FudgeCore;
     export let movementTimer: number = 0;
     export let harvestTimer: number = 0;
-  
+    let newRobot: Robot;
+
     export class Robot extends QuadNode {
         private static scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
         public previousField: ƒ.Vector2;
         public moduleMovement: boolean = true;
-        public moduleFlying: boolean = false;
-        public moduleScrapper: boolean = true;
-        public collectsScrap: boolean = false;
+        public moduleHovering: boolean = false;
+        public moduleScrapper: boolean = false;
         public moduleLumberjack: boolean = true;
-        public collectsBioMass: boolean = false;
         public moduleMiner: boolean = false;
-        public collectsOre: boolean = false;
         public moduleOil: boolean = false;
-        public collectsOil: boolean = false;
-        public moduleFighter: boolean = false;
+        public moduleFighter: boolean = true;
         public moduleRetreat: boolean = false;
         public moduleScout: boolean = false;
         public isInteracting: boolean = false;
         public robotAlive: boolean = true;
-        public damageValue: number;
+        public isAutomated: boolean = false;
+        public damageValue: number = 0;
+        public ressourceCapacity: number = 200;
+        public isWaiting: boolean = true;
         public fieldOfView: number = 1; //switch case für andere köpfe einbauen
+        private bioMassLoaded: number = 0;
+        private oreLoaded: number = 0;
+        private oilLoaded: number = 0;
+        private scrapLoaded: number = 0;
+        private collectsBioMass: boolean = false;
+        private collectsOre: boolean = false;
+        private collectsOil: boolean = false;
+        private collectsScrap: boolean = false;
 
         constructor(_name: string, _pos: ƒ.Vector2) {
-            super("Robot: ", _pos, Robot.scale);
+            super(_name, _pos, Robot.scale);
             let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
+
         moveToNewField(): void {
             let thisX: number = this.mtxLocal.translation.x;
             let thisY: number = this.mtxLocal.translation.y;
             let nextDirection: number;
             this.previousField = new ƒ.Vector2(thisX, thisY);
 
-            if (!this.isInteracting) {
-                if (this.moduleMovement || this.moduleFlying) {
-                    nextDirection = Math.floor((Math.random() * 8)) + 1;
+            if (!this.isWaiting) {
+                if (!this.isInteracting) {
+                    if (this.moduleMovement || this.moduleHovering) {
+                        nextDirection = Math.floor((Math.random() * 8)) + 1;
 
-                    switch (nextDirection) {
+                        switch (nextDirection) {
 
-                        case 1: {
-                            if (mapHelperArray[thisX - 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateX(-1);
-                                this.mtxLocal.translateY(+1);
+                            case 1: {
+                                if (mapHelperArray[thisX - 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(-1);
+                                    this.mtxLocal.translateY(+1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 2: {
-                            if (mapHelperArray[thisX][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateY(+1);
+                            case 2: {
+                                if (mapHelperArray[thisX][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateY(+1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 3: {
-                            if (mapHelperArray[thisX + 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateX(+1);
-                                this.mtxLocal.translateY(+1);
+                            case 3: {
+                                if (mapHelperArray[thisX + 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(+1);
+                                    this.mtxLocal.translateY(+1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 4: {
-                            if (mapHelperArray[thisX - 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateX(-1);
+                            case 4: {
+                                if (mapHelperArray[thisX - 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(-1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 5: {
-                            if (mapHelperArray[thisX + 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateX(+1);
+                            case 5: {
+                                if (mapHelperArray[thisX + 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(+1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 6: {
-                            if (mapHelperArray[thisX - 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateX(-1);
-                                this.mtxLocal.translateY(-1);
+                            case 6: {
+                                if (mapHelperArray[thisX - 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(-1);
+                                    this.mtxLocal.translateY(-1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 7: {
-                            if (mapHelperArray[thisX][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateY(-1);
+                            case 7: {
+                                if (mapHelperArray[thisX][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateY(-1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 8: {
-                            if (mapHelperArray[thisX + 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                this.mtxLocal.translateX(+1);
-                                this.mtxLocal.translateY(-1);
+                            case 8: {
+                                if (mapHelperArray[thisX + 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(+1);
+                                    this.mtxLocal.translateY(-1);
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        default: {
-                            break;
+                            default: {
+                                break;
+                            }
                         }
                     }
-                }
-            }
-        }
-        moveToPreviousField(): void {
-            this.mtxLocal.translation = new ƒ.Vector3(this.previousField.x, this.previousField.y, 0);
-        }
-        obtainQuest(): void {
-            console.log("placeholder");
-        }
-        collectRessource(_tile: WorldMapTile): void {
-            if (this.collectsBioMass == true) {
-                ressourceBioMass += increaseBioMass;
-                _tile.ressourceAmount -= increaseBioMass;
-                if (_tile.ressourceAmount <= 0) {
-                    console.log("im empty");
-                    this.isInteracting = false;
-                    this.collectsBioMass = false;
-                    _tile.refreshTile();
-                }
-            }
-            if (this.collectsOre == true) {
-                ressourceMetal += increaseMetal;
-                _tile.ressourceAmount -= increaseMetal;
-                if (_tile.ressourceAmount <= 0) {
-                    this.isInteracting = false;
-                    this.collectsOre = false;
-                    _tile.refreshTile();
-                }
-            }
-            if (this.collectsOil == true) {
-                ressourceOil += increaseOil;
-                _tile.ressourceAmount -= increaseOil;
-                if (_tile.ressourceAmount <= 0) {
-                    this.isInteracting = false;
-                    this.collectsOil = false;
-                    _tile.refreshTile(); 
-                }
-            }
-            if (this.collectsScrap == true) {
-                ressourceScrap += increaseScrap;
-                _tile.ressourceAmount -= increaseScrap;
-                if (_tile.ressourceAmount <= 0) {
-                    this.isInteracting = false;
-                    this.collectsScrap = false;
-                    _tile.refreshTile();
-                }
-            }
-        }
-
-        fightEnemy(): void {
-            if (this.moduleRetreat) {
-
-                this.moveToPreviousField();
-            } else {
-                let newEnemy: Enemy = new Enemy(5);
-                if (this.damageValue > newEnemy.damageOfEnemy) {
-                    //ressouceScrap += newEnemy.scrapsDropped;
-                    this.isInteracting = false;
-                } else {
-                    this.robotAlive = false;
                 }
             }
         }
@@ -174,12 +125,8 @@ namespace RoboGame {
                     }
                     break;
                 }
-                case FIELDATTRIBUTE.PLAINS: {
-                    //statements; 
-                    break;
-                }
                 case FIELDATTRIBUTE.MOUNTAIN: {
-                    if (!this.moduleFlying) {
+                    if (!this.moduleHovering) {
                         this.moveToPreviousField();
                     }
                     break;
@@ -203,7 +150,7 @@ namespace RoboGame {
                     break;
                 }
                 case FIELDATTRIBUTE.WATER: {
-                    if (!this.moduleFlying) {
+                    if (!this.moduleHovering) {
                         this.moveToPreviousField();
                     }
                     break;
@@ -218,11 +165,170 @@ namespace RoboGame {
                     break;
                 }
                 default: {
-                    //statements; 
                     break;
                 }
             }
+        }
 
+        moveToPreviousField(): void {
+            this.mtxLocal.translation = new ƒ.Vector3(this.previousField.x, this.previousField.y, 0);
+        }
+
+        collectRessource(_tile: WorldMapTile): void {
+            if (this.collectsBioMass == true) {
+                this.bioMassLoaded += increaseBioMass;
+                _tile.ressourceAmount -= increaseBioMass;
+                if (this.bioMassLoaded >= this.ressourceCapacity) {
+                    this.collectsBioMass = false;
+                    this.returnTimer();
+                }
+                if (_tile.ressourceAmount <= 0) {
+                    console.log("im empty");
+                    this.isInteracting = false;
+                    this.collectsBioMass = false;
+                    _tile.refreshTile();
+                }
+            }
+            if (this.collectsOre == true) {
+                this.oreLoaded += increaseMetal;
+                _tile.ressourceAmount -= increaseMetal;
+                if (this.oreLoaded >= this.ressourceCapacity) {
+                    this.collectsOre = false;
+                    this.returnTimer();
+                }
+                if (_tile.ressourceAmount <= 0) {
+                    this.isInteracting = false;
+                    this.collectsOre = false;
+                    _tile.refreshTile();
+                }
+            }
+            if (this.collectsOil == true) {
+                this.oilLoaded += increaseOil;
+                _tile.ressourceAmount -= increaseOil;
+                if (this.oilLoaded >= this.ressourceCapacity) {
+                    this.collectsOil = false;
+                    this.returnTimer();
+                }
+                if (_tile.ressourceAmount <= 0) {
+                    this.isInteracting = false;
+                    this.collectsOil = false;
+                    _tile.refreshTile();
+                }
+            }
+            if (this.collectsScrap == true) {
+                this.scrapLoaded += increaseScrap;
+                _tile.ressourceAmount -= increaseScrap;
+                if (this.scrapLoaded >= this.ressourceCapacity) {
+                    this.collectsScrap = false;
+                    this.returnTimer();
+                }
+                if (_tile.ressourceAmount <= 0) {
+                    this.isInteracting = false;
+                    this.collectsScrap = false;
+                    _tile.refreshTile();
+                }
+            }
+        }
+
+        returnTimer(): void {
+            ƒ.Time.game.setTimer(12000, 1, () => {
+                this.returnToBase();
+            });
+        }
+
+        returnToBase(): void {
+            this.isInteracting = false;
+            this.mtxLocal.translation = playerBase;
+            ressourceBioMass += this.bioMassLoaded;
+            this.bioMassLoaded = 0;
+            ressourceMetal += this.oreLoaded;
+            this.oreLoaded = 0;
+            ressourceOil += this.oilLoaded;
+            this.oilLoaded = 0;
+            ressourceScrap += this.scrapLoaded;
+            this.scrapLoaded = 0;
+            if (!this.isAutomated) {
+                this.isWaiting = true;
+            }
+        }
+
+        fightEnemy(): void {
+            if (this.moduleRetreat) {
+
+                this.moveToPreviousField();
+            } else {
+                let newEnemy: Enemy = new Enemy(5);
+                if (this.damageValue > newEnemy.damageOfEnemy) {
+                    this.isInteracting = false;
+                } else {
+                    this.robotAlive = false;
+                }
+            }
+        }
+
+
+    }
+
+    export function createRobot(): void {
+        newRobot = new Robot("Robot #" + (robots.getChildren().length + 1), new ƒ.Vector2(worldSize / 2, worldSize / 2));
+    }
+
+    export function spawnRobot(): void {
+        robots.addChild(newRobot);
+    }
+
+    export function activateRobot(robot: Robot): void {
+        robot.isWaiting = false;
+    }
+
+    export function setCollectionModule(robot: Robot, module: string): void {
+        switch (module) {
+            case "lumberer": {
+                robot.moduleLumberjack = true;
+                robot.moduleMiner = false;
+                robot.moduleOil = false;
+                robot.moduleScrapper = false;
+                break;
+            }
+            case "miner": {
+                robot.moduleLumberjack = false;
+                robot.moduleMiner = true;
+                robot.moduleOil = false;
+                robot.moduleScrapper = false;
+                break;
+            }
+            case "oiler": {
+                robot.moduleLumberjack = false;
+                robot.moduleMiner = false;
+                robot.moduleOil = true;
+                robot.moduleScrapper = false;
+                break;
+            }
+            case "scrapper": {
+                robot.moduleLumberjack = false;
+                robot.moduleMiner = false;
+                robot.moduleOil = false;
+                robot.moduleScrapper = true;
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    export function setFightMode(robot: Robot, module: string): void {
+        switch (module) {
+            case "fight": {
+                robot.moduleFighter = true;
+                robot.moduleRetreat = false;
+
+                break;
+            }
+            case "retreat": {
+                robot.moduleFighter = false;
+                robot.moduleRetreat = true;
+
+                break;
+            }
         }
     }
 }

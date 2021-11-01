@@ -15,11 +15,11 @@ namespace RoboGame {
     export let borderMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureBorder));
     export let textureFactory: ƒ.TextureImage = new ƒ.TextureImage("./Art/factory.png");
     export let factoryMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureFactory));
-    export let textureOre: ƒ.TextureImage = new ƒ.TextureImage("./Art/factory.png");
+    export let textureOre: ƒ.TextureImage = new ƒ.TextureImage("./Art/ore.png");
     export let oreMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureOre));
-    export let textureOil: ƒ.TextureImage = new ƒ.TextureImage("./Art/factory.png");
+    export let textureOil: ƒ.TextureImage = new ƒ.TextureImage("./Art/oil.png");
     export let oilMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureOil));
-    export let textureWreckage: ƒ.TextureImage = new ƒ.TextureImage("./Art/factory.png");
+    export let textureWreckage: ƒ.TextureImage = new ƒ.TextureImage("./Art/scrap.png");
     export let wreckageMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureWreckage));
 
 }
