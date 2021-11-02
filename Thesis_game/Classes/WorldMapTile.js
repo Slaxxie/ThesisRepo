@@ -69,8 +69,10 @@ var RoboGame;
                         break;
                     }
                 }
-                if (this.enemyRnd <= 0.05) {
+                if (this.enemyRnd <= 0.03) {
                     this.hasEnemy = true;
+                    this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
+                    this.addComponent(new ƒ.ComponentMaterial(RoboGame.enemyMaterial));
                 }
             }
         }

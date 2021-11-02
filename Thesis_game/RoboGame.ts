@@ -42,11 +42,8 @@ namespace RoboGame {
         document.getElementById("saveWorld").addEventListener("click", () => {
             saveNoisemap();
         });
-        document.getElementById("modMovement").addEventListener("click", () => {
-            saveNoisemap();
-        });
         document.getElementById("modHover").addEventListener("click", () => {
-            saveNoisemap();
+            setHoverMode(<Robot>robots.getChild(robots.getChildren().length - 1));
         });
         document.getElementById("modScrap").addEventListener("click", () => {
             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
@@ -66,11 +63,8 @@ namespace RoboGame {
         document.getElementById("modRetreat").addEventListener("click", () => {
             setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
         });
-        document.getElementById("modScout").addEventListener("click", () => {
-            saveNoisemap();
-        });
         document.getElementById("isAuto").addEventListener("click", () => {
-            saveNoisemap();
+            setAutoMode(<Robot>robots.getChild(robots.getChildren().length - 1));
         });
         document.getElementById("createRobot").addEventListener("click", () => {
             createRobot();

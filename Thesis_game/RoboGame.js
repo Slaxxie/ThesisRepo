@@ -36,11 +36,8 @@ var RoboGame;
         document.getElementById("saveWorld").addEventListener("click", () => {
             RoboGame.saveNoisemap();
         });
-        document.getElementById("modMovement").addEventListener("click", () => {
-            RoboGame.saveNoisemap();
-        });
         document.getElementById("modHover").addEventListener("click", () => {
-            RoboGame.saveNoisemap();
+            RoboGame.setHoverMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
         });
         document.getElementById("modScrap").addEventListener("click", () => {
             RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
@@ -60,11 +57,8 @@ var RoboGame;
         document.getElementById("modRetreat").addEventListener("click", () => {
             RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
         });
-        document.getElementById("modScout").addEventListener("click", () => {
-            RoboGame.saveNoisemap();
-        });
         document.getElementById("isAuto").addEventListener("click", () => {
-            RoboGame.saveNoisemap();
+            RoboGame.setAutoMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
         });
         document.getElementById("createRobot").addEventListener("click", () => {
             RoboGame.createRobot();

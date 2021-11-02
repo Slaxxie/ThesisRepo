@@ -16,7 +16,6 @@ var RoboGame;
             this.moduleOil = false;
             this.moduleFighter = true;
             this.moduleRetreat = false;
-            this.moduleScout = false;
             this.isInteracting = false;
             this.robotAlive = true;
             this.isAutomated = false;
@@ -24,6 +23,10 @@ var RoboGame;
             this.ressourceCapacity = 200;
             this.isWaiting = true;
             this.fieldOfView = 1; //switch case für andere köpfe einbauen
+            this.robotUI = document.createElement("div");
+            this.activateRobot = document.createElement("button");
+            /*  private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+             private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button"); */
             this.bioMassLoaded = 0;
             this.oreLoaded = 0;
             this.oilLoaded = 0;
@@ -32,6 +35,13 @@ var RoboGame;
             this.collectsOre = false;
             this.collectsOil = false;
             this.collectsScrap = false;
+            this.robotUI.className = "RobotUI";
+            document.getElementById("Robots").appendChild(this.robotUI);
+            this.robotUI.appendChild(this.activateRobot);
+            this.activateRobot.addEventListener("click", () => {
+                activateRobot(this);
+            });
+            this.activateRobot.className = "activateRobot";
             let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
@@ -108,11 +118,9 @@ var RoboGame;
         interactWithField(_tile) {
             switch (_tile.attribute) {
                 case RoboGame.FIELDATTRIBUTE.FOREST: {
-                    if (!this.moduleScout) {
-                        if (this.moduleLumberjack) {
-                            this.isInteracting = true;
-                            this.collectsBioMass = true;
-                        }
+                    if (this.moduleLumberjack) {
+                        this.isInteracting = true;
+                        this.collectsBioMass = true;
                     }
                     break;
                 }
@@ -123,20 +131,16 @@ var RoboGame;
                     break;
                 }
                 case RoboGame.FIELDATTRIBUTE.ORE: {
-                    if (!this.moduleScout) {
-                        if (this.moduleMiner) {
-                            this.isInteracting = true;
-                            this.collectsOre = true;
-                        }
+                    if (this.moduleMiner) {
+                        this.isInteracting = true;
+                        this.collectsOre = true;
                     }
                     break;
                 }
                 case RoboGame.FIELDATTRIBUTE.OIL: {
-                    if (!this.moduleScout) {
-                        if (this.moduleOil) {
-                            this.isInteracting = true;
-                            this.collectsOil = true;
-                        }
+                    if (this.moduleOil) {
+                        this.isInteracting = true;
+                        this.collectsOil = true;
                     }
                     break;
                 }
@@ -147,11 +151,9 @@ var RoboGame;
                     break;
                 }
                 case RoboGame.FIELDATTRIBUTE.WRECKAGE: {
-                    if (!this.moduleScout) {
-                        if (this.moduleScrapper) {
-                            this.isInteracting = true;
-                            this.collectsScrap = true;
-                        }
+                    if (this.moduleScrapper) {
+                        this.isInteracting = true;
+                        this.collectsScrap = true;
                     }
                     break;
                 }
@@ -219,7 +221,7 @@ var RoboGame;
             }
         }
         returnTimer() {
-            ƒ.Time.game.setTimer(12000, 1, () => {
+            ƒ.Time.game.setTimer(6000, 1, () => {
                 this.returnToBase();
             });
         }
@@ -297,6 +299,13 @@ var RoboGame;
                 robot.moduleScrapper = true;
                 break;
             }
+            case "none": {
+                robot.moduleLumberjack = false;
+                robot.moduleMiner = false;
+                robot.moduleOil = false;
+                robot.moduleScrapper = false;
+                break;
+            }
             default:
                 break;
         }
@@ -317,5 +326,23 @@ var RoboGame;
         }
     }
     RoboGame.setFightMode = setFightMode;
+    function setAutoMode(robot) {
+        if (robot.isAutomated) {
+            robot.isAutomated = false;
+        }
+        if (!robot.isAutomated) {
+            robot.isAutomated = true;
+        }
+    }
+    RoboGame.setAutoMode = setAutoMode;
+    function setHoverMode(robot) {
+        if (robot.moduleHovering) {
+            robot.moduleHovering = false;
+        }
+        if (!robot.moduleHovering) {
+            robot.moduleHovering = true;
+        }
+    }
+    RoboGame.setHoverMode = setHoverMode;
 })(RoboGame || (RoboGame = {}));
 //# sourceMappingURL=Robot.js.map

@@ -15,7 +15,6 @@ namespace RoboGame {
         public moduleOil: boolean = false;
         public moduleFighter: boolean = true;
         public moduleRetreat: boolean = false;
-        public moduleScout: boolean = false;
         public isInteracting: boolean = false;
         public robotAlive: boolean = true;
         public isAutomated: boolean = false;
@@ -23,6 +22,10 @@ namespace RoboGame {
         public ressourceCapacity: number = 200;
         public isWaiting: boolean = true;
         public fieldOfView: number = 1; //switch case für andere köpfe einbauen
+        private robotUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        private activateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+       /*  private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button"); */
         private bioMassLoaded: number = 0;
         private oreLoaded: number = 0;
         private oilLoaded: number = 0;
@@ -34,6 +37,14 @@ namespace RoboGame {
 
         constructor(_name: string, _pos: ƒ.Vector2) {
             super(_name, _pos, Robot.scale);
+            this.robotUI.className = "RobotUI";
+            document.getElementById("Robots").appendChild(this.robotUI);
+            this.robotUI.appendChild(this.activateRobot);
+            this.activateRobot.addEventListener("click", () => {
+                activateRobot(this);
+            });
+            this.activateRobot.className = "activateRobot";
+
             let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
@@ -117,12 +128,12 @@ namespace RoboGame {
             switch (_tile.attribute) {
 
                 case FIELDATTRIBUTE.FOREST: {
-                    if (!this.moduleScout) {
-                        if (this.moduleLumberjack) {
-                            this.isInteracting = true;
-                            this.collectsBioMass = true;
-                        }
+
+                    if (this.moduleLumberjack) {
+                        this.isInteracting = true;
+                        this.collectsBioMass = true;
                     }
+
                     break;
                 }
                 case FIELDATTRIBUTE.MOUNTAIN: {
@@ -132,21 +143,20 @@ namespace RoboGame {
                     break;
                 }
                 case FIELDATTRIBUTE.ORE: {
-                    if (!this.moduleScout) {
-                        if (this.moduleMiner) {
-                            this.isInteracting = true;
-                            this.collectsOre = true;
-                        }
+                    if (this.moduleMiner) {
+                        this.isInteracting = true;
+                        this.collectsOre = true;
                     }
+
                     break;
                 }
                 case FIELDATTRIBUTE.OIL: {
-                    if (!this.moduleScout) {
-                        if (this.moduleOil) {
-                            this.isInteracting = true;
-                            this.collectsOil = true;
-                        }
+
+                    if (this.moduleOil) {
+                        this.isInteracting = true;
+                        this.collectsOil = true;
                     }
+
                     break;
                 }
                 case FIELDATTRIBUTE.WATER: {
@@ -156,12 +166,11 @@ namespace RoboGame {
                     break;
                 }
                 case FIELDATTRIBUTE.WRECKAGE: {
-                    if (!this.moduleScout) {
-                        if (this.moduleScrapper) {
-                            this.isInteracting = true;
-                            this.collectsScrap = true;
-                        }
+                    if (this.moduleScrapper) {
+                        this.isInteracting = true;
+                        this.collectsScrap = true;
                     }
+
                     break;
                 }
                 default: {
@@ -231,7 +240,7 @@ namespace RoboGame {
         }
 
         returnTimer(): void {
-            ƒ.Time.game.setTimer(12000, 1, () => {
+            ƒ.Time.game.setTimer(6000, 1, () => {
                 this.returnToBase();
             });
         }
@@ -265,8 +274,6 @@ namespace RoboGame {
                 }
             }
         }
-
-
     }
 
     export function createRobot(): void {
@@ -311,6 +318,13 @@ namespace RoboGame {
                 robot.moduleScrapper = true;
                 break;
             }
+            case "none": {
+                robot.moduleLumberjack = false;
+                robot.moduleMiner = false;
+                robot.moduleOil = false;
+                robot.moduleScrapper = false;
+                break;
+            }
             default:
                 break;
         }
@@ -320,15 +334,29 @@ namespace RoboGame {
             case "fight": {
                 robot.moduleFighter = true;
                 robot.moduleRetreat = false;
-
                 break;
             }
             case "retreat": {
                 robot.moduleFighter = false;
                 robot.moduleRetreat = true;
-
                 break;
             }
+        }
+    }
+    export function setAutoMode(robot: Robot): void {
+        if (robot.isAutomated) {
+            robot.isAutomated = false;
+        }
+        if (!robot.isAutomated) {
+            robot.isAutomated = true;
+        }
+    }
+    export function setHoverMode(robot: Robot): void {
+        if (robot.moduleHovering) {
+            robot.moduleHovering = false;
+        }
+        if (!robot.moduleHovering) {
+            robot.moduleHovering = true;
         }
     }
 }
