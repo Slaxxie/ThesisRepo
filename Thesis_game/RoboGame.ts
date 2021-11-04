@@ -45,7 +45,7 @@ namespace RoboGame {
         document.getElementById("modHover").addEventListener("click", () => {
             setHoverMode(<Robot>robots.getChild(robots.getChildren().length - 1));
         });
-        document.getElementById("modScrap").addEventListener("click", () => {
+        /* document.getElementById("modScrap").addEventListener("click", () => {
             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
         });
         document.getElementById("modLumberer").addEventListener("click", () => {
@@ -56,26 +56,25 @@ namespace RoboGame {
         });
         document.getElementById("modOil").addEventListener("click", () => {
             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
-        });
+        }); */
         document.getElementById("modFighter").addEventListener("click", () => {
             setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
         });
         document.getElementById("modRetreat").addEventListener("click", () => {
             setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
         });
-        document.getElementById("isAuto").addEventListener("click", () => {
+        /* document.getElementById("isAuto").addEventListener("click", () => {
             setAutoMode(<Robot>robots.getChild(robots.getChildren().length - 1));
-        });
+        }); */
         document.getElementById("createRobot").addEventListener("click", () => {
             createRobot();
+            openRobotCustomization();
         });
-        document.getElementById("spawnRobot").addEventListener("click", () => {
-            spawnRobot();
-        });
-        document.getElementById("activateRobot").addEventListener("click", () => {
-            activateRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
-        });
+        /* document.getElementById("spawnRobot").addEventListener("click", () => {
+            spawnRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
+        }); */
         viewport.draw();
+
     }
 
     function hndKey(): void {
@@ -96,6 +95,7 @@ namespace RoboGame {
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
             player.moveCameraDown();
+            console.log(<Robot>robots.getChild(robots.getChildren().length - 1));
         }
 
     }
@@ -160,6 +160,47 @@ namespace RoboGame {
             }
         }
         viewport.draw();
+    }
+    function openRobotCustomization(): void {
+        let customizationUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        customizationUI.className = "Customizer";
+        document.getElementById("CustomizeWindow").appendChild(customizationUI);
+
+        let modScrapButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(modScrapButton);
+        modScrapButton.addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
+        });
+        modScrapButton.className = "modScrapButton";
+
+        let modLumbererButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(modLumbererButton);
+        modLumbererButton.addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
+        });
+        modLumbererButton.className = "modLumbererButton";
+
+        let modMinerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(modMinerButton);
+        modMinerButton.addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
+        });
+        modMinerButton.className = "modMinerButton";
+
+        let modOilerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(modOilerButton);
+        modOilerButton.addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
+        });
+        modOilerButton.className = "modOilerButton";
+
+        let spawnNewRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(spawnNewRobot);
+        spawnNewRobot.addEventListener("click", () => {
+            spawnRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
+            document.getElementById("CustomizeWindow").removeChild(customizationUI);
+        });
+        spawnNewRobot.className = "spawnNewRobot";
     }
 }
 

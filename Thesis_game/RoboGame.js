@@ -39,36 +39,34 @@ var RoboGame;
         document.getElementById("modHover").addEventListener("click", () => {
             RoboGame.setHoverMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
         });
-        document.getElementById("modScrap").addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
+        /* document.getElementById("modScrap").addEventListener("click", () => {
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
         });
         document.getElementById("modLumberer").addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "lumberer");
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
         });
         document.getElementById("modMiner").addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "miner");
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
         });
         document.getElementById("modOil").addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "oiler");
-        });
+            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
+        }); */
         document.getElementById("modFighter").addEventListener("click", () => {
             RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "fight");
         });
         document.getElementById("modRetreat").addEventListener("click", () => {
             RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
         });
-        document.getElementById("isAuto").addEventListener("click", () => {
-            RoboGame.setAutoMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
-        });
+        /* document.getElementById("isAuto").addEventListener("click", () => {
+            setAutoMode(<Robot>robots.getChild(robots.getChildren().length - 1));
+        }); */
         document.getElementById("createRobot").addEventListener("click", () => {
             RoboGame.createRobot();
+            openRobotCustomization();
         });
-        document.getElementById("spawnRobot").addEventListener("click", () => {
-            RoboGame.spawnRobot();
-        });
-        document.getElementById("activateRobot").addEventListener("click", () => {
-            RoboGame.activateRobot(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
-        });
+        /* document.getElementById("spawnRobot").addEventListener("click", () => {
+            spawnRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
+        }); */
         viewport.draw();
     }
     function hndKey() {
@@ -89,6 +87,7 @@ var RoboGame;
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
             player.moveCameraDown();
+            console.log(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
         }
     }
     function update(_event) {
@@ -143,6 +142,42 @@ var RoboGame;
             }
         }
         viewport.draw();
+    }
+    function openRobotCustomization() {
+        let customizationUI = document.createElement("div");
+        customizationUI.className = "Customizer";
+        document.getElementById("CustomizeWindow").appendChild(customizationUI);
+        let modScrapButton = document.createElement("button");
+        customizationUI.appendChild(modScrapButton);
+        modScrapButton.addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
+        });
+        modScrapButton.className = "modScrapButton";
+        let modLumbererButton = document.createElement("button");
+        customizationUI.appendChild(modLumbererButton);
+        modLumbererButton.addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "lumberer");
+        });
+        modLumbererButton.className = "modLumbererButton";
+        let modMinerButton = document.createElement("button");
+        customizationUI.appendChild(modMinerButton);
+        modMinerButton.addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "miner");
+        });
+        modMinerButton.className = "modMinerButton";
+        let modOilerButton = document.createElement("button");
+        customizationUI.appendChild(modOilerButton);
+        modOilerButton.addEventListener("click", () => {
+            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "oiler");
+        });
+        modOilerButton.className = "modOilerButton";
+        let spawnNewRobot = document.createElement("button");
+        customizationUI.appendChild(spawnNewRobot);
+        spawnNewRobot.addEventListener("click", () => {
+            RoboGame.spawnRobot(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
+            document.getElementById("CustomizeWindow").removeChild(customizationUI);
+        });
+        spawnNewRobot.className = "spawnNewRobot";
     }
 })(RoboGame || (RoboGame = {}));
 /*

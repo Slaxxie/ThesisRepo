@@ -1,8 +1,86 @@
-.robotUI {
+#Sidebar {
+    top: 20px;
+    left: 1340px;
+    height: 875px;
+    width: 260px;
+    position: absolute;
+    z-index: 2;
+    background-color: royalblue;
+}
+
+#CustomizeWindow {
+    position: absolute;
+    top: 10px;
+    width: 1000px;
+    height: 600px;
+}
+
+.Customizer {
+    height: 100%;
     width: 100%;
+    background-color: gray;
+}
+
+.modScrapButton::after {
+    content: "Scrapper";
+}
+
+.modLumbererButton::after {
+    content: "Lumberer";
+}
+
+.modMinerButton::after {
+    content: "Miner";
+}
+
+.modOilerButton::after {
+    content: "Oiler";
+}
+
+.spawnNewRobot::after {
+    content: "SPAWN";
+}
+
+.RobotUI {
+    margin-left: 20px;
+    width: 220px;
     height: 90px;
+    background-color: red;
+    margin-top: 10px;
+}
+
+.activateRobot {
+    width: 25%;
+    height: 20px;
+}
+
+.callRobotBack {
+    width: 25%;
+    height: 20px;
+}
+
+.disassembleRobot {
+    width: 25%;
+    height: 20px;
+}
+
+.automateRobot {
+    width: 25%;
+    height: 20px;
 }
 
 .activateRobot::after {
-    content: "lol";
+    content: "activate";
+}
+
+.callRobotBack::after {
+    content: "call back";
+}
+
+.disassembleRobot::after {
+    content: "disassemble";
+}
+
+.automateRobot::after {
+    content: "automate";
 }

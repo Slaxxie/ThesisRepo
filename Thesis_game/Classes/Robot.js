@@ -25,8 +25,9 @@ var RoboGame;
             this.fieldOfView = 1; //switch case für andere köpfe einbauen
             this.robotUI = document.createElement("div");
             this.activateRobot = document.createElement("button");
-            /*  private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-             private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button"); */
+            this.callRobotBack = document.createElement("button");
+            this.disassembleRobot = document.createElement("button");
+            this.automateRobot = document.createElement("button");
             this.bioMassLoaded = 0;
             this.oreLoaded = 0;
             this.oilLoaded = 0;
@@ -42,6 +43,21 @@ var RoboGame;
                 activateRobot(this);
             });
             this.activateRobot.className = "activateRobot";
+            this.robotUI.appendChild(this.callRobotBack);
+            this.callRobotBack.addEventListener("click", () => {
+                this.returnTimer();
+            });
+            this.callRobotBack.className = "callRobotBack";
+            this.robotUI.appendChild(this.disassembleRobot);
+            this.disassembleRobot.addEventListener("click", () => {
+                disassembleRobot(this);
+            });
+            this.disassembleRobot.className = "disassembleRobot";
+            this.robotUI.appendChild(this.automateRobot);
+            this.automateRobot.addEventListener("click", () => {
+                setAutoMode(this);
+            });
+            this.automateRobot.className = "automateRobot";
             let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
@@ -221,6 +237,7 @@ var RoboGame;
             }
         }
         returnTimer() {
+            this.isWaiting = true;
             ƒ.Time.game.setTimer(6000, 1, () => {
                 this.returnToBase();
             });
@@ -238,6 +255,9 @@ var RoboGame;
             this.scrapLoaded = 0;
             if (!this.isAutomated) {
                 this.isWaiting = true;
+            }
+            else {
+                this.isWaiting = false;
             }
         }
         fightEnemy() {
@@ -259,16 +279,31 @@ var RoboGame;
     RoboGame.Robot = Robot;
     function createRobot() {
         newRobot = new Robot("Robot #" + (RoboGame.robots.getChildren().length + 1), new ƒ.Vector2(RoboGame.worldSize / 2, RoboGame.worldSize / 2));
-    }
-    RoboGame.createRobot = createRobot;
-    function spawnRobot() {
         RoboGame.robots.addChild(newRobot);
     }
+    RoboGame.createRobot = createRobot;
+    function spawnRobot(robot) {
+        if (RoboGame.ressourceScrap >= 30 && RoboGame.ressourceBioMass >= 300) {
+            RoboGame.ressourceScrap -= 30;
+            RoboGame.ressourceBioMass -= 300;
+        }
+        else {
+            removeRobot(robot);
+        }
+    }
     RoboGame.spawnRobot = spawnRobot;
+    function removeRobot(robot) {
+        RoboGame.robots.removeChild(robot);
+        document.getElementById("Robots").removeChild(robot.robotUI);
+    }
+    RoboGame.removeRobot = removeRobot;
     function activateRobot(robot) {
         robot.isWaiting = false;
     }
-    RoboGame.activateRobot = activateRobot;
+    function disassembleRobot(robot) {
+        removeRobot(robot);
+        RoboGame.ressourceScrap += 25;
+    }
     function setCollectionModule(robot, module) {
         switch (module) {
             case "lumberer": {
@@ -327,11 +362,13 @@ var RoboGame;
     }
     RoboGame.setFightMode = setFightMode;
     function setAutoMode(robot) {
-        if (robot.isAutomated) {
+        if (robot.isAutomated == true) {
             robot.isAutomated = false;
+            console.log("i am in non-auto mode");
         }
-        if (!robot.isAutomated) {
+        else if (robot.isAutomated == false) {
             robot.isAutomated = true;
+            console.log("i am in auto mode");
         }
     }
     RoboGame.setAutoMode = setAutoMode;

@@ -1,11 +1,11 @@
 namespace RoboGame {
-    export let ressourceBioMass: number;
+    export let ressourceBioMass: number = 5000;
     export let increaseBioMass: number = 10;
-    export let ressourceScrap: number;
+    export let ressourceScrap: number = 5000;
     export let increaseScrap: number = 5;
-    export let ressourceOil: number;
+    export let ressourceOil: number = 5000;
     export let increaseOil: number = 3;
-    export let ressourceMetal: number;
+    export let ressourceMetal: number = 5000;
     export let increaseMetal: number = 7;
 
     export function bioMassToHTML(bioMass: number): void {

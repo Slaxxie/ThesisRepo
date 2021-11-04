@@ -22,10 +22,11 @@ namespace RoboGame {
         public ressourceCapacity: number = 200;
         public isWaiting: boolean = true;
         public fieldOfView: number = 1; //switch case für andere köpfe einbauen
-        private robotUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        public robotUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         private activateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-       /*  private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button"); */
+        private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        private automateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private bioMassLoaded: number = 0;
         private oreLoaded: number = 0;
         private oilLoaded: number = 0;
@@ -44,6 +45,21 @@ namespace RoboGame {
                 activateRobot(this);
             });
             this.activateRobot.className = "activateRobot";
+            this.robotUI.appendChild(this.callRobotBack);
+            this.callRobotBack.addEventListener("click", () => {
+                this.returnTimer();
+            });
+            this.callRobotBack.className = "callRobotBack";
+            this.robotUI.appendChild(this.disassembleRobot);
+            this.disassembleRobot.addEventListener("click", () => {
+                disassembleRobot(this);
+            });
+            this.disassembleRobot.className = "disassembleRobot";
+            this.robotUI.appendChild(this.automateRobot);
+            this.automateRobot.addEventListener("click", () => {
+                setAutoMode(this);
+            });
+            this.automateRobot.className = "automateRobot";
 
             let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
@@ -59,9 +75,7 @@ namespace RoboGame {
                 if (!this.isInteracting) {
                     if (this.moduleMovement || this.moduleHovering) {
                         nextDirection = Math.floor((Math.random() * 8)) + 1;
-
                         switch (nextDirection) {
-
                             case 1: {
                                 if (mapHelperArray[thisX - 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
                                     this.mtxLocal.translateX(-1);
@@ -133,7 +147,6 @@ namespace RoboGame {
                         this.isInteracting = true;
                         this.collectsBioMass = true;
                     }
-
                     break;
                 }
                 case FIELDATTRIBUTE.MOUNTAIN: {
@@ -147,11 +160,9 @@ namespace RoboGame {
                         this.isInteracting = true;
                         this.collectsOre = true;
                     }
-
                     break;
                 }
                 case FIELDATTRIBUTE.OIL: {
-
                     if (this.moduleOil) {
                         this.isInteracting = true;
                         this.collectsOil = true;
@@ -170,7 +181,6 @@ namespace RoboGame {
                         this.isInteracting = true;
                         this.collectsScrap = true;
                     }
-
                     break;
                 }
                 default: {
@@ -240,6 +250,7 @@ namespace RoboGame {
         }
 
         returnTimer(): void {
+            this.isWaiting = true;
             ƒ.Time.game.setTimer(6000, 1, () => {
                 this.returnToBase();
             });
@@ -258,6 +269,8 @@ namespace RoboGame {
             this.scrapLoaded = 0;
             if (!this.isAutomated) {
                 this.isWaiting = true;
+            } else {
+                this.isWaiting = false;
             }
         }
 
@@ -278,14 +291,30 @@ namespace RoboGame {
 
     export function createRobot(): void {
         newRobot = new Robot("Robot #" + (robots.getChildren().length + 1), new ƒ.Vector2(worldSize / 2, worldSize / 2));
-    }
-
-    export function spawnRobot(): void {
         robots.addChild(newRobot);
     }
 
-    export function activateRobot(robot: Robot): void {
+    export function spawnRobot(robot: Robot): void {
+        if (ressourceScrap >= 30 && ressourceBioMass >= 300) {
+            ressourceScrap -= 30;
+            ressourceBioMass -= 300;
+        } else {
+            removeRobot(robot);
+        }
+    }
+
+    export function removeRobot(robot: Robot): void {
+        robots.removeChild(robot);
+        document.getElementById("Robots").removeChild(robot.robotUI);
+    }
+
+    function activateRobot(robot: Robot): void {
         robot.isWaiting = false;
+    }
+
+    function disassembleRobot(robot: Robot): void {
+        removeRobot(robot);
+        ressourceScrap += 25;
     }
 
     export function setCollectionModule(robot: Robot, module: string): void {
@@ -329,6 +358,7 @@ namespace RoboGame {
                 break;
         }
     }
+
     export function setFightMode(robot: Robot, module: string): void {
         switch (module) {
             case "fight": {
@@ -343,14 +373,17 @@ namespace RoboGame {
             }
         }
     }
+
     export function setAutoMode(robot: Robot): void {
-        if (robot.isAutomated) {
+        if (robot.isAutomated == true) {
             robot.isAutomated = false;
-        }
-        if (!robot.isAutomated) {
+            console.log("i am in non-auto mode");
+        } else if (robot.isAutomated == false) {
             robot.isAutomated = true;
+            console.log("i am in auto mode");
         }
     }
+
     export function setHoverMode(robot: Robot): void {
         if (robot.moduleHovering) {
             robot.moduleHovering = false;
