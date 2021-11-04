@@ -24,4 +24,5 @@ namespace RoboGame {
         let div: HTMLElement = document.getElementById("UI-Metal");
         div.textContent = String(metal);
     }
+
 }

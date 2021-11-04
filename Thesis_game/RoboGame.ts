@@ -6,6 +6,7 @@ namespace RoboGame {
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     let player: Player;
+    let harvestModuleIndex: number;
     export let movementSpeed: number = 10;
     export let robots: ƒ.Node = new ƒ.Node("Robots");
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
@@ -17,7 +18,6 @@ namespace RoboGame {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
 
         player = Player.getInstance();
-        viewportNode.addChild(objects);
         viewportNode.addChild(robots);
         viewportNode.addChild(worldTilesNode);
         viewportNode.addChild(player);
@@ -45,34 +45,17 @@ namespace RoboGame {
         document.getElementById("modHover").addEventListener("click", () => {
             setHoverMode(<Robot>robots.getChild(robots.getChildren().length - 1));
         });
-        /* document.getElementById("modScrap").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
-        });
-        document.getElementById("modLumberer").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
-        });
-        document.getElementById("modMiner").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
-        });
-        document.getElementById("modOil").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
-        }); */
         document.getElementById("modFighter").addEventListener("click", () => {
             setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
         });
         document.getElementById("modRetreat").addEventListener("click", () => {
             setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
         });
-        /* document.getElementById("isAuto").addEventListener("click", () => {
-            setAutoMode(<Robot>robots.getChild(robots.getChildren().length - 1));
-        }); */
         document.getElementById("createRobot").addEventListener("click", () => {
             createRobot();
+            chooseHarvestModule(harvestModuleIndex);
             openRobotCustomization();
         });
-        /* document.getElementById("spawnRobot").addEventListener("click", () => {
-            spawnRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
-        }); */
         viewport.draw();
 
     }
@@ -105,29 +88,23 @@ namespace RoboGame {
         movementTimer++;
         harvestTimer++;
 
-        if (harvestTimer == 2) {
+        if (harvestTimer == 60) {
             harvestTimer = 0;
 
-            // Hier alle map tiles deaktivieren
-
             for (let robotEntity of robots.getChildren() as Robot[]) {
-                if (!robotEntity.robotAlive) {
-                    robots.removeChild(robotEntity);
+                if (!robotEntity.isAlive) {
+                    removeRobot(robotEntity);
                 }
                 if (robotEntity.isInteracting) {
                     robotEntity.collectRessource(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
-
-                    //console.log("i'm harvesting");
                 }
-                //console.log(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
             }
         }
-        if (movementTimer == 4) {
+        if (movementTimer == 120) {
             movementTimer = 0;
             for (let robotEntity of robots.getChildren() as Robot[]) {
                 if (!robotEntity.isInteracting) {
                     robotEntity.moveToNewField();
-
 
                     let minX: number = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
                     if (minX < 0) {
@@ -146,7 +123,6 @@ namespace RoboGame {
                         maxY = worldSize;
                     }
 
-
                     for (let x: number = minX; x <= maxX; x++) {
                         for (let y: number = minY; y <= maxY; y++) {
                             let tile: WorldMapTile = mapHelperArray[x][y];
@@ -159,14 +135,19 @@ namespace RoboGame {
                 }
             }
         }
+        bioMassToHTML(ressourceBioMass);
+        scrapToHTML(ressourceScrap);
+        oilToHTML(ressourceOil);
+        metalToHTML(ressourceMetal);
         viewport.draw();
     }
+
     function openRobotCustomization(): void {
         let customizationUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         customizationUI.className = "Customizer";
         document.getElementById("CustomizeWindow").appendChild(customizationUI);
 
-        let modScrapButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+       /*  let modScrapButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         customizationUI.appendChild(modScrapButton);
         modScrapButton.addEventListener("click", () => {
             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
@@ -192,8 +173,53 @@ namespace RoboGame {
         modOilerButton.addEventListener("click", () => {
             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
         });
-        modOilerButton.className = "modOilerButton";
+        modOilerButton.className = "modOilerButton"; */
+        
+        //Declare harvesting module
+        let buttonLeftHarvesting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonLeftHarvesting);
+        buttonLeftHarvesting.addEventListener("click", () => {
+            harvestModuleIndex -= 1;
+            chooseHarvestModule(harvestModuleIndex);
+        });
+        buttonLeftHarvesting.className = "buttonLeftHarvesting";
+        
+        let buttonRightHarvesting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonRightHarvesting);
+        buttonRightHarvesting.addEventListener("click", () => {
+            harvestModuleIndex += 1;
+            chooseHarvestModule(harvestModuleIndex);
+        });
+        buttonRightHarvesting.className = "buttonRightHarvesting";
+        
 
+        //Declare fightmode
+        let buttonFighting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonFighting);
+        buttonFighting.addEventListener("click", () => {
+            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
+        });
+        buttonFighting.className = "buttonFighting";
+        
+        let buttonRetreat: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonRetreat);
+        buttonRetreat.addEventListener("click", () => {
+            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
+        });
+        buttonRetreat.className = "buttonRetreat";
+
+
+        //Declare hovering
+        let buttonHovering: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonHovering);
+        buttonHovering.addEventListener("click", () => {
+            setHoverMode(<Robot>robots.getChild(robots.getChildren().length - 1));
+        });
+        buttonHovering.className = "buttonHovering";
+
+
+
+        //Spawn Robot into world
         let spawnNewRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         customizationUI.appendChild(spawnNewRobot);
         spawnNewRobot.addEventListener("click", () => {
@@ -201,6 +227,40 @@ namespace RoboGame {
             document.getElementById("CustomizeWindow").removeChild(customizationUI);
         });
         spawnNewRobot.className = "spawnNewRobot";
+    }
+
+    function chooseHarvestModule(index: number): void {
+        switch (index) {
+            case 1: {
+                setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
+                break;
+            }
+            case 2: {
+                setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
+                break;
+            }
+            case 3: {
+                setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
+                break;
+            }
+            case 4: {
+                setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
+                break;
+            }
+            case 5: {
+                setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "none");
+                break;
+            }
+            case 6: {
+                harvestModuleIndex = 1;
+                chooseHarvestModule(harvestModuleIndex);
+                break;
+            }
+            default: {
+                harvestModuleIndex = 1;
+                break;
+            }
+        }
     }
 }
 

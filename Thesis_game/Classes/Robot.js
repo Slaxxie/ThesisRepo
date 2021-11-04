@@ -10,18 +10,22 @@ var RoboGame;
             super(_name, _pos, Robot.scale);
             this.moduleMovement = true;
             this.moduleHovering = false;
-            this.moduleScrapper = false;
             this.moduleLumberjack = true;
             this.moduleMiner = false;
             this.moduleOil = false;
+            this.moduleScrapper = false;
             this.moduleFighter = true;
             this.moduleRetreat = false;
             this.isInteracting = false;
-            this.robotAlive = true;
+            this.isCalledBack = false;
+            this.isAlive = true;
+            this.robotMaxHealth = 50;
+            this.robotHealth = this.robotMaxHealth;
             this.isAutomated = false;
-            this.damageValue = 0;
+            this.damageValue = 4;
             this.ressourceCapacity = 200;
             this.isWaiting = true;
+            this.isFighting = false;
             this.fieldOfView = 1; //switch case für andere köpfe einbauen
             this.robotUI = document.createElement("div");
             this.activateRobot = document.createElement("button");
@@ -36,6 +40,7 @@ var RoboGame;
             this.collectsOre = false;
             this.collectsOil = false;
             this.collectsScrap = false;
+            this.robotID = RoboGame.robots.getChildren().length + 1;
             this.robotUI.className = "RobotUI";
             document.getElementById("Robots").appendChild(this.robotUI);
             this.robotUI.appendChild(this.activateRobot);
@@ -67,64 +72,66 @@ var RoboGame;
             let nextDirection;
             this.previousField = new ƒ.Vector2(thisX, thisY);
             if (!this.isWaiting) {
-                if (!this.isInteracting) {
-                    if (this.moduleMovement || this.moduleHovering) {
-                        nextDirection = Math.floor((Math.random() * 8)) + 1;
-                        switch (nextDirection) {
-                            case 1: {
-                                if (RoboGame.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(-1);
-                                    this.mtxLocal.translateY(+1);
+                if (!this.isFighting) {
+                    if (!this.isInteracting) {
+                        if (this.moduleMovement || this.moduleHovering) {
+                            nextDirection = Math.floor((Math.random() * 8)) + 1;
+                            switch (nextDirection) {
+                                case 1: {
+                                    if (RoboGame.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(-1);
+                                        this.mtxLocal.translateY(+1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 2: {
-                                if (RoboGame.mapHelperArray[thisX][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateY(+1);
+                                case 2: {
+                                    if (RoboGame.mapHelperArray[thisX][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateY(+1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 3: {
-                                if (RoboGame.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(+1);
-                                    this.mtxLocal.translateY(+1);
+                                case 3: {
+                                    if (RoboGame.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(+1);
+                                        this.mtxLocal.translateY(+1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 4: {
-                                if (RoboGame.mapHelperArray[thisX - 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(-1);
+                                case 4: {
+                                    if (RoboGame.mapHelperArray[thisX - 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 5: {
-                                if (RoboGame.mapHelperArray[thisX + 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(+1);
+                                case 5: {
+                                    if (RoboGame.mapHelperArray[thisX + 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(+1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 6: {
-                                if (RoboGame.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(-1);
-                                    this.mtxLocal.translateY(-1);
+                                case 6: {
+                                    if (RoboGame.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(-1);
+                                        this.mtxLocal.translateY(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 7: {
-                                if (RoboGame.mapHelperArray[thisX][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateY(-1);
+                                case 7: {
+                                    if (RoboGame.mapHelperArray[thisX][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateY(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 8: {
-                                if (RoboGame.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(+1);
-                                    this.mtxLocal.translateY(-1);
+                                case 8: {
+                                    if (RoboGame.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(+1);
+                                        this.mtxLocal.translateY(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            default: {
-                                break;
+                                default: {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -132,49 +139,56 @@ var RoboGame;
             }
         }
         interactWithField(_tile) {
-            switch (_tile.attribute) {
-                case RoboGame.FIELDATTRIBUTE.FOREST: {
-                    if (this.moduleLumberjack) {
-                        this.isInteracting = true;
-                        this.collectsBioMass = true;
+            if (_tile.hasEnemy) {
+                this.isInteracting = true;
+                this.isFighting = true;
+                this.fightEnemy();
+            }
+            else {
+                switch (_tile.attribute) {
+                    case RoboGame.FIELDATTRIBUTE.FOREST: {
+                        if (this.moduleLumberjack) {
+                            this.isInteracting = true;
+                            this.collectsBioMass = true;
+                        }
+                        break;
                     }
-                    break;
-                }
-                case RoboGame.FIELDATTRIBUTE.MOUNTAIN: {
-                    if (!this.moduleHovering) {
-                        this.moveToPreviousField();
+                    case RoboGame.FIELDATTRIBUTE.MOUNTAIN: {
+                        if (!this.moduleHovering) {
+                            this.moveToPreviousField();
+                        }
+                        break;
                     }
-                    break;
-                }
-                case RoboGame.FIELDATTRIBUTE.ORE: {
-                    if (this.moduleMiner) {
-                        this.isInteracting = true;
-                        this.collectsOre = true;
+                    case RoboGame.FIELDATTRIBUTE.ORE: {
+                        if (this.moduleMiner) {
+                            this.isInteracting = true;
+                            this.collectsOre = true;
+                        }
+                        break;
                     }
-                    break;
-                }
-                case RoboGame.FIELDATTRIBUTE.OIL: {
-                    if (this.moduleOil) {
-                        this.isInteracting = true;
-                        this.collectsOil = true;
+                    case RoboGame.FIELDATTRIBUTE.OIL: {
+                        if (this.moduleOil) {
+                            this.isInteracting = true;
+                            this.collectsOil = true;
+                        }
+                        break;
                     }
-                    break;
-                }
-                case RoboGame.FIELDATTRIBUTE.WATER: {
-                    if (!this.moduleHovering) {
-                        this.moveToPreviousField();
+                    case RoboGame.FIELDATTRIBUTE.WATER: {
+                        if (!this.moduleHovering) {
+                            this.moveToPreviousField();
+                        }
+                        break;
                     }
-                    break;
-                }
-                case RoboGame.FIELDATTRIBUTE.WRECKAGE: {
-                    if (this.moduleScrapper) {
-                        this.isInteracting = true;
-                        this.collectsScrap = true;
+                    case RoboGame.FIELDATTRIBUTE.WRECKAGE: {
+                        if (this.moduleScrapper) {
+                            this.isInteracting = true;
+                            this.collectsScrap = true;
+                        }
+                        break;
                     }
-                    break;
-                }
-                default: {
-                    break;
+                    default: {
+                        break;
+                    }
                 }
             }
         }
@@ -237,6 +251,7 @@ var RoboGame;
             }
         }
         returnTimer() {
+            this.isCalledBack = true;
             this.isWaiting = true;
             ƒ.Time.game.setTimer(6000, 1, () => {
                 this.returnToBase();
@@ -253,6 +268,7 @@ var RoboGame;
             this.oilLoaded = 0;
             RoboGame.ressourceScrap += this.scrapLoaded;
             this.scrapLoaded = 0;
+            this.robotHealth = this.robotMaxHealth;
             if (!this.isAutomated) {
                 this.isWaiting = true;
             }
@@ -261,22 +277,65 @@ var RoboGame;
             }
         }
         fightEnemy() {
+            let enemyLevel = ((Math.floor(Math.sqrt(Math.pow(this.mtxLocal.translation.x - (RoboGame.worldSize / 2), 2) + Math.pow(this.mtxLocal.translation.y - (RoboGame.worldSize / 2), 2)))) / 4) + 1;
+            let enemy = new RoboGame.Enemy(enemyLevel);
             if (this.moduleRetreat) {
+                this.robotHealth -= enemy.damageOfEnemy;
                 this.moveToPreviousField();
+                this.isFighting = false;
             }
             else {
-                let newEnemy = new RoboGame.Enemy(5);
-                if (this.damageValue > newEnemy.damageOfEnemy) {
+                let enemyMessage = document.createElement("div");
+                enemyMessage.className = "EnemyEncountered";
+                document.getElementById("EnemyWarning").appendChild(enemyMessage);
+                enemyMessage.textContent = String("Robot Nr.:" + this.robotID + " encountered an enemy!");
+                ƒ.Time.game.setTimer(20000, 1, () => {
+                    if (this.isCalledBack) {
+                        this.isCalledBack = false;
+                    }
+                    else {
+                        console.log("fight started");
+                        this.startFight(RoboGame.mapHelperArray[this.mtxLocal.translation.x][this.mtxLocal.translation.y], enemy);
+                        ƒ.Time.game.setTimer(15000, 1, () => {
+                            document.getElementById("EnemyWarning").removeChild(enemyMessage);
+                        });
+                    }
+                });
+            }
+        }
+        startFight(tile, enemy) {
+            console.log("test" + tile + this + enemy);
+            while (this.isAlive && enemy.isAlive) {
+                enemy.healthOfEnemy -= this.damageValue;
+                console.log("Enemy has " + enemy.healthOfEnemy + "HP left!");
+                this.robotHealth -= enemy.damageOfEnemy;
+                console.log("Robot Nr.:" + this.robotID + " has " + this.robotHealth + "HP left!");
+                if (enemy.healthOfEnemy <= 0) {
+                    tile.hasEnemy = false;
+                    tile.removeComponent(tile.getComponent(ƒ.ComponentMaterial));
+                    tile.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
+                    RoboGame.ressourceScrap += enemy.scrapsDropped;
+                    this.isFighting = false;
                     this.isInteracting = false;
+                    break;
                 }
-                else {
-                    this.robotAlive = false;
+                if (this.robotHealth <= 0) {
+                    this.isAlive = false;
+                    let deathMessage = document.createElement("div");
+                    deathMessage.className = "RobotDestroyed";
+                    document.getElementById("RobotStatus").appendChild(deathMessage);
+                    deathMessage.textContent = String("Robot Nr.:" + this.robotID + " was destroyed!");
+                    ƒ.Time.game.setTimer(15000, 1, () => {
+                        document.getElementById("RobotStatus").removeChild(deathMessage);
+                    });
+                    break;
                 }
             }
         }
     }
     Robot.scale = new ƒ.Vector2(1, 1);
     RoboGame.Robot = Robot;
+    // Robot Management
     function createRobot() {
         newRobot = new Robot("Robot #" + (RoboGame.robots.getChildren().length + 1), new ƒ.Vector2(RoboGame.worldSize / 2, RoboGame.worldSize / 2));
         RoboGame.robots.addChild(newRobot);
@@ -304,6 +363,7 @@ var RoboGame;
         removeRobot(robot);
         RoboGame.ressourceScrap += 25;
     }
+    //Module settings
     function setCollectionModule(robot, module) {
         switch (module) {
             case "lumberer": {
@@ -311,6 +371,7 @@ var RoboGame;
                 robot.moduleMiner = false;
                 robot.moduleOil = false;
                 robot.moduleScrapper = false;
+                robot.damageValue = 4;
                 break;
             }
             case "miner": {
@@ -318,6 +379,7 @@ var RoboGame;
                 robot.moduleMiner = true;
                 robot.moduleOil = false;
                 robot.moduleScrapper = false;
+                robot.damageValue = 6;
                 break;
             }
             case "oiler": {
@@ -325,6 +387,7 @@ var RoboGame;
                 robot.moduleMiner = false;
                 robot.moduleOil = true;
                 robot.moduleScrapper = false;
+                robot.damageValue = 2;
                 break;
             }
             case "scrapper": {
@@ -332,6 +395,7 @@ var RoboGame;
                 robot.moduleMiner = false;
                 robot.moduleOil = false;
                 robot.moduleScrapper = true;
+                robot.damageValue = 8;
                 break;
             }
             case "none": {
@@ -339,6 +403,7 @@ var RoboGame;
                 robot.moduleMiner = false;
                 robot.moduleOil = false;
                 robot.moduleScrapper = false;
+                robot.damageValue = 15;
                 break;
             }
             default:

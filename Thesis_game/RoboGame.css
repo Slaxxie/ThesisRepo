@@ -1,13 +1,3 @@
-#Sidebar {
-    top: 20px;
-    left: 1340px;
-    height: 875px;
-    width: 260px;
-    position: absolute;
-    z-index: 2;
-    background-color: royalblue;
-}
-
 #CustomizeWindow {
     position: absolute;
     top: 10px;
@@ -21,29 +11,43 @@
     background-color: gray;
 }
 
-.modScrapButton::after {
-    content: "Scrapper";
+.buttonLeftHarvesting::after {
+    content: "<";
 }
 
-.modLumbererButton::after {
-    content: "Lumberer";
+.buttonRightHarvesting::after {
+    content: ">";
 }
 
-.modMinerButton::after {
-    content: "Miner";
+.buttonFighting::after {
+    content: "Fight";
 }
 
-.modOilerButton::after {
-    content: "Oiler";
+.buttonRetreat::after {
+    content: "Retreat";
+}
+
+.buttonHovering::after {
+    content: "Hovering";
 }
 
 .spawnNewRobot::after {
     content: "SPAWN";
 }
 
+#Sidebar {
+    top: 20px;
+    left: 1340px;
+    height: 875px;
+    width: 260px;
+    position: absolute;
+    z-index: 2;
+    background-color: royalblue;
+}
+
 .RobotUI {
-    margin-left: 20px;
-    width: 220px;
+    margin-left: 4px;
+    width: 246px;
     height: 90px;
     background-color: red;
     margin-top: 10px;

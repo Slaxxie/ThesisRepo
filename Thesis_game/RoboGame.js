@@ -7,6 +7,7 @@ var RoboGame;
     let viewportNode = new ƒ.Node("Viewport");
     let viewport = new ƒ.Viewport();
     let player;
+    let harvestModuleIndex;
     RoboGame.movementSpeed = 10;
     RoboGame.robots = new ƒ.Node("Robots");
     RoboGame.worldTilesNode = new ƒ.Node("Worldmap");
@@ -15,7 +16,6 @@ var RoboGame;
     function init(_event) {
         const canvas = document.querySelector("canvas");
         player = RoboGame.Player.getInstance();
-        viewportNode.addChild(RoboGame.objects);
         viewportNode.addChild(RoboGame.robots);
         viewportNode.addChild(RoboGame.worldTilesNode);
         viewportNode.addChild(player);
@@ -39,34 +39,17 @@ var RoboGame;
         document.getElementById("modHover").addEventListener("click", () => {
             RoboGame.setHoverMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
         });
-        /* document.getElementById("modScrap").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
-        });
-        document.getElementById("modLumberer").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
-        });
-        document.getElementById("modMiner").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
-        });
-        document.getElementById("modOil").addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
-        }); */
         document.getElementById("modFighter").addEventListener("click", () => {
             RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "fight");
         });
         document.getElementById("modRetreat").addEventListener("click", () => {
             RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
         });
-        /* document.getElementById("isAuto").addEventListener("click", () => {
-            setAutoMode(<Robot>robots.getChild(robots.getChildren().length - 1));
-        }); */
         document.getElementById("createRobot").addEventListener("click", () => {
             RoboGame.createRobot();
+            chooseHarvestModule(harvestModuleIndex);
             openRobotCustomization();
         });
-        /* document.getElementById("spawnRobot").addEventListener("click", () => {
-            spawnRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
-        }); */
         viewport.draw();
     }
     function hndKey() {
@@ -94,21 +77,18 @@ var RoboGame;
         hndKey();
         RoboGame.movementTimer++;
         RoboGame.harvestTimer++;
-        if (RoboGame.harvestTimer == 2) {
+        if (RoboGame.harvestTimer == 60) {
             RoboGame.harvestTimer = 0;
-            // Hier alle map tiles deaktivieren
             for (let robotEntity of RoboGame.robots.getChildren()) {
-                if (!robotEntity.robotAlive) {
-                    RoboGame.robots.removeChild(robotEntity);
+                if (!robotEntity.isAlive) {
+                    RoboGame.removeRobot(robotEntity);
                 }
                 if (robotEntity.isInteracting) {
                     robotEntity.collectRessource(RoboGame.mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
-                    //console.log("i'm harvesting");
                 }
-                //console.log(mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
             }
         }
-        if (RoboGame.movementTimer == 4) {
+        if (RoboGame.movementTimer == 120) {
             RoboGame.movementTimer = 0;
             for (let robotEntity of RoboGame.robots.getChildren()) {
                 if (!robotEntity.isInteracting) {
@@ -141,36 +121,79 @@ var RoboGame;
                 }
             }
         }
+        RoboGame.bioMassToHTML(RoboGame.ressourceBioMass);
+        RoboGame.scrapToHTML(RoboGame.ressourceScrap);
+        RoboGame.oilToHTML(RoboGame.ressourceOil);
+        RoboGame.metalToHTML(RoboGame.ressourceMetal);
         viewport.draw();
     }
     function openRobotCustomization() {
         let customizationUI = document.createElement("div");
         customizationUI.className = "Customizer";
         document.getElementById("CustomizeWindow").appendChild(customizationUI);
-        let modScrapButton = document.createElement("button");
-        customizationUI.appendChild(modScrapButton);
-        modScrapButton.addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
+        /*  let modScrapButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+         customizationUI.appendChild(modScrapButton);
+         modScrapButton.addEventListener("click", () => {
+             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
+         });
+         modScrapButton.className = "modScrapButton";
+ 
+         let modLumbererButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+         customizationUI.appendChild(modLumbererButton);
+         modLumbererButton.addEventListener("click", () => {
+             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
+         });
+         modLumbererButton.className = "modLumbererButton";
+ 
+         let modMinerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+         customizationUI.appendChild(modMinerButton);
+         modMinerButton.addEventListener("click", () => {
+             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
+         });
+         modMinerButton.className = "modMinerButton";
+ 
+         let modOilerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+         customizationUI.appendChild(modOilerButton);
+         modOilerButton.addEventListener("click", () => {
+             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
+         });
+         modOilerButton.className = "modOilerButton"; */
+        //Declare harvesting module
+        let buttonLeftHarvesting = document.createElement("button");
+        customizationUI.appendChild(buttonLeftHarvesting);
+        buttonLeftHarvesting.addEventListener("click", () => {
+            harvestModuleIndex -= 1;
+            chooseHarvestModule(harvestModuleIndex);
         });
-        modScrapButton.className = "modScrapButton";
-        let modLumbererButton = document.createElement("button");
-        customizationUI.appendChild(modLumbererButton);
-        modLumbererButton.addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "lumberer");
+        buttonLeftHarvesting.className = "buttonLeftHarvesting";
+        let buttonRightHarvesting = document.createElement("button");
+        customizationUI.appendChild(buttonRightHarvesting);
+        buttonRightHarvesting.addEventListener("click", () => {
+            harvestModuleIndex += 1;
+            chooseHarvestModule(harvestModuleIndex);
         });
-        modLumbererButton.className = "modLumbererButton";
-        let modMinerButton = document.createElement("button");
-        customizationUI.appendChild(modMinerButton);
-        modMinerButton.addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "miner");
+        buttonRightHarvesting.className = "buttonRightHarvesting";
+        //Declare fightmode
+        let buttonFighting = document.createElement("button");
+        customizationUI.appendChild(buttonFighting);
+        buttonFighting.addEventListener("click", () => {
+            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "fight");
         });
-        modMinerButton.className = "modMinerButton";
-        let modOilerButton = document.createElement("button");
-        customizationUI.appendChild(modOilerButton);
-        modOilerButton.addEventListener("click", () => {
-            RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "oiler");
+        buttonFighting.className = "buttonFighting";
+        let buttonRetreat = document.createElement("button");
+        customizationUI.appendChild(buttonRetreat);
+        buttonRetreat.addEventListener("click", () => {
+            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
         });
-        modOilerButton.className = "modOilerButton";
+        buttonRetreat.className = "buttonRetreat";
+        //Declare hovering
+        let buttonHovering = document.createElement("button");
+        customizationUI.appendChild(buttonHovering);
+        buttonHovering.addEventListener("click", () => {
+            RoboGame.setHoverMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
+        });
+        buttonHovering.className = "buttonHovering";
+        //Spawn Robot into world
         let spawnNewRobot = document.createElement("button");
         customizationUI.appendChild(spawnNewRobot);
         spawnNewRobot.addEventListener("click", () => {
@@ -178,6 +201,39 @@ var RoboGame;
             document.getElementById("CustomizeWindow").removeChild(customizationUI);
         });
         spawnNewRobot.className = "spawnNewRobot";
+    }
+    function chooseHarvestModule(index) {
+        switch (index) {
+            case 1: {
+                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "lumberer");
+                break;
+            }
+            case 2: {
+                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "miner");
+                break;
+            }
+            case 3: {
+                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "oiler");
+                break;
+            }
+            case 4: {
+                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
+                break;
+            }
+            case 5: {
+                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "none");
+                break;
+            }
+            case 6: {
+                harvestModuleIndex = 1;
+                chooseHarvestModule(harvestModuleIndex);
+                break;
+            }
+            default: {
+                harvestModuleIndex = 1;
+                break;
+            }
+        }
     }
 })(RoboGame || (RoboGame = {}));
 /*
