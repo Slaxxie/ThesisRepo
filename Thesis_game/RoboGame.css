@@ -88,3 +88,42 @@
 .automateRobot::after {
     content: "automate";
 }
+
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+
+#frame001 {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    padding: 5px;
+}
+
+#color001 {
+    color: black;
+    font-size: large;
+    text-align: left;
+}
+
+#center001 {
+    text-align: center;
+}
+
+.button001 {
+    background-color: blue;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button002 {
+    width: 10px;
+    height: 10px;
+}

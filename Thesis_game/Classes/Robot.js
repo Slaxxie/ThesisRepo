@@ -1,11 +1,11 @@
 "use strict";
-var RoboGame;
-(function (RoboGame) {
+var RoboGameNamespace;
+(function (RoboGameNamespace) {
     var ƒ = FudgeCore;
-    RoboGame.movementTimer = 0;
-    RoboGame.harvestTimer = 0;
+    RoboGameNamespace.movementTimer = 0;
+    RoboGameNamespace.harvestTimer = 0;
     let newRobot;
-    class Robot extends RoboGame.QuadNode {
+    class Robot extends RoboGameNamespace.QuadNode {
         constructor(_name, _pos) {
             super(_name, _pos, Robot.scale);
             this.moduleMovement = true;
@@ -40,7 +40,7 @@ var RoboGame;
             this.collectsOre = false;
             this.collectsOil = false;
             this.collectsScrap = false;
-            this.robotID = RoboGame.robots.getChildren().length + 1;
+            this.robotID = RoboGameNamespace.robots.getChildren().length + 1;
             this.robotUI.className = "RobotUI";
             document.getElementById("Robots").appendChild(this.robotUI);
             this.robotUI.appendChild(this.activateRobot);
@@ -63,7 +63,7 @@ var RoboGame;
                 setAutoMode(this);
             });
             this.automateRobot.className = "automateRobot";
-            let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGame.textureRobot));
+            let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGameNamespace.textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
         }
         moveToNewField() {
@@ -78,52 +78,52 @@ var RoboGame;
                             nextDirection = Math.floor((Math.random() * 8)) + 1;
                             switch (nextDirection) {
                                 case 1: {
-                                    if (RoboGame.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateX(-1);
                                         this.mtxLocal.translateY(+1);
                                     }
                                     break;
                                 }
                                 case 2: {
-                                    if (RoboGame.mapHelperArray[thisX][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateY(+1);
                                     }
                                     break;
                                 }
                                 case 3: {
-                                    if (RoboGame.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateX(+1);
                                         this.mtxLocal.translateY(+1);
                                     }
                                     break;
                                 }
                                 case 4: {
-                                    if (RoboGame.mapHelperArray[thisX - 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateX(-1);
                                     }
                                     break;
                                 }
                                 case 5: {
-                                    if (RoboGame.mapHelperArray[thisX + 1][thisY].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateX(+1);
                                     }
                                     break;
                                 }
                                 case 6: {
-                                    if (RoboGame.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateX(-1);
                                         this.mtxLocal.translateY(-1);
                                     }
                                     break;
                                 }
                                 case 7: {
-                                    if (RoboGame.mapHelperArray[thisX][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateY(-1);
                                     }
                                     break;
                                 }
                                 case 8: {
-                                    if (RoboGame.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGame.FIELDATTRIBUTE.WORLDBORDER) {
+                                    if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
                                         this.mtxLocal.translateX(+1);
                                         this.mtxLocal.translateY(-1);
                                     }
@@ -146,40 +146,40 @@ var RoboGame;
             }
             else {
                 switch (_tile.attribute) {
-                    case RoboGame.FIELDATTRIBUTE.FOREST: {
+                    case RoboGameNamespace.FIELDATTRIBUTE.FOREST: {
                         if (this.moduleLumberjack) {
                             this.isInteracting = true;
                             this.collectsBioMass = true;
                         }
                         break;
                     }
-                    case RoboGame.FIELDATTRIBUTE.MOUNTAIN: {
+                    case RoboGameNamespace.FIELDATTRIBUTE.MOUNTAIN: {
                         if (!this.moduleHovering) {
                             this.moveToPreviousField();
                         }
                         break;
                     }
-                    case RoboGame.FIELDATTRIBUTE.ORE: {
+                    case RoboGameNamespace.FIELDATTRIBUTE.ORE: {
                         if (this.moduleMiner) {
                             this.isInteracting = true;
                             this.collectsOre = true;
                         }
                         break;
                     }
-                    case RoboGame.FIELDATTRIBUTE.OIL: {
+                    case RoboGameNamespace.FIELDATTRIBUTE.OIL: {
                         if (this.moduleOil) {
                             this.isInteracting = true;
                             this.collectsOil = true;
                         }
                         break;
                     }
-                    case RoboGame.FIELDATTRIBUTE.WATER: {
+                    case RoboGameNamespace.FIELDATTRIBUTE.WATER: {
                         if (!this.moduleHovering) {
                             this.moveToPreviousField();
                         }
                         break;
                     }
-                    case RoboGame.FIELDATTRIBUTE.WRECKAGE: {
+                    case RoboGameNamespace.FIELDATTRIBUTE.WRECKAGE: {
                         if (this.moduleScrapper) {
                             this.isInteracting = true;
                             this.collectsScrap = true;
@@ -197,8 +197,8 @@ var RoboGame;
         }
         collectRessource(_tile) {
             if (this.collectsBioMass == true) {
-                this.bioMassLoaded += RoboGame.increaseBioMass;
-                _tile.ressourceAmount -= RoboGame.increaseBioMass;
+                this.bioMassLoaded += RoboGameNamespace.increaseBioMass;
+                _tile.ressourceAmount -= RoboGameNamespace.increaseBioMass;
                 if (this.bioMassLoaded >= this.ressourceCapacity) {
                     this.collectsBioMass = false;
                     this.returnTimer();
@@ -211,8 +211,8 @@ var RoboGame;
                 }
             }
             if (this.collectsOre == true) {
-                this.oreLoaded += RoboGame.increaseMetal;
-                _tile.ressourceAmount -= RoboGame.increaseMetal;
+                this.oreLoaded += RoboGameNamespace.increaseMetal;
+                _tile.ressourceAmount -= RoboGameNamespace.increaseMetal;
                 if (this.oreLoaded >= this.ressourceCapacity) {
                     this.collectsOre = false;
                     this.returnTimer();
@@ -224,8 +224,8 @@ var RoboGame;
                 }
             }
             if (this.collectsOil == true) {
-                this.oilLoaded += RoboGame.increaseOil;
-                _tile.ressourceAmount -= RoboGame.increaseOil;
+                this.oilLoaded += RoboGameNamespace.increaseOil;
+                _tile.ressourceAmount -= RoboGameNamespace.increaseOil;
                 if (this.oilLoaded >= this.ressourceCapacity) {
                     this.collectsOil = false;
                     this.returnTimer();
@@ -237,8 +237,8 @@ var RoboGame;
                 }
             }
             if (this.collectsScrap == true) {
-                this.scrapLoaded += RoboGame.increaseScrap;
-                _tile.ressourceAmount -= RoboGame.increaseScrap;
+                this.scrapLoaded += RoboGameNamespace.increaseScrap;
+                _tile.ressourceAmount -= RoboGameNamespace.increaseScrap;
                 if (this.scrapLoaded >= this.ressourceCapacity) {
                     this.collectsScrap = false;
                     this.returnTimer();
@@ -259,14 +259,14 @@ var RoboGame;
         }
         returnToBase() {
             this.isInteracting = false;
-            this.mtxLocal.translation = RoboGame.playerBase;
-            RoboGame.ressourceBioMass += this.bioMassLoaded;
+            this.mtxLocal.translation = RoboGameNamespace.playerBase;
+            RoboGameNamespace.ressourceBioMass += this.bioMassLoaded;
             this.bioMassLoaded = 0;
-            RoboGame.ressourceMetal += this.oreLoaded;
+            RoboGameNamespace.ressourceMetal += this.oreLoaded;
             this.oreLoaded = 0;
-            RoboGame.ressourceOil += this.oilLoaded;
+            RoboGameNamespace.ressourceOil += this.oilLoaded;
             this.oilLoaded = 0;
-            RoboGame.ressourceScrap += this.scrapLoaded;
+            RoboGameNamespace.ressourceScrap += this.scrapLoaded;
             this.scrapLoaded = 0;
             this.robotHealth = this.robotMaxHealth;
             if (!this.isAutomated) {
@@ -277,8 +277,8 @@ var RoboGame;
             }
         }
         fightEnemy() {
-            let enemyLevel = ((Math.floor(Math.sqrt(Math.pow(this.mtxLocal.translation.x - (RoboGame.worldSize / 2), 2) + Math.pow(this.mtxLocal.translation.y - (RoboGame.worldSize / 2), 2)))) / 4) + 1;
-            let enemy = new RoboGame.Enemy(enemyLevel);
+            let enemyLevel = ((Math.floor(Math.sqrt(Math.pow(this.mtxLocal.translation.x - (RoboGameNamespace.worldSize / 2), 2) + Math.pow(this.mtxLocal.translation.y - (RoboGameNamespace.worldSize / 2), 2)))) / 4) + 1;
+            let enemy = new RoboGameNamespace.Enemy(enemyLevel);
             if (this.moduleRetreat) {
                 this.robotHealth -= enemy.damageOfEnemy;
                 this.moveToPreviousField();
@@ -295,7 +295,7 @@ var RoboGame;
                     }
                     else {
                         console.log("fight started");
-                        this.startFight(RoboGame.mapHelperArray[this.mtxLocal.translation.x][this.mtxLocal.translation.y], enemy);
+                        this.startFight(RoboGameNamespace.mapHelperArray[this.mtxLocal.translation.x][this.mtxLocal.translation.y], enemy);
                         ƒ.Time.game.setTimer(15000, 1, () => {
                             document.getElementById("EnemyWarning").removeChild(enemyMessage);
                         });
@@ -313,8 +313,8 @@ var RoboGame;
                 if (enemy.healthOfEnemy <= 0) {
                     tile.hasEnemy = false;
                     tile.removeComponent(tile.getComponent(ƒ.ComponentMaterial));
-                    tile.addComponent(new ƒ.ComponentMaterial(RoboGame.plainsMaterial));
-                    RoboGame.ressourceScrap += enemy.scrapsDropped;
+                    tile.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.plainsMaterial));
+                    RoboGameNamespace.ressourceScrap += enemy.scrapsDropped;
                     this.isFighting = false;
                     this.isInteracting = false;
                     break;
@@ -334,34 +334,34 @@ var RoboGame;
         }
     }
     Robot.scale = new ƒ.Vector2(1, 1);
-    RoboGame.Robot = Robot;
+    RoboGameNamespace.Robot = Robot;
     // Robot Management
     function createRobot() {
-        newRobot = new Robot("Robot #" + (RoboGame.robots.getChildren().length + 1), new ƒ.Vector2(RoboGame.worldSize / 2, RoboGame.worldSize / 2));
-        RoboGame.robots.addChild(newRobot);
+        newRobot = new Robot("Robot #" + (RoboGameNamespace.robots.getChildren().length + 1), new ƒ.Vector2(RoboGameNamespace.worldSize / 2, RoboGameNamespace.worldSize / 2));
+        RoboGameNamespace.robots.addChild(newRobot);
     }
-    RoboGame.createRobot = createRobot;
+    RoboGameNamespace.createRobot = createRobot;
     function spawnRobot(robot) {
-        if (RoboGame.ressourceScrap >= 30 && RoboGame.ressourceBioMass >= 300) {
-            RoboGame.ressourceScrap -= 30;
-            RoboGame.ressourceBioMass -= 300;
+        if (RoboGameNamespace.ressourceScrap >= 30 && RoboGameNamespace.ressourceBioMass >= 300) {
+            RoboGameNamespace.ressourceScrap -= 30;
+            RoboGameNamespace.ressourceBioMass -= 300;
         }
         else {
             removeRobot(robot);
         }
     }
-    RoboGame.spawnRobot = spawnRobot;
+    RoboGameNamespace.spawnRobot = spawnRobot;
     function removeRobot(robot) {
-        RoboGame.robots.removeChild(robot);
+        RoboGameNamespace.robots.removeChild(robot);
         document.getElementById("Robots").removeChild(robot.robotUI);
     }
-    RoboGame.removeRobot = removeRobot;
+    RoboGameNamespace.removeRobot = removeRobot;
     function activateRobot(robot) {
         robot.isWaiting = false;
     }
     function disassembleRobot(robot) {
         removeRobot(robot);
-        RoboGame.ressourceScrap += 25;
+        RoboGameNamespace.ressourceScrap += 25;
     }
     //Module settings
     function setCollectionModule(robot, module) {
@@ -410,7 +410,7 @@ var RoboGame;
                 break;
         }
     }
-    RoboGame.setCollectionModule = setCollectionModule;
+    RoboGameNamespace.setCollectionModule = setCollectionModule;
     function setFightMode(robot, module) {
         switch (module) {
             case "fight": {
@@ -425,7 +425,7 @@ var RoboGame;
             }
         }
     }
-    RoboGame.setFightMode = setFightMode;
+    RoboGameNamespace.setFightMode = setFightMode;
     function setAutoMode(robot) {
         if (robot.isAutomated == true) {
             robot.isAutomated = false;
@@ -436,7 +436,7 @@ var RoboGame;
             console.log("i am in auto mode");
         }
     }
-    RoboGame.setAutoMode = setAutoMode;
+    RoboGameNamespace.setAutoMode = setAutoMode;
     function setHoverMode(robot) {
         if (robot.moduleHovering) {
             robot.moduleHovering = false;
@@ -445,6 +445,6 @@ var RoboGame;
             robot.moduleHovering = true;
         }
     }
-    RoboGame.setHoverMode = setHoverMode;
-})(RoboGame || (RoboGame = {}));
+    RoboGameNamespace.setHoverMode = setHoverMode;
+})(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=Robot.js.map

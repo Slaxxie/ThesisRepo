@@ -1,4 +1,4 @@
-namespace RoboGame {
+namespace RoboGameNamespace {
     export enum FIELDATTRIBUTE {
         PLAINS,
         ORE,

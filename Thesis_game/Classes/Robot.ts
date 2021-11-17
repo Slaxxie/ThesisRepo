@@ -1,4 +1,4 @@
-namespace RoboGame {
+namespace RoboGameNamespace {
     import ƒ = FudgeCore;
     export let movementTimer: number = 0;
     export let harvestTimer: number = 0;

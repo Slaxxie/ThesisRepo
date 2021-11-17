@@ -1,6 +1,6 @@
 "use strict";
-var RoboGame;
-(function (RoboGame) {
+var RoboGameNamespace;
+(function (RoboGameNamespace) {
     var ƒ = FudgeCore;
     window.addEventListener("load", init);
     let gameNode = new ƒ.Node("Game");
@@ -8,16 +8,17 @@ var RoboGame;
     let viewport = new ƒ.Viewport();
     let player;
     let harvestModuleIndex;
-    RoboGame.movementSpeed = 10;
-    RoboGame.robots = new ƒ.Node("Robots");
-    RoboGame.worldTilesNode = new ƒ.Node("Worldmap");
-    RoboGame.mapHelperArray = [];
+    RoboGameNamespace.movementSpeed = 10;
+    RoboGameNamespace.robots = new ƒ.Node("Robots");
+    RoboGameNamespace.worldTilesNode = new ƒ.Node("Worldmap");
+    RoboGameNamespace.mapHelperArray = [];
+    RoboGameNamespace.riddleHandler = new ƒ.Node("Riddle Handler");
     gameNode.appendChild(viewportNode);
     function init(_event) {
         const canvas = document.querySelector("canvas");
-        player = RoboGame.Player.getInstance();
-        viewportNode.addChild(RoboGame.robots);
-        viewportNode.addChild(RoboGame.worldTilesNode);
+        player = RoboGameNamespace.Player.getInstance();
+        viewportNode.addChild(RoboGameNamespace.robots);
+        viewportNode.addChild(RoboGameNamespace.worldTilesNode);
         viewportNode.addChild(player);
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(50);
@@ -28,27 +29,34 @@ var RoboGame;
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
         document.getElementById("createWorld").addEventListener("click", () => {
-            RoboGame.createWorld();
-            console.log(RoboGame.mapHelperArray);
+            RoboGameNamespace.createWorld();
+            console.log(RoboGameNamespace.mapHelperArray);
             ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
             ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         });
         document.getElementById("saveWorld").addEventListener("click", () => {
-            RoboGame.saveNoisemap();
+            RoboGameNamespace.saveNoisemap();
         });
         document.getElementById("modHover").addEventListener("click", () => {
-            RoboGame.setHoverMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
+            RoboGameNamespace.setHoverMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
         });
         document.getElementById("modFighter").addEventListener("click", () => {
-            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "fight");
+            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "fight");
         });
         document.getElementById("modRetreat").addEventListener("click", () => {
-            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
+            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "retreat");
         });
         document.getElementById("createRobot").addEventListener("click", () => {
-            RoboGame.createRobot();
+            RoboGameNamespace.createRobot();
             chooseHarvestModule(harvestModuleIndex);
             openRobotCustomization();
+        });
+        document.getElementById("drag1").addEventListener("dragstart", drag);
+        document.getElementById("drag2").addEventListener("dragstart", drag);
+        document.getElementById("div1").addEventListener("drop", drop);
+        document.getElementById("div1").addEventListener("dragover", allowDrop);
+        document.getElementById("disappear001").addEventListener("click", () => {
+            RoboGameNamespace.submit001();
         });
         viewport.draw();
     }
@@ -70,27 +78,39 @@ var RoboGame;
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
             player.moveCameraDown();
-            console.log(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
+            console.log(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.C])) {
+            RoboGameNamespace.robots.activate(true);
+            RoboGameNamespace.worldTilesNode.activate(true);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.X])) {
+            RoboGameNamespace.robots.activate(false);
+            RoboGameNamespace.worldTilesNode.activate(false);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.V])) {
+            let riddle = new RoboGameNamespace.Riddles("easy", "text");
+            RoboGameNamespace.riddleHandler.addChild(riddle);
         }
     }
     function update(_event) {
         hndKey();
-        RoboGame.movementTimer++;
-        RoboGame.harvestTimer++;
-        if (RoboGame.harvestTimer == 60) {
-            RoboGame.harvestTimer = 0;
-            for (let robotEntity of RoboGame.robots.getChildren()) {
+        RoboGameNamespace.movementTimer++;
+        RoboGameNamespace.harvestTimer++;
+        if (RoboGameNamespace.harvestTimer == 60) {
+            RoboGameNamespace.harvestTimer = 0;
+            for (let robotEntity of RoboGameNamespace.robots.getChildren()) {
                 if (!robotEntity.isAlive) {
-                    RoboGame.removeRobot(robotEntity);
+                    RoboGameNamespace.removeRobot(robotEntity);
                 }
                 if (robotEntity.isInteracting) {
-                    robotEntity.collectRessource(RoboGame.mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
+                    robotEntity.collectRessource(RoboGameNamespace.mapHelperArray[robotEntity.mtxLocal.translation.x][robotEntity.mtxLocal.translation.y]);
                 }
             }
         }
-        if (RoboGame.movementTimer == 120) {
-            RoboGame.movementTimer = 0;
-            for (let robotEntity of RoboGame.robots.getChildren()) {
+        if (RoboGameNamespace.movementTimer == 120) {
+            RoboGameNamespace.movementTimer = 0;
+            for (let robotEntity of RoboGameNamespace.robots.getChildren()) {
                 if (!robotEntity.isInteracting) {
                     robotEntity.moveToNewField();
                     let minX = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
@@ -98,20 +118,20 @@ var RoboGame;
                         minX = 0;
                     }
                     let maxX = robotEntity.mtxLocal.translation.x + robotEntity.fieldOfView;
-                    if (maxX > RoboGame.worldSize) {
-                        maxX = RoboGame.worldSize;
+                    if (maxX > RoboGameNamespace.worldSize) {
+                        maxX = RoboGameNamespace.worldSize;
                     }
                     let minY = robotEntity.mtxLocal.translation.y - robotEntity.fieldOfView;
                     if (minY < 0) {
                         minY = 0;
                     }
                     let maxY = robotEntity.mtxLocal.translation.y + robotEntity.fieldOfView;
-                    if (maxY > RoboGame.worldSize) {
-                        maxY = RoboGame.worldSize;
+                    if (maxY > RoboGameNamespace.worldSize) {
+                        maxY = RoboGameNamespace.worldSize;
                     }
                     for (let x = minX; x <= maxX; x++) {
                         for (let y = minY; y <= maxY; y++) {
-                            let tile = RoboGame.mapHelperArray[x][y];
+                            let tile = RoboGameNamespace.mapHelperArray[x][y];
                             tile.activate(true);
                             if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
                                 robotEntity.interactWithField(tile);
@@ -121,43 +141,16 @@ var RoboGame;
                 }
             }
         }
-        RoboGame.bioMassToHTML(RoboGame.ressourceBioMass);
-        RoboGame.scrapToHTML(RoboGame.ressourceScrap);
-        RoboGame.oilToHTML(RoboGame.ressourceOil);
-        RoboGame.metalToHTML(RoboGame.ressourceMetal);
+        RoboGameNamespace.bioMassToHTML(RoboGameNamespace.ressourceBioMass);
+        RoboGameNamespace.scrapToHTML(RoboGameNamespace.ressourceScrap);
+        RoboGameNamespace.oilToHTML(RoboGameNamespace.ressourceOil);
+        RoboGameNamespace.metalToHTML(RoboGameNamespace.ressourceMetal);
         viewport.draw();
     }
     function openRobotCustomization() {
         let customizationUI = document.createElement("div");
         customizationUI.className = "Customizer";
         document.getElementById("CustomizeWindow").appendChild(customizationUI);
-        /*  let modScrapButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-         customizationUI.appendChild(modScrapButton);
-         modScrapButton.addEventListener("click", () => {
-             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
-         });
-         modScrapButton.className = "modScrapButton";
- 
-         let modLumbererButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-         customizationUI.appendChild(modLumbererButton);
-         modLumbererButton.addEventListener("click", () => {
-             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
-         });
-         modLumbererButton.className = "modLumbererButton";
- 
-         let modMinerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-         customizationUI.appendChild(modMinerButton);
-         modMinerButton.addEventListener("click", () => {
-             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
-         });
-         modMinerButton.className = "modMinerButton";
- 
-         let modOilerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-         customizationUI.appendChild(modOilerButton);
-         modOilerButton.addEventListener("click", () => {
-             setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
-         });
-         modOilerButton.className = "modOilerButton"; */
         //Declare harvesting module
         let buttonLeftHarvesting = document.createElement("button");
         customizationUI.appendChild(buttonLeftHarvesting);
@@ -177,27 +170,27 @@ var RoboGame;
         let buttonFighting = document.createElement("button");
         customizationUI.appendChild(buttonFighting);
         buttonFighting.addEventListener("click", () => {
-            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "fight");
+            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "fight");
         });
         buttonFighting.className = "buttonFighting";
         let buttonRetreat = document.createElement("button");
         customizationUI.appendChild(buttonRetreat);
         buttonRetreat.addEventListener("click", () => {
-            RoboGame.setFightMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "retreat");
+            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "retreat");
         });
         buttonRetreat.className = "buttonRetreat";
         //Declare hovering
         let buttonHovering = document.createElement("button");
         customizationUI.appendChild(buttonHovering);
         buttonHovering.addEventListener("click", () => {
-            RoboGame.setHoverMode(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
+            RoboGameNamespace.setHoverMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
         });
         buttonHovering.className = "buttonHovering";
         //Spawn Robot into world
         let spawnNewRobot = document.createElement("button");
         customizationUI.appendChild(spawnNewRobot);
         spawnNewRobot.addEventListener("click", () => {
-            RoboGame.spawnRobot(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1));
+            RoboGameNamespace.spawnRobot(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
             document.getElementById("CustomizeWindow").removeChild(customizationUI);
         });
         spawnNewRobot.className = "spawnNewRobot";
@@ -205,23 +198,23 @@ var RoboGame;
     function chooseHarvestModule(index) {
         switch (index) {
             case 1: {
-                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "lumberer");
+                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "lumberer");
                 break;
             }
             case 2: {
-                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "miner");
+                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "miner");
                 break;
             }
             case 3: {
-                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "oiler");
+                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "oiler");
                 break;
             }
             case 4: {
-                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "scrapper");
+                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "scrapper");
                 break;
             }
             case 5: {
-                RoboGame.setCollectionModule(RoboGame.robots.getChild(RoboGame.robots.getChildren().length - 1), "none");
+                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "none");
                 break;
             }
             case 6: {
@@ -235,7 +228,25 @@ var RoboGame;
             }
         }
     }
-})(RoboGame || (RoboGame = {}));
+    function allowDrop(ev) {
+        console.log("test allow");
+        ev.preventDefault();
+    }
+    RoboGameNamespace.allowDrop = allowDrop;
+    function drag(ev) {
+        console.log("test drag");
+        console.log(ev.target);
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+    RoboGameNamespace.drag = drag;
+    function drop(ev) {
+        console.log("test drop");
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+    RoboGameNamespace.drop = drop;
+})(RoboGameNamespace || (RoboGameNamespace = {}));
 /*
 Alt+Shift+F = auto-format
 Koordinatensystem = Rechtshändig

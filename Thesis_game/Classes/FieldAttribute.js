@@ -1,6 +1,6 @@
 "use strict";
-var RoboGame;
-(function (RoboGame) {
+var RoboGameNamespace;
+(function (RoboGameNamespace) {
     let FIELDATTRIBUTE;
     (function (FIELDATTRIBUTE) {
         FIELDATTRIBUTE[FIELDATTRIBUTE["PLAINS"] = 0] = "PLAINS";
@@ -12,6 +12,6 @@ var RoboGame;
         FIELDATTRIBUTE[FIELDATTRIBUTE["WRECKAGE"] = 6] = "WRECKAGE";
         FIELDATTRIBUTE[FIELDATTRIBUTE["WORLDBORDER"] = 7] = "WORLDBORDER";
         FIELDATTRIBUTE[FIELDATTRIBUTE["FACTORY"] = 8] = "FACTORY";
-    })(FIELDATTRIBUTE = RoboGame.FIELDATTRIBUTE || (RoboGame.FIELDATTRIBUTE = {}));
-})(RoboGame || (RoboGame = {}));
+    })(FIELDATTRIBUTE = RoboGameNamespace.FIELDATTRIBUTE || (RoboGameNamespace.FIELDATTRIBUTE = {}));
+})(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=FieldAttribute.js.map

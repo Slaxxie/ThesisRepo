@@ -1,4 +1,4 @@
-namespace RoboGame {
+namespace RoboGameNamespace {
     import ƒ = FudgeCore;
     window.addEventListener("load", init);
 
@@ -11,6 +11,7 @@ namespace RoboGame {
     export let robots: ƒ.Node = new ƒ.Node("Robots");
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
     export let mapHelperArray: WorldMapTile[][] = [];
+    export let riddleHandler: ƒ.Node = new ƒ.Node("Riddle Handler");
 
     gameNode.appendChild(viewportNode);
 
@@ -56,6 +57,14 @@ namespace RoboGame {
             chooseHarvestModule(harvestModuleIndex);
             openRobotCustomization();
         });
+        document.getElementById("drag1").addEventListener("dragstart", drag);
+        document.getElementById("drag2").addEventListener("dragstart", drag);
+        document.getElementById("div1").addEventListener("drop", drop);
+        document.getElementById("div1").addEventListener("dragover", allowDrop);
+        document.getElementById("disappear001").addEventListener("click",  () => {
+            submit001();
+        });
+        
         viewport.draw();
 
     }
@@ -79,6 +88,18 @@ namespace RoboGame {
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
             player.moveCameraDown();
             console.log(<Robot>robots.getChild(robots.getChildren().length - 1));
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.C])) {
+            robots.activate(true);
+            worldTilesNode.activate(true);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.X])) {
+            robots.activate(false);
+            worldTilesNode.activate(false);
+        }
+        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.V])) {
+            let riddle: Riddles = new Riddles("easy", "text");
+            riddleHandler.addChild(riddle);
         }
 
     }
@@ -147,34 +168,6 @@ namespace RoboGame {
         customizationUI.className = "Customizer";
         document.getElementById("CustomizeWindow").appendChild(customizationUI);
 
-       /*  let modScrapButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        customizationUI.appendChild(modScrapButton);
-        modScrapButton.addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "scrapper");
-        });
-        modScrapButton.className = "modScrapButton";
-
-        let modLumbererButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        customizationUI.appendChild(modLumbererButton);
-        modLumbererButton.addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "lumberer");
-        });
-        modLumbererButton.className = "modLumbererButton";
-
-        let modMinerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        customizationUI.appendChild(modMinerButton);
-        modMinerButton.addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "miner");
-        });
-        modMinerButton.className = "modMinerButton";
-
-        let modOilerButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        customizationUI.appendChild(modOilerButton);
-        modOilerButton.addEventListener("click", () => {
-            setCollectionModule(<Robot>robots.getChild(robots.getChildren().length - 1), "oiler");
-        });
-        modOilerButton.className = "modOilerButton"; */
-        
         //Declare harvesting module
         let buttonLeftHarvesting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         customizationUI.appendChild(buttonLeftHarvesting);
@@ -183,7 +176,7 @@ namespace RoboGame {
             chooseHarvestModule(harvestModuleIndex);
         });
         buttonLeftHarvesting.className = "buttonLeftHarvesting";
-        
+
         let buttonRightHarvesting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         customizationUI.appendChild(buttonRightHarvesting);
         buttonRightHarvesting.addEventListener("click", () => {
@@ -191,7 +184,7 @@ namespace RoboGame {
             chooseHarvestModule(harvestModuleIndex);
         });
         buttonRightHarvesting.className = "buttonRightHarvesting";
-        
+
 
         //Declare fightmode
         let buttonFighting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
@@ -200,7 +193,7 @@ namespace RoboGame {
             setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
         });
         buttonFighting.className = "buttonFighting";
-        
+
         let buttonRetreat: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         customizationUI.appendChild(buttonRetreat);
         buttonRetreat.addEventListener("click", () => {
@@ -262,6 +255,24 @@ namespace RoboGame {
             }
         }
     }
+    export function allowDrop(ev: DragEvent): void {
+        console.log("test allow");
+        ev.preventDefault();
+    }
+
+    export function drag(ev: DragEvent): void {
+        console.log("test drag");
+        console.log(ev.target);
+        ev.dataTransfer.setData("text", (<HTMLImageElement>ev.target).id);
+    }
+
+    export function drop(ev: DragEvent): void {
+        console.log("test drop");
+        ev.preventDefault();
+        let data: string = ev.dataTransfer.getData("text");
+        (<HTMLDivElement>ev.target).appendChild(document.getElementById(data));
+    }
+
 }
 
 

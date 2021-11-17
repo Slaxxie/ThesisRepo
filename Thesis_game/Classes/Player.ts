@@ -1,4 +1,4 @@
-namespace RoboGame {
+namespace RoboGameNamespace {
     import ƒ = FudgeCore;
 
     export class Player extends QuadNode {

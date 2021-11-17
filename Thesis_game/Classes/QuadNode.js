@@ -1,6 +1,6 @@
 "use strict";
-var RoboGame;
-(function (RoboGame) {
+var RoboGameNamespace;
+(function (RoboGameNamespace) {
     var ƒ = FudgeCore;
     class QuadNode extends ƒ.Node {
         constructor(_name, _pos, _scale) {
@@ -23,6 +23,6 @@ var RoboGame;
         }
     }
     QuadNode.mesh = new ƒ.MeshSprite("Quad");
-    RoboGame.QuadNode = QuadNode;
-})(RoboGame || (RoboGame = {}));
+    RoboGameNamespace.QuadNode = QuadNode;
+})(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=QuadNode.js.map

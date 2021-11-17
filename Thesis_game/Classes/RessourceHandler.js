@@ -1,33 +1,33 @@
 "use strict";
-var RoboGame;
-(function (RoboGame) {
-    RoboGame.ressourceBioMass = 5000;
-    RoboGame.increaseBioMass = 10;
-    RoboGame.ressourceScrap = 5000;
-    RoboGame.increaseScrap = 5;
-    RoboGame.ressourceOil = 5000;
-    RoboGame.increaseOil = 3;
-    RoboGame.ressourceMetal = 5000;
-    RoboGame.increaseMetal = 7;
+var RoboGameNamespace;
+(function (RoboGameNamespace) {
+    RoboGameNamespace.ressourceBioMass = 5000;
+    RoboGameNamespace.increaseBioMass = 10;
+    RoboGameNamespace.ressourceScrap = 5000;
+    RoboGameNamespace.increaseScrap = 5;
+    RoboGameNamespace.ressourceOil = 5000;
+    RoboGameNamespace.increaseOil = 3;
+    RoboGameNamespace.ressourceMetal = 5000;
+    RoboGameNamespace.increaseMetal = 7;
     function bioMassToHTML(bioMass) {
         let div = document.getElementById("UI-Biomass");
         div.textContent = String(bioMass);
     }
-    RoboGame.bioMassToHTML = bioMassToHTML;
+    RoboGameNamespace.bioMassToHTML = bioMassToHTML;
     function scrapToHTML(scrap) {
         let div = document.getElementById("UI-Scrap");
         div.textContent = String(scrap);
     }
-    RoboGame.scrapToHTML = scrapToHTML;
+    RoboGameNamespace.scrapToHTML = scrapToHTML;
     function oilToHTML(oil) {
         let div = document.getElementById("UI-Oil");
         div.textContent = String(oil);
     }
-    RoboGame.oilToHTML = oilToHTML;
+    RoboGameNamespace.oilToHTML = oilToHTML;
     function metalToHTML(metal) {
         let div = document.getElementById("UI-Metal");
         div.textContent = String(metal);
     }
-    RoboGame.metalToHTML = metalToHTML;
-})(RoboGame || (RoboGame = {}));
+    RoboGameNamespace.metalToHTML = metalToHTML;
+})(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=RessourceHandler.js.map

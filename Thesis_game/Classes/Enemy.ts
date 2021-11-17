@@ -1,4 +1,4 @@
-namespace RoboGame {
+namespace RoboGameNamespace {
 
     export class Enemy {
         public damageOfEnemy: number;

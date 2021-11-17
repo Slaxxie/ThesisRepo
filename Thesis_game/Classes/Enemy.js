@@ -1,6 +1,6 @@
 "use strict";
-var RoboGame;
-(function (RoboGame) {
+var RoboGameNamespace;
+(function (RoboGameNamespace) {
     class Enemy {
         constructor(_level) {
             this.isAlive = true;
@@ -10,6 +10,6 @@ var RoboGame;
             this.healthOfEnemy = (_level * this.randomInt) + 15;
         }
     }
-    RoboGame.Enemy = Enemy;
-})(RoboGame || (RoboGame = {}));
+    RoboGameNamespace.Enemy = Enemy;
+})(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=Enemy.js.map

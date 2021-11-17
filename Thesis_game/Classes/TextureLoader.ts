@@ -1,4 +1,4 @@
-namespace RoboGame {
+namespace RoboGameNamespace {
     import ƒ = FudgeCore;
 
     export let texturePlains: ƒ.TextureImage = new ƒ.TextureImage("./Art/plainsTest.png");
