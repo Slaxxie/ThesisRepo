@@ -93,6 +93,9 @@ var RoboGameNamespace;
             RoboGameNamespace.riddleHandler.addChild(riddle);
         }
     }
+    function newGame() {
+        RoboGameNamespace.level = 1;
+    }
     function update(_event) {
         hndKey();
         RoboGameNamespace.movementTimer++;
@@ -166,19 +169,21 @@ var RoboGameNamespace;
             chooseHarvestModule(harvestModuleIndex);
         });
         buttonRightHarvesting.className = "buttonRightHarvesting";
-        //Declare fightmode
-        let buttonFighting = document.createElement("button");
-        customizationUI.appendChild(buttonFighting);
-        buttonFighting.addEventListener("click", () => {
-            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "fight");
-        });
-        buttonFighting.className = "buttonFighting";
-        let buttonRetreat = document.createElement("button");
-        customizationUI.appendChild(buttonRetreat);
-        buttonRetreat.addEventListener("click", () => {
-            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "retreat");
-        });
-        buttonRetreat.className = "buttonRetreat";
+        if (RoboGameNamespace.level >= 10) {
+            //Declare fightmode
+            let buttonFighting = document.createElement("button");
+            customizationUI.appendChild(buttonFighting);
+            buttonFighting.addEventListener("click", () => {
+                RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "fight");
+            });
+            buttonFighting.className = "buttonFighting";
+            let buttonRetreat = document.createElement("button");
+            customizationUI.appendChild(buttonRetreat);
+            buttonRetreat.addEventListener("click", () => {
+                RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "retreat");
+            });
+            buttonRetreat.className = "buttonRetreat";
+        }
         //Declare hovering
         let buttonHovering = document.createElement("button");
         customizationUI.appendChild(buttonHovering);

@@ -12,6 +12,7 @@ namespace RoboGameNamespace {
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
     export let mapHelperArray: WorldMapTile[][] = [];
     export let riddleHandler: ƒ.Node = new ƒ.Node("Riddle Handler");
+    export let level: number;
 
     gameNode.appendChild(viewportNode);
 
@@ -61,10 +62,10 @@ namespace RoboGameNamespace {
         document.getElementById("drag2").addEventListener("dragstart", drag);
         document.getElementById("div1").addEventListener("drop", drop);
         document.getElementById("div1").addEventListener("dragover", allowDrop);
-        document.getElementById("disappear001").addEventListener("click",  () => {
+        document.getElementById("disappear001").addEventListener("click", () => {
             submit001();
         });
-        
+
         viewport.draw();
 
     }
@@ -102,6 +103,10 @@ namespace RoboGameNamespace {
             riddleHandler.addChild(riddle);
         }
 
+    }
+
+    function newGame(): void {
+        level = 1;
     }
 
     function update(_event: Event): void {
@@ -185,22 +190,22 @@ namespace RoboGameNamespace {
         });
         buttonRightHarvesting.className = "buttonRightHarvesting";
 
+        if (level >= 10) {
+            //Declare fightmode
+            let buttonFighting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            customizationUI.appendChild(buttonFighting);
+            buttonFighting.addEventListener("click", () => {
+                setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
+            });
+            buttonFighting.className = "buttonFighting";
 
-        //Declare fightmode
-        let buttonFighting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        customizationUI.appendChild(buttonFighting);
-        buttonFighting.addEventListener("click", () => {
-            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
-        });
-        buttonFighting.className = "buttonFighting";
-
-        let buttonRetreat: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        customizationUI.appendChild(buttonRetreat);
-        buttonRetreat.addEventListener("click", () => {
-            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
-        });
-        buttonRetreat.className = "buttonRetreat";
-
+            let buttonRetreat: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            customizationUI.appendChild(buttonRetreat);
+            buttonRetreat.addEventListener("click", () => {
+                setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
+            });
+            buttonRetreat.className = "buttonRetreat";
+        }
 
         //Declare hovering
         let buttonHovering: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
