@@ -13,19 +13,19 @@ namespace RoboGameNamespace {
             if (this.instance == null) this.instance = new Player();
             return this.instance;
         }
-        public moveRight(): void {
+        public moveCameraRight(): void {
             this.setRectPosition();
             Player.getInstance().mtxLocal.translateX((movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
-        public moveLeft(): void {
+        public moveCameraLeft(): void {
             this.setRectPosition();
             Player.getInstance().mtxLocal.translateX((- movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
-        public moveUp(): void {
+        public moveCameraTop(): void {
             this.setRectPosition();
             Player.getInstance().mtxLocal.translateY((movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
-        public moveDown(): void {
+        public moveCameraBottom(): void {
             this.setRectPosition();
             Player.getInstance().mtxLocal.translateY((- movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }

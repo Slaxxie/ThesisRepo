@@ -46,7 +46,7 @@ namespace RoboGameNamespace {
                         } else if (randomizedInt > 0.85 && randomizedInt <= 0.92) {
                             this.addComponent(new ƒ.ComponentMaterial(oreMaterial));
                             this.attribute = FIELDATTRIBUTE.ORE;
-                            this.ressourceAmount = Math.floor(Math.random() * 100) * increaseMetal;
+                            this.ressourceAmount = Math.floor(Math.random() * 100) * increaseRessource;
                         } else if (randomizedInt > 0.92) {
                             this.addComponent(new ƒ.ComponentMaterial(wreckageMaterial));
                             this.attribute = FIELDATTRIBUTE.WRECKAGE;

@@ -5,8 +5,8 @@ namespace RoboGameNamespace {
     export let increaseScrap: number = 5;
     export let ressourceOil: number = 5000;
     export let increaseOil: number = 3;
-    export let ressourceMetal: number = 5000;
-    export let increaseMetal: number = 7;
+    export let ressourceOre: number = 5000;
+    export let increaseRessource: number = 7;
 
     export function bioMassToHTML(bioMass: number): void {
         let div: HTMLElement = document.getElementById("UI-Biomass");
@@ -20,9 +20,9 @@ namespace RoboGameNamespace {
         let div: HTMLElement = document.getElementById("UI-Oil");
         div.textContent = String(oil);
     }
-    export function metalToHTML(metal: number): void {
+    export function metalToHTML(ore: number): void {
         let div: HTMLElement = document.getElementById("UI-Metal");
-        div.textContent = String(metal);
+        div.textContent = String(ore);
     }
 
 }

@@ -2,7 +2,6 @@ namespace RoboGameNamespace {
     import ƒ = FudgeCore;
     export let movementTimer: number = 0;
     export let harvestTimer: number = 0;
-    let newRobot: Robot;
 
     export class Robot extends QuadNode {
         private static scale: ƒ.Vector2 = new ƒ.Vector2(1, 1);
@@ -32,10 +31,7 @@ namespace RoboGameNamespace {
         private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private automateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-        private bioMassLoaded: number = 0;
-        private oreLoaded: number = 0;
-        private oilLoaded: number = 0;
-        private scrapLoaded: number = 0;
+        private ressourceLoaded: number = 0;
         private collectsBioMass: boolean = false;
         private collectsOre: boolean = false;
         private collectsOil: boolean = false;
@@ -51,21 +47,25 @@ namespace RoboGameNamespace {
                 activateRobot(this);
             });
             this.activateRobot.className = "activateRobot";
+            this.activateRobot.textContent = "activate";
             this.robotUI.appendChild(this.callRobotBack);
             this.callRobotBack.addEventListener("click", () => {
                 this.returnTimer();
             });
             this.callRobotBack.className = "callRobotBack";
+            this.callRobotBack.textContent = "call back";
             this.robotUI.appendChild(this.disassembleRobot);
             this.disassembleRobot.addEventListener("click", () => {
                 disassembleRobot(this);
             });
             this.disassembleRobot.className = "disassembleRobot";
+            this.disassembleRobot.textContent = "disassemble";
             this.robotUI.appendChild(this.automateRobot);
             this.automateRobot.addEventListener("click", () => {
                 setAutoMode(this);
             });
             this.automateRobot.className = "automateRobot";
+            this.automateRobot.textContent = "automate";
 
             let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
@@ -208,9 +208,9 @@ namespace RoboGameNamespace {
 
         collectRessource(_tile: WorldMapTile): void {
             if (this.collectsBioMass == true) {
-                this.bioMassLoaded += increaseBioMass;
+                this.ressourceLoaded += increaseBioMass;
                 _tile.ressourceAmount -= increaseBioMass;
-                if (this.bioMassLoaded >= this.ressourceCapacity) {
+                if (this.ressourceLoaded >= this.ressourceCapacity) {
                     this.collectsBioMass = false;
                     this.returnTimer();
                 }
@@ -222,9 +222,9 @@ namespace RoboGameNamespace {
                 }
             }
             if (this.collectsOre == true) {
-                this.oreLoaded += increaseMetal;
-                _tile.ressourceAmount -= increaseMetal;
-                if (this.oreLoaded >= this.ressourceCapacity) {
+                this.ressourceLoaded += increaseRessource;
+                _tile.ressourceAmount -= increaseRessource;
+                if (this.ressourceLoaded >= this.ressourceCapacity) {
                     this.collectsOre = false;
                     this.returnTimer();
                 }
@@ -235,9 +235,9 @@ namespace RoboGameNamespace {
                 }
             }
             if (this.collectsOil == true) {
-                this.oilLoaded += increaseOil;
+                this.ressourceLoaded += increaseOil;
                 _tile.ressourceAmount -= increaseOil;
-                if (this.oilLoaded >= this.ressourceCapacity) {
+                if (this.ressourceLoaded >= this.ressourceCapacity) {
                     this.collectsOil = false;
                     this.returnTimer();
                 }
@@ -248,9 +248,9 @@ namespace RoboGameNamespace {
                 }
             }
             if (this.collectsScrap == true) {
-                this.scrapLoaded += increaseScrap;
+                this.ressourceLoaded += increaseScrap;
                 _tile.ressourceAmount -= increaseScrap;
-                if (this.scrapLoaded >= this.ressourceCapacity) {
+                if (this.ressourceLoaded >= this.ressourceCapacity) {
                     this.collectsScrap = false;
                     this.returnTimer();
                 }
@@ -273,14 +273,22 @@ namespace RoboGameNamespace {
         returnToBase(): void {
             this.isInteracting = false;
             this.mtxLocal.translation = playerBase;
-            ressourceBioMass += this.bioMassLoaded;
-            this.bioMassLoaded = 0;
-            ressourceMetal += this.oreLoaded;
-            this.oreLoaded = 0;
-            ressourceOil += this.oilLoaded;
-            this.oilLoaded = 0;
-            ressourceScrap += this.scrapLoaded;
-            this.scrapLoaded = 0;
+            if (this.moduleLumberjack) {
+                ressourceBioMass += this.ressourceLoaded;
+                this.ressourceLoaded = 0;
+            }
+            if (this.moduleMiner) {
+                ressourceOre += this.ressourceLoaded;
+                this.ressourceLoaded = 0;
+            }
+            if (this.moduleOil) {
+                ressourceOil += this.ressourceLoaded;
+                this.ressourceLoaded = 0;
+            }
+            if (this.moduleScrapper) {
+                ressourceScrap += this.ressourceLoaded;
+                this.ressourceLoaded = 0;
+            }
             this.robotHealth = this.robotMaxHealth;
             if (!this.isAutomated) {
                 this.isWaiting = true;
@@ -352,7 +360,7 @@ namespace RoboGameNamespace {
 
     // Robot Management
     export function createRobot(): void {
-        newRobot = new Robot("Robot #" + (robots.getChildren().length + 1), new ƒ.Vector2(worldSize / 2, worldSize / 2));
+        let newRobot: Robot = new Robot("Robot #" + (robots.getChildren().length + 1), new ƒ.Vector2(worldSize / 2, worldSize / 2));
         robots.addChild(newRobot);
     }
 

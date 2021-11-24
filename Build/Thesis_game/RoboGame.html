@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>ROBOGAME</title>
+    <link rel="shortcut icon" href="#">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="RoboGame.css">
+    <script src='../FudgeCore/Build/FudgeCore.js'></script>
+    <script src='./Classes/QuadNode.js'></script>
+    <script src='./Classes/Player.js'></script>
+    <script src='./Classes/RessourceHandler.js'></script>
+    <script src='./Classes/SFX.js'></script>
+    <script src='./Classes/FieldAttribute.js'></script>
+    <script src='./Classes/TextureLoader.js'></script>
+    <script src='./Classes/WorldMapTile.js'></script>
+    <script src='./Classes/Robot.js'></script>
+    <script src='./Classes/Enemy.js'></script>
+    <script src='./Classes/OpenRiddle.js'></script>
+    <script src='./Classes/Riddles.js'></script>
+    <script src='./Classes/TextRiddles.js'></script>
+    <script src='RoboGame.js'></script>
+
+
+</head>
+
+<body>
+    <canvas width="1600" height="900" id="game_canvas"></canvas>
+    <div class="hidden" id="mainMenu">
+        <button id="newGame">new game</button>
+        <button id="loadGame">load game</button>
+        <button id="option">options</button>
+    </div>
+
+    <div class="hidden" id="worldCreation">
+        <button id="saveWorld">generate world</button>
+        <button id="createWorldButton">Create</button>
+    </div>
+
+    <div class="hidden" id="options">
+        <button id="toMainMenu">to main menu</button>
+    </div>
+
+
+    <div id="CustomizeWindow">
+
+    </div>
+    <div id="Sidebar">
+        <div id="Robots">
+
+        </div>
+    </div>
+    <div id="questMenu">
+        <button id="startQuest">Start Quest</button>
+    </div>
+    <div class="hidden" id="robotCustomizer">
+        <button id="createRobot">createRobot</button>
+    </div>
+    <div id="ressourceBar">
+        </br>
+        Biomass:
+        <div id="UI-Biomass">
+        </div>
+        Scrap:
+        <div id="UI-Scrap">
+        </div>
+        Oil:
+        <div id="UI-Oil">
+        </div>
+        Metal:
+        <div id="UI-Metal">
+        </div>
+    </div>
+    <div id="EnemyWarning">
+
+    </div>
+    <div id="RobotStatus">
+
+    </div>
+    <div id="Riddles">
+
+    </div>
+
+    <div id="riddles">
+        <div id="frame001">
+            <div id="center001">
+                <h2><strong>Lückentext</strong></h2>
+                <p><strong>Word Bank:</strong> Test1 - Test2 - Test3 - Test4 - Test5</p>
+            </div><br />
+            <p> Testfeld 1 <input type="text" class="check003" id="input001" size="15" /><text class="button002" id="check001">dfkghkdjfgh</text>
+                <br> Testfeld 2 <input id="input002" size="15" /><text class="button002" id="check002">ss</text>
+                <br> Testfeld 3 <input id="input003" size="15" /><text class="button002" id="check003">d</text>
+                <br> Testfeld 4 <input id="input004" size="15" /><text class="button002" id="check004">fff</text>
+                <br> Testfeld 5 <input id="input005" size="15" /><text class="button002" id="check005">gg</text></p>
+            <div id="disappear001">
+                <div id="center001">
+                    <button id="button001">Submit</button>
+                </div>
+            </div><br />
+            <div id="center001">
+                <p id="message001"></p>
+            </div>
+            <br />
+            <br />
+        </div>
+    </div>
+</body>
+
+</html>

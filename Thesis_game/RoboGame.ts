@@ -4,6 +4,7 @@ namespace RoboGameNamespace {
 
     let gameNode: ƒ.Node = new ƒ.Node("Game");
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
+    let roboGameNode: ƒ.Node = new ƒ.Node("RoboGame");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     let player: Player;
     let harvestModuleIndex: number;
@@ -11,6 +12,7 @@ namespace RoboGameNamespace {
     export let robots: ƒ.Node = new ƒ.Node("Robots");
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
     export let mapHelperArray: WorldMapTile[][] = [];
+    export let riddleUI: ƒ.Node = new ƒ.Node("Riddle UI");
     export let riddleHandler: ƒ.Node = new ƒ.Node("Riddle Handler");
     export let level: number;
 
@@ -20,9 +22,13 @@ namespace RoboGameNamespace {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
 
         player = Player.getInstance();
-        viewportNode.addChild(robots);
-        viewportNode.addChild(worldTilesNode);
+        roboGameNode.addChild(robots);
+        roboGameNode.addChild(worldTilesNode);
         viewportNode.addChild(player);
+        viewportNode.addChild(roboGameNode);
+
+        roboGameNode.activate(false);
+
 
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(50);
@@ -35,36 +41,42 @@ namespace RoboGameNamespace {
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
 
-        document.getElementById("createWorld").addEventListener("click", () => {
-            createWorld();
-            console.log(mapHelperArray);
-            ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
-            ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
+        document.getElementById("newGame").addEventListener("click", () => {
+            newGame();
         });
+
+        document.getElementById("toMainMenu").addEventListener("click", () => {
+            document.getElementById("mainMenu").style.display = "inline";
+            document.getElementById("questMenu").style.display = "none";
+            document.getElementById("robotCustomizer").style.display = "none";
+            document.getElementById("ressourceBar").style.display = "none";
+            roboGameNode.activate(false);
+        });
+
+        document.getElementById("loadGame").addEventListener("click", () => {
+            loadGame();
+        });
+
+        document.getElementById("startQuest").addEventListener("click", () => {
+            let newRiddle: OpenRiddle = new OpenRiddle();
+            console.log(newRiddle);
+        });
+
         document.getElementById("saveWorld").addEventListener("click", () => {
             saveNoisemap();
-        });
-        document.getElementById("modHover").addEventListener("click", () => {
-            setHoverMode(<Robot>robots.getChild(robots.getChildren().length - 1));
-        });
-        document.getElementById("modFighter").addEventListener("click", () => {
-            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
-        });
-        document.getElementById("modRetreat").addEventListener("click", () => {
-            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
+            //create image from noisemap and show
         });
         document.getElementById("createRobot").addEventListener("click", () => {
             createRobot();
             chooseHarvestModule(harvestModuleIndex);
             openRobotCustomization();
         });
-        document.getElementById("drag1").addEventListener("dragstart", drag);
-        document.getElementById("drag2").addEventListener("dragstart", drag);
-        document.getElementById("div1").addEventListener("drop", drop);
-        document.getElementById("div1").addEventListener("dragover", allowDrop);
-        document.getElementById("disappear001").addEventListener("click", () => {
-            submit001();
-        });
+
+        document.getElementById("worldCreation").style.display = "none";
+        document.getElementById("questMenu").style.display = "none";
+        document.getElementById("robotCustomizer").style.display = "none";
+        document.getElementById("ressourceBar").style.display = "none";
+        
 
         viewport.draw();
 
@@ -72,16 +84,16 @@ namespace RoboGameNamespace {
 
     function hndKey(): void {
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
-            player.moveRight();
+            player.moveCameraRight();
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.A])) {
-            player.moveLeft();
+            player.moveCameraLeft();
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.W])) {
-            player.moveUp();
+            player.moveCameraTop();
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.S])) {
-            player.moveDown();
+            player.moveCameraBottom();
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SHIFT_LEFT])) {
             player.moveCameraUp();
@@ -98,15 +110,34 @@ namespace RoboGameNamespace {
             robots.activate(false);
             worldTilesNode.activate(false);
         }
-        if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.V])) {
-            let riddle: Riddles = new Riddles("easy", "text");
-            riddleHandler.addChild(riddle);
-        }
 
     }
 
     function newGame(): void {
+        document.getElementById("worldCreation").style.display = "inline";
+        document.getElementById("mainMenu").style.display = "none";
         level = 1;
+        document.getElementById("createWorldButton").addEventListener("click", () => {
+            startGameLoop();
+        });
+
+    }
+    function loadGame(): void {
+
+
+        startGameLoop();
+        console.log("loaded");
+    }
+
+    function startGameLoop(): void {
+        createWorld();
+        roboGameNode.activate(true);
+        document.getElementById("mainMenu").style.display = "none";
+        document.getElementById("questMenu").style.display = "inline";
+        document.getElementById("robotCustomizer").style.display = "inline";
+        document.getElementById("ressourceBar").style.display = "inline";
+        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
+        ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     }
 
     function update(_event: Event): void {
@@ -164,7 +195,7 @@ namespace RoboGameNamespace {
         bioMassToHTML(ressourceBioMass);
         scrapToHTML(ressourceScrap);
         oilToHTML(ressourceOil);
-        metalToHTML(ressourceMetal);
+        metalToHTML(ressourceOre);
         viewport.draw();
     }
 
@@ -190,22 +221,22 @@ namespace RoboGameNamespace {
         });
         buttonRightHarvesting.className = "buttonRightHarvesting";
 
-        if (level >= 10) {
-            //Declare fightmode
-            let buttonFighting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-            customizationUI.appendChild(buttonFighting);
-            buttonFighting.addEventListener("click", () => {
-                setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
-            });
-            buttonFighting.className = "buttonFighting";
 
-            let buttonRetreat: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-            customizationUI.appendChild(buttonRetreat);
-            buttonRetreat.addEventListener("click", () => {
-                setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
-            });
-            buttonRetreat.className = "buttonRetreat";
-        }
+        //Declare fightmode
+        let buttonFighting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonFighting);
+        buttonFighting.addEventListener("click", () => {
+            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "fight");
+        });
+        buttonFighting.className = "buttonFighting";
+
+        let buttonRetreat: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(buttonRetreat);
+        buttonRetreat.addEventListener("click", () => {
+            setFightMode(<Robot>robots.getChild(robots.getChildren().length - 1), "retreat");
+        });
+        buttonRetreat.className = "buttonRetreat";
+
 
         //Declare hovering
         let buttonHovering: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
@@ -260,7 +291,7 @@ namespace RoboGameNamespace {
             }
         }
     }
-    export function allowDrop(ev: DragEvent): void {
+    /* export function allowDrop(ev: DragEvent): void {
         console.log("test allow");
         ev.preventDefault();
     }
@@ -276,7 +307,7 @@ namespace RoboGameNamespace {
         ev.preventDefault();
         let data: string = ev.dataTransfer.getData("text");
         (<HTMLDivElement>ev.target).appendChild(document.getElementById(data));
-    }
+    } */
 
 }
 
