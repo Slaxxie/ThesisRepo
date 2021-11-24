@@ -1,7 +1,6 @@
 namespace RoboGameNamespace {
     import ƒ = FudgeCore;
     window.addEventListener("load", init);
-
     let gameNode: ƒ.Node = new ƒ.Node("Game");
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
     let roboGameNode: ƒ.Node = new ƒ.Node("RoboGame");

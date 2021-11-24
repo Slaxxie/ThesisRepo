@@ -2,6 +2,7 @@
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
+    console.log("test");
     class Riddles extends ƒ.Node {
         constructor(_difficulty, _type) {
             super("Riddle");

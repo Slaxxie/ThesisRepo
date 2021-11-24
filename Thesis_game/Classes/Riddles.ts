@@ -1,6 +1,6 @@
 namespace RoboGameNamespace {
     import ƒ = FudgeCore;
-    
+    console.log("test");
     export class Riddles extends ƒ.Node {
         constructor(_difficulty: string, _type: string) {
             super("Riddle");
