@@ -14,7 +14,7 @@ var RoboGameNamespace;
             this.tempDiff = "easy";
             this.tempType = "text";
             this.riddleUI.className = "RiddleUI";
-            document.getElementById("Riddles").appendChild(this.riddleUI);
+            document.getElementById("RiddleMenu").appendChild(this.riddleUI);
             this.riddleUI.appendChild(this.easy);
             this.easy.addEventListener("click", () => {
                 this.tempDiff = "easy";
@@ -40,7 +40,7 @@ var RoboGameNamespace;
             this.riddleUI.appendChild(this.submit);
             this.submit.addEventListener("click", () => {
                 RoboGameNamespace.riddleUI.removeChild(this);
-                document.getElementById("Riddles").removeChild(this.riddleUI);
+                document.getElementById("RiddleMenu").removeChild(this.riddleUI);
                 let newRiddle = new RoboGameNamespace.Riddles(this.tempDiff, this.tempType);
                 RoboGameNamespace.riddleHandler.addChild(newRiddle);
             });

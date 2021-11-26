@@ -14,7 +14,7 @@ namespace RoboGameNamespace {
         constructor() {
             super("RiddleWindow");
             this.riddleUI.className = "RiddleUI";
-            document.getElementById("Riddles").appendChild(this.riddleUI);
+            document.getElementById("RiddleMenu").appendChild(this.riddleUI);
             this.riddleUI.appendChild(this.easy);
             this.easy.addEventListener("click", () => {
                 this.tempDiff = "easy";
@@ -41,7 +41,7 @@ namespace RoboGameNamespace {
             this.riddleUI.appendChild(this.submit);
             this.submit.addEventListener("click", () => {
                 riddleUI.removeChild(this);
-                document.getElementById("Riddles").removeChild(this.riddleUI);
+                document.getElementById("RiddleMenu").removeChild(this.riddleUI);
                 let newRiddle: Riddles = new Riddles(this.tempDiff, this.tempType);
                 riddleHandler.addChild(newRiddle);
             });

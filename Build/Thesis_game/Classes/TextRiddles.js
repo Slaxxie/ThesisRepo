@@ -1,94 +1,81 @@
 "use strict";
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
-    let answer1;
-    let answer2;
-    let answer3;
-    let answer4;
-    let answer5;
     class TextRiddles {
-        constructor(header, wordbank, answers) {
+        constructor(header, wordbank, textBeforeInput, answers, textAfterInput) {
             this.textRiddleFrame = document.createElement("div");
+            this.message = document.createElement("p");
+            this.answerHelperArray = answers;
             this.textRiddleFrame.className = "textRiddleFrame";
-            document.getElementById("riddles").appendChild(this.textRiddleFrame);
+            document.getElementById("Riddles").appendChild(this.textRiddleFrame);
             let textRiddleCenter = document.createElement("div");
             textRiddleCenter.className = "textRiddleCenter";
             this.textRiddleFrame.appendChild(textRiddleCenter);
-            textRiddleCenter.innerHTML = "Texträtsel <br/> ";
-            textRiddleCenter.innerHTML += "zweite Zeile <br/> ";
-            let buttontest = document.createElement("button");
-            textRiddleCenter.appendChild(buttontest);
+            textRiddleCenter.innerHTML = header;
+            textRiddleCenter.innerHTML += "<br/>";
+            textRiddleCenter.innerHTML += wordbank;
+            for (let i = 0; i < answers.length; i++) {
+                textRiddleCenter.innerHTML += "<br/>";
+                textRiddleCenter.innerHTML += textBeforeInput[i];
+                let input = document.createElement("input");
+                input.id = "input" + i;
+                textRiddleCenter.appendChild(input);
+                input.size = 15;
+                textRiddleCenter.innerHTML += "<span id = 'check" + i + "' ></span>";
+                textRiddleCenter.innerHTML += textAfterInput[i];
+            }
             textRiddleCenter.innerHTML += "<br/> blub <br/> ";
             textRiddleCenter.innerHTML += "blab <br/> ";
             textRiddleCenter.innerHTML += "blub <br/> ";
-            console.log(textRiddleCenter.textContent);
-            console.log(header);
-            console.log(wordbank);
-            console.log(answers);
-            document.getElementById("button001").addEventListener("click", () => {
+            let submitButton = document.createElement("button");
+            textRiddleCenter.appendChild(submitButton);
+            submitButton.addEventListener("click", () => {
                 this.solveTextRiddle();
             });
+            submitButton.textContent = "submit";
+            let messageBox = document.createElement("div");
+            messageBox.className = "messageBox";
+            textRiddleCenter.appendChild(messageBox);
+            messageBox.appendChild(this.message);
         }
         solveTextRiddle() {
             console.log("worked");
-            let input1 = document.getElementById("input001").value.toLowerCase();
-            let input2 = document.getElementById("input002").value;
-            let input3 = document.getElementById("input003").value;
-            let input4 = document.getElementById("input004").value;
-            let input5 = document.getElementById("input005").value;
-            if (input1 == "Test1" || input1 == "test1") {
-                answer1 = 1;
-                document.getElementById("input001").value = input1;
-                document.getElementById("input001").innerHTML = "<text class=button002>" + "✔" + "</text>";
+            let correctAnswers = [];
+            for (let i = 0; i < this.answerHelperArray.length; i++) {
+                let input = document.getElementById("input" + i).value.toLowerCase();
+                if (input == this.answerHelperArray[i]) { //answers[i]
+                    correctAnswers[i] = true;
+                    document.getElementById("input" + i).value = input;
+                    document.getElementById("check" + i).textContent = "✔";
+                }
+                else {
+                    correctAnswers[i] = false;
+                    document.getElementById("input" + i).value = input;
+                    document.getElementById("check" + i).textContent = "✖";
+                }
+                console.log(input == this.answerHelperArray[i]);
+            }
+            let correctAnswersHelper = 0;
+            for (let i = 0; i < correctAnswers.length; i++) {
+                if (correctAnswers[i] == true) {
+                    correctAnswersHelper++;
+                }
+            }
+            if (correctAnswersHelper == correctAnswers.length) {
+                this.message.innerHTML = "Quest complete!";
+                //Belohnung vergeben und Rätselobjekt löschen
+                let closeRiddle = document.createElement("button");
+                this.textRiddleFrame.appendChild(closeRiddle);
+                closeRiddle.textContent = "close";
+                closeRiddle.addEventListener("click", () => {
+                    RoboGameNamespace.riddleHandler.removeAllChildren();
+                    document.getElementById("Riddles").removeChild(this.textRiddleFrame);
+                });
             }
             else {
-                document.getElementById("input001").value = input1;
-                document.getElementById("input001").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-            if (input2 == "Test2" || input2 == "test2") {
-                answer2 = 1;
-                document.getElementById("input002").value = input2;
-                document.getElementById("input002").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            }
-            else {
-                document.getElementById("input002").value = input2;
-                document.getElementById("input002").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-            if (input3 == "Test3" || input3 == "test3") {
-                answer3 = 1;
-                document.getElementById("input003").value = input3;
-                document.getElementById("input003").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            }
-            else {
-                document.getElementById("input003").value = input3;
-                document.getElementById("input003").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-            if (input4 == "Test4" || input4 == "test4") {
-                answer4 = 1;
-                document.getElementById("input004").value = input4;
-                document.getElementById("input004").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            }
-            else {
-                document.getElementById("input004").value = input4;
-                document.getElementById("input004").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-            if (input5 == "Test5" || input5 == "test5") {
-                answer5 = 1;
-                document.getElementById("input005").value = input5;
-                document.getElementById("input005").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            }
-            else {
-                document.getElementById("input005").value = input5;
-                document.getElementById("input005").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-            if (answer1 == 1 && answer2 == 1 && answer3 == 1 && answer4 == 1 && answer5 == 1) {
-                document.getElementById("message001").innerHTML = "Quest complete!";
-                document.getElementById("disappear001").innerHTML = ""; //Belohnung vergeben und Rätselobjekt löschen
-                RoboGameNamespace.riddleHandler.removeAllChildren();
-                document.getElementById("riddles").removeChild(this.textRiddleFrame);
-            }
-            else {
-                document.getElementById("message001").innerHTML = "Wrong answers!";
+                console.log(correctAnswers.length);
+                console.log(correctAnswersHelper);
+                this.message.innerHTML = "Wrong answers!";
             }
         }
     }

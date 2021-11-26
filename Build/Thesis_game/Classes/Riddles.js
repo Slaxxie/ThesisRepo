@@ -2,17 +2,20 @@
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
-    console.log("test");
     class Riddles extends ƒ.Node {
         constructor(_difficulty, _type) {
             super("Riddle");
-            switch (_type) {
+            this.loadRiddleCollection(_difficulty, _type);
+        }
+        async loadRiddleCollection(difficulty, type) {
+            this.riddleCollection = await (await fetch("RiddleCollection.json")).json();
+            switch (type) {
                 case "text": {
-                    this.textRiddle(_difficulty);
+                    this.textRiddle(difficulty);
                     break;
                 }
                 case "labyrinth": {
-                    this.labyrinthRiddle(_difficulty);
+                    this.labyrinthRiddle(difficulty);
                     break;
                 }
                 default: {
@@ -23,11 +26,28 @@ var RoboGameNamespace;
         textRiddle(difficulty) {
             if (difficulty == "easy") {
                 console.log("easy");
-                let textRiddle1 = new RoboGameNamespace.TextRiddles("1", "2", ["3", "4"]);
+                //Erstellung von HTML
+                // tslint:disable-next-line: no-any
+                let helperArray = this.riddleCollection.text.easy[Math.floor(Math.random() * this.riddleCollection.text.easy.length)];
+                let header = helperArray.header;
+                let wordbank = helperArray.wordbank;
+                let textBeforeInput = helperArray.textBeforeInput;
+                let answers = helperArray.answers;
+                let textAfterInput = helperArray.textAfterInput;
+                let textRiddle1 = new RoboGameNamespace.TextRiddles(header, wordbank, textBeforeInput, answers, textAfterInput);
                 console.log(textRiddle1);
             }
             else if (difficulty == "hard") {
                 console.log("hard");
+                // tslint:disable-next-line: no-any
+                let helperArray = this.riddleCollection.text.hard[Math.floor(Math.random() * this.riddleCollection.text.hard.length)];
+                let header = helperArray.header;
+                let wordbank = helperArray.wordbank;
+                let textBeforeInput = helperArray.textBeforeInput;
+                let answers = helperArray.answers;
+                let textAfterInput = helperArray.textAfterInput;
+                let textRiddle1 = new RoboGameNamespace.TextRiddles(header, wordbank, textBeforeInput, answers, textAfterInput);
+                console.log(textRiddle1);
             }
             else {
                 console.log(difficulty);

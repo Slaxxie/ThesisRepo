@@ -1,0 +1,38 @@
+{
+    "text": {
+        "easy": [{
+                "header": "1",
+                "wordbank": "3 - 4 - 5",
+                "textBeforeInput": ["davor ", "auch davor ", "sdfhj", "dfgdfh"],
+                "answers": ["3", "4", "5", "6"],
+                "textAfterInput": [" danach", " auch danach", "fdgh", "sdfgdsg"]
+            },
+
+            {
+                "header": "2",
+                "wordbank": "3 - 4 - 5",
+                "textBeforeInput": ["davor ", "auch davor ", "sdfhj"],
+                "answers": ["3", "4", "5"],
+                "textAfterInput": [" danach", " auch danach", "fdgh"]
+            }
+        ],
+
+        "hard": [{
+                "header": "3",
+                "wordbank": "3 - 4 - 5",
+                "textBeforeInput": ["davor ", "auch davor ", "sdfhj", "dfgdfh"],
+                "answers": ["3", "4", "5", "6"],
+                "textAfterInput": [" danach", " auch danach", "fdgh", "sdfgdsg"]
+            },
+
+            {
+                "header": "4",
+                "wordbank": "3 - 4 - 5",
+                "textBeforeInput": ["davor ", "auch davor ", "sdfhj"],
+                "answers": ["3", "4", "5"],
+                "textAfterInput": [" danach", " auch danach", "fdgh"]
+            }
+        ]
+    }
+
+}

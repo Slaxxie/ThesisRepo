@@ -1,96 +1,88 @@
 namespace RoboGameNamespace {
-    
-    let answer1: number;
-    let answer2: number;
-    let answer3: number;
-    let answer4: number;
-    let answer5: number;
+
+
+
     export class TextRiddles {
         public textRiddleFrame: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        public message: HTMLParagraphElement = <HTMLParagraphElement>document.createElement("p");
+        private answerHelperArray: string[];
 
-        constructor(header: string, wordbank: string, answers: string[]) {
+        constructor(header: string, wordbank: string, textBeforeInput: string[], answers: string[], textAfterInput: string[]) {
+            this.answerHelperArray = answers;
             this.textRiddleFrame.className = "textRiddleFrame";
-            document.getElementById("riddles").appendChild(this.textRiddleFrame);
+            document.getElementById("Riddles").appendChild(this.textRiddleFrame);
             let textRiddleCenter: HTMLDivElement = <HTMLDivElement>document.createElement("div");
             textRiddleCenter.className = "textRiddleCenter";
             this.textRiddleFrame.appendChild(textRiddleCenter);
-            textRiddleCenter.innerHTML = "Texträtsel <br/> ";
-            textRiddleCenter.innerHTML += "zweite Zeile <br/> ";
-            let buttontest: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-            textRiddleCenter.appendChild(buttontest);
+            textRiddleCenter.innerHTML = header;
+            textRiddleCenter.innerHTML += "<br/>";
+            textRiddleCenter.innerHTML += wordbank;
+            for (let i: number = 0; i < answers.length; i++) {
+                textRiddleCenter.innerHTML += "<br/>";
+                textRiddleCenter.innerHTML += textBeforeInput[i];
+                let input: HTMLInputElement = <HTMLInputElement>document.createElement("input");
+                input.id = "input" + i;
+                textRiddleCenter.appendChild(input);
+                input.size = 15;
+                textRiddleCenter.innerHTML += "<span id = 'check" + i + "' ></span>";
+                textRiddleCenter.innerHTML += textAfterInput[i];
+            }
             textRiddleCenter.innerHTML += "<br/> blub <br/> ";
             textRiddleCenter.innerHTML += "blab <br/> ";
             textRiddleCenter.innerHTML += "blub <br/> ";
-            console.log(textRiddleCenter.textContent);
-            console.log(header);
-            console.log(wordbank);
-            console.log(answers);
-            document.getElementById("button001").addEventListener("click", () => {
+
+            let submitButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            textRiddleCenter.appendChild(submitButton);
+            submitButton.addEventListener("click", () => {
                 this.solveTextRiddle();
             });
+            submitButton.textContent = "submit";
+            let messageBox: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+            messageBox.className = "messageBox";
+            textRiddleCenter.appendChild(messageBox);
+            messageBox.appendChild(this.message);
         }
 
         solveTextRiddle(): void {
             console.log("worked");
-            let input1: string = (document.getElementById("input001") as HTMLInputElement).value.toLowerCase();
-            let input2: string = (document.getElementById("input002") as HTMLInputElement).value;
-            let input3: string = (document.getElementById("input003") as HTMLInputElement).value;
-            let input4: string = (document.getElementById("input004") as HTMLInputElement).value;
-            let input5: string = (document.getElementById("input005") as HTMLInputElement).value;
-            if (input1 == "Test1" || input1 == "test1") {
-                answer1 = 1;
-                (document.getElementById("input001") as HTMLInputElement).value = input1;
-                document.getElementById("input001").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            } else {
-                (document.getElementById("input001") as HTMLInputElement).value = input1;
-                document.getElementById("input001").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
+            let correctAnswers: boolean[] = [];
+            for (let i: number = 0; i < this.answerHelperArray.length; i++) {
+                let input: string = (document.getElementById("input" + i) as HTMLInputElement).value.toLowerCase();
 
-            if (input2 == "Test2" || input2 == "test2") {
-                answer2 = 1;
-                (document.getElementById("input002") as HTMLInputElement).value = input2;
-                document.getElementById("input002").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            } else {
-                (document.getElementById("input002") as HTMLInputElement).value = input2;
-                document.getElementById("input002").innerHTML = "<text class=button002>" + "✖" + "</text>";
+                if (input == this.answerHelperArray[i]) { //answers[i]
+                    correctAnswers[i] = true;
+                    (document.getElementById("input" + i) as HTMLInputElement).value = input;
+                    document.getElementById("check" + i).textContent = "✔";
+                } else {
+                    correctAnswers[i] = false;
+                    (document.getElementById("input" + i) as HTMLInputElement).value = input;
+                    document.getElementById("check" + i).textContent = "✖";
+                }
+                console.log(input == this.answerHelperArray[i]);
             }
-
-            if (input3 == "Test3" || input3 == "test3") {
-                answer3 = 1;
-                (document.getElementById("input003") as HTMLInputElement).value = input3;
-                document.getElementById("input003").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            } else {
-                (document.getElementById("input003") as HTMLInputElement).value = input3;
-                document.getElementById("input003").innerHTML = "<text class=button002>" + "✖" + "</text>";
+            let correctAnswersHelper: number = 0;
+            for (let i: number = 0; i < correctAnswers.length; i++) {
+                if (correctAnswers[i] == true) {
+                    correctAnswersHelper++;
+                }
             }
-
-            if (input4 == "Test4" || input4 == "test4") {
-                answer4 = 1;
-                (document.getElementById("input004") as HTMLInputElement).value = input4;
-                document.getElementById("input004").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            } else {
-                (document.getElementById("input004") as HTMLInputElement).value = input4;
-                document.getElementById("input004").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-
-            if (input5 == "Test5" || input5 == "test5") {
-                answer5 = 1;
-                (document.getElementById("input005") as HTMLInputElement).value = input5;
-                document.getElementById("input005").innerHTML = "<text class=button002>" + "✔" + "</text>";
-            } else {
-                (document.getElementById("input005") as HTMLInputElement).value = input5;
-                document.getElementById("input005").innerHTML = "<text class=button002>" + "✖" + "</text>";
-            }
-
-            if (answer1 == 1 && answer2 == 1 && answer3 == 1 && answer4 == 1 && answer5 == 1) {
-                document.getElementById("message001").innerHTML = "Quest complete!";
-                document.getElementById("disappear001").innerHTML = ""; //Belohnung vergeben und Rätselobjekt löschen
-                riddleHandler.removeAllChildren();
-                document.getElementById("riddles").removeChild(this.textRiddleFrame);
+            if (correctAnswersHelper == correctAnswers.length) {
+                this.message.innerHTML = "Quest complete!";
+                //Belohnung vergeben und Rätselobjekt löschen
+                let closeRiddle: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+                this.textRiddleFrame.appendChild(closeRiddle);
+                closeRiddle.textContent = "close";
+                closeRiddle.addEventListener("click", () => {
+                    riddleHandler.removeAllChildren();
+                    document.getElementById("Riddles").removeChild(this.textRiddleFrame);   
+                });
 
             } else {
-                document.getElementById("message001").innerHTML = "Wrong answers!";
+                console.log(correctAnswers.length);
+                console.log(correctAnswersHelper);
+                this.message.innerHTML = "Wrong answers!";
             }
+
         }
     }
 }
