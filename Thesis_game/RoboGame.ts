@@ -8,6 +8,7 @@ namespace RoboGameNamespace {
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     let player: Player;
     let harvestModuleIndex: number;
+    let questHandler: QuestHandler;
     export let movementSpeed: number = 10;
     export let robots: ƒ.Node = new ƒ.Node("Robots");
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
@@ -15,20 +16,21 @@ namespace RoboGameNamespace {
     export let riddleUI: ƒ.Node = new ƒ.Node("Riddle UI");
     export let riddleHandler: ƒ.Node = new ƒ.Node("Riddle Handler");
     export let level: number;
+    export let currentQuestStage: QUESTSTAGE = QUESTSTAGE.TUTORIAL; //bei gespeicherten spielen auf aktuellen gamestate ändern (localstorage)
 
     gameNode.appendChild(viewportNode);
 
     function init(_event: Event): void {
         const canvas: HTMLCanvasElement = document.querySelector("canvas");
-
         player = Player.getInstance();
         roboGameNode.addChild(robots);
         roboGameNode.addChild(worldTilesNode);
         viewportNode.addChild(player);
         viewportNode.addChild(roboGameNode);
-
+        
         roboGameNode.activate(false);
-
+        questHandler = new QuestHandler();
+        createRobot();
 
         let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(50);
@@ -37,6 +39,7 @@ namespace RoboGameNamespace {
         cmpCamera.mtxPivot.rotateY(180);
 
         player.addComponent(cmpCamera);
+        console.log(questHandler);
 
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
@@ -57,7 +60,7 @@ namespace RoboGameNamespace {
             loadGame();
         });
 
-        document.getElementById("startQuest").addEventListener("click", () => {
+        document.getElementById("startRiddle").addEventListener("click", () => {
             let newRiddle: OpenRiddle = new OpenRiddle();
             console.log(newRiddle);
         });

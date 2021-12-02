@@ -3,16 +3,16 @@ var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
     class OpenRiddle extends ƒ.Node {
+        riddleUI = document.createElement("div");
+        easy = document.createElement("button");
+        hard = document.createElement("button");
+        text = document.createElement("button");
+        labyrinth = document.createElement("button");
+        submit = document.createElement("button");
+        tempDiff = "easy";
+        tempType = "text";
         constructor() {
             super("RiddleWindow");
-            this.riddleUI = document.createElement("div");
-            this.easy = document.createElement("button");
-            this.hard = document.createElement("button");
-            this.text = document.createElement("button");
-            this.labyrinth = document.createElement("button");
-            this.submit = document.createElement("button");
-            this.tempDiff = "easy";
-            this.tempType = "text";
             this.riddleUI.className = "RiddleUI";
             document.getElementById("RiddleMenu").appendChild(this.riddleUI);
             this.riddleUI.appendChild(this.easy);

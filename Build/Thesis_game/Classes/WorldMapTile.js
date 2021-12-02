@@ -6,10 +6,13 @@ var RoboGameNamespace;
     RoboGameNamespace.noiseMap = new ƒ.Noise2(Math.random);
     RoboGameNamespace.playerBase = new ƒ.Vector3(Math.floor(RoboGameNamespace.worldSize / 2), Math.floor(RoboGameNamespace.worldSize / 2), 0);
     class WorldMapTile extends RoboGameNamespace.QuadNode {
+        static scale = new ƒ.Vector2(1, 1);
+        attribute;
+        hasEnemy = false;
+        ressourceAmount = 0;
+        enemyRnd;
         constructor(_pos) {
             super("Field: " + (_pos.x + 1) + " / " + (_pos.y + 1), _pos, WorldMapTile.scale);
-            this.hasEnemy = false;
-            this.ressourceAmount = 0;
             this.enemyRnd = Math.random();
             let mapValue = JSON.parse(localStorage.getItem("Map"));
             let val = mapValue[_pos.x][_pos.y];
@@ -104,7 +107,6 @@ var RoboGameNamespace;
             }
         }
     }
-    WorldMapTile.scale = new ƒ.Vector2(1, 1);
     RoboGameNamespace.WorldMapTile = WorldMapTile;
     function createWorld() {
         for (let x = 0; x < RoboGameNamespace.worldSize; x++) {

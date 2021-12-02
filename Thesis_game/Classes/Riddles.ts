@@ -1,4 +1,5 @@
 namespace RoboGameNamespace {
+    export let riddleCounter: number = 0;
     import ƒ = FudgeCore;
     export class Riddles extends ƒ.Node {
         // tslint:disable-next-line: no-any

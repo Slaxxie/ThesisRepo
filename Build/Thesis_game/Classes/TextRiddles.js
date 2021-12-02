@@ -2,9 +2,10 @@
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
     class TextRiddles {
+        textRiddleFrame = document.createElement("div");
+        message = document.createElement("p");
+        answerHelperArray;
         constructor(header, wordbank, textBeforeInput, answers, textAfterInput) {
-            this.textRiddleFrame = document.createElement("div");
-            this.message = document.createElement("p");
             this.answerHelperArray = answers;
             this.textRiddleFrame.className = "textRiddleFrame";
             document.getElementById("Riddles").appendChild(this.textRiddleFrame);
@@ -63,6 +64,7 @@ var RoboGameNamespace;
             }
             if (correctAnswersHelper == correctAnswers.length) {
                 this.message.innerHTML = "Quest complete!";
+                RoboGameNamespace.riddleCounter++;
                 //Belohnung vergeben und Rätselobjekt löschen
                 let closeRiddle = document.createElement("button");
                 this.textRiddleFrame.appendChild(closeRiddle);

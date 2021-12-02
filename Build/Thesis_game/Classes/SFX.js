@@ -14,6 +14,24 @@ var RoboGameNamespace;
     })(SFXs = RoboGameNamespace.SFXs || (RoboGameNamespace.SFXs = {}));
     RoboGameNamespace.masterVolume = 1;
     class SFX {
+        cmpAudioSoundtrack;
+        audioExplosion;
+        audioGameStart;
+        audioLooting;
+        audioLvlUp;
+        audioMainMenu;
+        audioShieldReload;
+        audioTimewarpActive;
+        audioSoundtrack;
+        audioHit;
+        cmpAudioExplosion;
+        cmpAudioGameStart;
+        cmpAudioLooting;
+        cmpAudioLvlUp;
+        cmpAudioMainMenu;
+        cmpAudioShieldReload;
+        cmpAudioTimewarpActive;
+        cmpAudioHit;
         constructor() {
             this.audioExplosion = new ƒ.Audio("./sounds/explosion.wav");
             this.cmpAudioExplosion = new ƒ.ComponentAudio(this.audioExplosion, false, false);

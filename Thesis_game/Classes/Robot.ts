@@ -69,6 +69,7 @@ namespace RoboGameNamespace {
 
             let robotMaterial: ƒ.Material = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
+            console.log(this);
         }
 
         moveToNewField(): void {

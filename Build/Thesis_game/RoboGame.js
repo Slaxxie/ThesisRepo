@@ -9,12 +9,14 @@ var RoboGameNamespace;
     let viewport = new ƒ.Viewport();
     let player;
     let harvestModuleIndex;
+    let questHandler;
     RoboGameNamespace.movementSpeed = 10;
     RoboGameNamespace.robots = new ƒ.Node("Robots");
     RoboGameNamespace.worldTilesNode = new ƒ.Node("Worldmap");
     RoboGameNamespace.mapHelperArray = [];
     RoboGameNamespace.riddleUI = new ƒ.Node("Riddle UI");
     RoboGameNamespace.riddleHandler = new ƒ.Node("Riddle Handler");
+    RoboGameNamespace.currentQuestStage = RoboGameNamespace.QUESTSTAGE.TUTORIAL; //bei gespeicherten spielen auf aktuellen gamestate ändern (localstorage)
     gameNode.appendChild(viewportNode);
     function init(_event) {
         const canvas = document.querySelector("canvas");
@@ -24,12 +26,15 @@ var RoboGameNamespace;
         viewportNode.addChild(player);
         viewportNode.addChild(roboGameNode);
         roboGameNode.activate(false);
+        questHandler = new RoboGameNamespace.QuestHandler();
+        RoboGameNamespace.createRobot();
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(50);
         cmpCamera.mtxPivot.translateY(9);
         cmpCamera.mtxPivot.translateX(16);
         cmpCamera.mtxPivot.rotateY(180);
         player.addComponent(cmpCamera);
+        console.log(questHandler);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
         document.getElementById("newGame").addEventListener("click", () => {
@@ -45,7 +50,7 @@ var RoboGameNamespace;
         document.getElementById("loadGame").addEventListener("click", () => {
             loadGame();
         });
-        document.getElementById("startQuest").addEventListener("click", () => {
+        document.getElementById("startRiddle").addEventListener("click", () => {
             let newRiddle = new RoboGameNamespace.OpenRiddle();
             console.log(newRiddle);
         });

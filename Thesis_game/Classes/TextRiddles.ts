@@ -68,6 +68,7 @@ namespace RoboGameNamespace {
             }
             if (correctAnswersHelper == correctAnswers.length) {
                 this.message.innerHTML = "Quest complete!";
+                riddleCounter++;
                 //Belohnung vergeben und Rätselobjekt löschen
                 let closeRiddle: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
                 this.textRiddleFrame.appendChild(closeRiddle);

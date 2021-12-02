@@ -1,8 +1,11 @@
 "use strict";
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
+    RoboGameNamespace.riddleCounter = 0;
     var ƒ = FudgeCore;
     class Riddles extends ƒ.Node {
+        // tslint:disable-next-line: no-any
+        riddleCollection;
         constructor(_difficulty, _type) {
             super("Riddle");
             this.loadRiddleCollection(_difficulty, _type);

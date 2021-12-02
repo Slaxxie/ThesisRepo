@@ -5,37 +5,40 @@ var RoboGameNamespace;
     RoboGameNamespace.movementTimer = 0;
     RoboGameNamespace.harvestTimer = 0;
     class Robot extends RoboGameNamespace.QuadNode {
+        static scale = new ƒ.Vector2(1, 1);
+        previousField;
+        moduleMovement = true;
+        moduleHovering = false;
+        moduleLumberjack = true;
+        moduleMiner = false;
+        moduleOil = false;
+        moduleScrapper = false;
+        moduleFighter = true;
+        moduleRetreat = false;
+        isInteracting = false;
+        isCalledBack = false;
+        isAlive = true;
+        robotMaxHealth = 50;
+        robotHealth = this.robotMaxHealth;
+        isAutomated = false;
+        damageValue = 4;
+        ressourceCapacity = 200;
+        robotID;
+        isWaiting = true;
+        isFighting = false;
+        fieldOfView = 1; //switch case für andere köpfe einbauen
+        robotUI = document.createElement("div");
+        activateRobot = document.createElement("button");
+        callRobotBack = document.createElement("button");
+        disassembleRobot = document.createElement("button");
+        automateRobot = document.createElement("button");
+        ressourceLoaded = 0;
+        collectsBioMass = false;
+        collectsOre = false;
+        collectsOil = false;
+        collectsScrap = false;
         constructor(_name, _pos) {
             super(_name, _pos, Robot.scale);
-            this.moduleMovement = true;
-            this.moduleHovering = false;
-            this.moduleLumberjack = true;
-            this.moduleMiner = false;
-            this.moduleOil = false;
-            this.moduleScrapper = false;
-            this.moduleFighter = true;
-            this.moduleRetreat = false;
-            this.isInteracting = false;
-            this.isCalledBack = false;
-            this.isAlive = true;
-            this.robotMaxHealth = 50;
-            this.robotHealth = this.robotMaxHealth;
-            this.isAutomated = false;
-            this.damageValue = 4;
-            this.ressourceCapacity = 200;
-            this.isWaiting = true;
-            this.isFighting = false;
-            this.fieldOfView = 1; //switch case für andere köpfe einbauen
-            this.robotUI = document.createElement("div");
-            this.activateRobot = document.createElement("button");
-            this.callRobotBack = document.createElement("button");
-            this.disassembleRobot = document.createElement("button");
-            this.automateRobot = document.createElement("button");
-            this.ressourceLoaded = 0;
-            this.collectsBioMass = false;
-            this.collectsOre = false;
-            this.collectsOil = false;
-            this.collectsScrap = false;
             this.robotID = RoboGameNamespace.robots.getChildren().length + 1;
             this.robotUI.className = "RobotUI";
             document.getElementById("Robots").appendChild(this.robotUI);
@@ -65,6 +68,7 @@ var RoboGameNamespace;
             this.automateRobot.textContent = "automate";
             let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGameNamespace.textureRobot));
             this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
+            console.log(this);
         }
         moveToNewField() {
             let thisX = this.mtxLocal.translation.x;
@@ -341,7 +345,6 @@ var RoboGameNamespace;
             }
         }
     }
-    Robot.scale = new ƒ.Vector2(1, 1);
     RoboGameNamespace.Robot = Robot;
     // Robot Management
     function createRobot() {

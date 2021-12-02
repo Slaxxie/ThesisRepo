@@ -3,6 +3,8 @@ var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
     class QuadNode extends ƒ.Node {
+        static mesh = new ƒ.MeshSprite("Quad");
+        rect;
         constructor(_name, _pos, _scale) {
             super(_name);
             this.rect = new ƒ.Rectangle(_pos.x, _pos.y, _scale.x, _scale.y, ƒ.ORIGIN2D.CENTER);
@@ -19,7 +21,6 @@ var RoboGameNamespace;
             this.rect.position.y = this.mtxLocal.translation.y - this.rect.size.y / 2;
         }
     }
-    QuadNode.mesh = new ƒ.MeshSprite("Quad");
     RoboGameNamespace.QuadNode = QuadNode;
 })(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=QuadNode.js.map

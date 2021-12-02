@@ -3,6 +3,7 @@ var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
     class Player extends RoboGameNamespace.QuadNode {
+        static instance;
         constructor() {
             let pos = new ƒ.Vector2(0, 0);
             let scale = new ƒ.Vector2(1, 1);
