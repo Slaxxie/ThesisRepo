@@ -1,0 +1,7 @@
+logbuch, das alle Geschichtseinträge und hilfestellungen speichert
+belohnung für quests und Rätsel
+speichern und laden
+online
+kistenrätsel
+
+

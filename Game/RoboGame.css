@@ -1,0 +1,202 @@
+#CustomizeWindow {
+    position: absolute;
+    top: 10px;
+    width: 1000px;
+    height: 600px;
+}
+
+#Customizer {
+    height: 100%;
+    width: 100%;
+    background-color: gray;
+}
+
+#buttonLeftHarvesting::after {
+    content: "<";
+}
+
+#buttonRightHarvesting::after {
+    content: ">";
+}
+
+#buttonFighting::after {
+    content: "Fight";
+}
+
+#buttonRetreat::after {
+    content: "Retreat";
+}
+
+#buttonHovering::after {
+    content: "Hovering";
+}
+
+#spawnNewRobot::after {
+    content: "SPAWN";
+}
+
+#Sidebar {
+    top: 20px;
+    left: 1340px;
+    height: 875px;
+    width: 260px;
+    position: absolute;
+    z-index: 2;
+    background-color: royalblue;
+}
+
+#RobotUI {
+    margin-left: 4px;
+    width: 246px;
+    height: 90px;
+    background-color: red;
+    margin-top: 10px;
+}
+
+#activateRobot {
+    width: 50%;
+    height: 20px;
+}
+
+#callRobotBack {
+    width: 50%;
+    height: 20px;
+}
+
+#disassembleRobot {
+    width: 50%;
+    height: 20px;
+}
+
+#automateRobot {
+    width: 50%;
+    height: 20px;
+}
+
+#easyRiddle::after {
+    content: "easy";
+}
+
+#hardRiddle::after {
+    content: "hard";
+}
+
+#textRiddle::after {
+    content: "text";
+}
+
+#labyrinthRiddle::after {
+    content: "labyrinth";
+}
+
+#submitRiddle::after {
+    content: "submit";
+}
+
+#hidden {
+    display: "none";
+}
+
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+
+#frame001 {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    padding: 5px;
+}
+
+#color001 {
+    color: black;
+    font-size: large;
+    text-align: left;
+}
+
+#center001 {
+    text-align: center;
+}
+
+.button001 {
+    background-color: blue;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button002 {
+    width: 10px;
+    height: 10px;
+}
+
+#QuestMenu {
+    display: none;
+}
+
+#ressourceBar {
+    position: absolute;
+    top: 10px;
+}
+
+#UI-Biomass-outer {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 100px;
+}
+
+#UI-Biomass {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 160px;
+}
+
+#UI-Scrap-outer {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 200px;
+}
+
+#UI-Scrap {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 260px;
+}
+
+#UI-Oil-outer {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 300px;
+}
+
+#UI-Oil {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 360px;
+}
+
+#UI-Metal-outer {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 400px;
+}
+
+#UI-Metal {
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    left: 460px;
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>ROBOGAME</title>
+    <link rel="shortcut icon" href="#">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="RoboGame.css">
+    <script src='../FudgeCore/FudgeCore.js'></script>
+    <script src='./Build/Classes/QuadNode.js'></script>
+    <script src='./Build/Classes/Player.js'></script>
+    <script src='./Build/Classes/RessourceHandler.js'></script>
+    <script src='./Build/Classes/SFX.js'></script>
+    <script src='./Build/Classes/FieldAttribute.js'></script>
+    <script src='./Build/Classes/TextureLoader.js'></script>
+    <script src='./Build/Classes/WorldMapTile.js'></script>
+    <script src='./Build/Classes/Robot.js'></script>
+    <script src='./Build/Classes/Enemy.js'></script>
+    <script src='./Build/Classes/OpenRiddle.js'></script>
+    <script src='./Build/Classes/Riddles.js'></script>
+    <script src='./Build/Classes/TextRiddles.js'></script>
+    <script src='./Build/Classes/Quest.js'></script>
+    <script src='./Build/Classes/QuestHandler.js'></script>
+    <script src='./Build/Classes/StoryHandler.js'></script>
+    <script src='./Build/RoboGame.js'></script>
+
+
+</head>
+
+<body>
+    <canvas width="1600" height="900" id="game_canvas"></canvas>
+    <div class="hidden" id="mainMenu">
+        <button id="newGame">new game</button>
+        <button id="loadGame">load game</button>
+        <button id="option">options</button>
+    </div>
+
+    <div class="hidden" id="worldCreation">
+        <button id="saveWorld">generate world</button>
+        <button id="createWorldButton">Create</button>
+    </div>
+
+    <div class="hidden" id="options">
+        <button id="toMainMenu">to main menu</button>
+    </div>
+
+
+    <div id="CustomizeWindow">
+
+    </div>
+    <div id="Sidebar">
+        <div id="Robots">
+
+        </div>
+    </div>
+    <div id="ingameMenu">
+        <button id="startRiddle">Start Riddle</button>
+        <button id="showQuest">Show Quest</button>
+    </div>
+    <div id="robotCustomizer">
+        <button id="createRobot">Create Robot</button>
+    </div>
+    <div id="robotMap">
+        <button id="showRobotMap">Robot Map</button>
+    </div>
+    <div id="robotMapMenu">
+        <button id="closeRobotMap">close Map</button>
+    </div>
+
+    <div id="ressourceBar">
+        <div id="UI-Biomass-outer">
+            Biomass:
+        </div>
+        <div id="UI-Biomass">
+        </div>
+        <div id="UI-Scrap-outer">
+            Scrap
+        </div>
+        <div id="UI-Scrap">
+        </div>
+        <div id="UI-Oil-outer">
+            Oil:
+        </div>
+        <div id="UI-Oil">
+        </div>
+        <div id="UI-Metal-outer">
+            Metal:
+        </div>
+        <div id="UI-Metal">
+        </div>
+    </div>
+
+    <div id="EnemyWarning">
+
+    </div>
+    <div id="RobotStatus">
+
+    </div>
+    <div id="RiddleMenu">
+
+    </div>
+    <div id="Riddles">
+
+    </div>
+    <div id="QuestMenu">
+
+    </div>
+    <div id="StoryBox">
+
+    </div>
+    <div id="Log">
+        <div id="StoryLog">
+
+        </div>
+        <div id="QuestLog">
+
+        </div>
+    </div>
+
+</body>
+
+</html>
