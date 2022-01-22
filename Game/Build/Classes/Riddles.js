@@ -6,25 +6,13 @@ var RoboGameNamespace;
     class Riddles extends ƒ.Node {
         // tslint:disable-next-line: no-any
         riddleCollection;
-        constructor(_difficulty, _type) {
+        constructor(_difficulty) {
             super("Riddle");
-            this.loadRiddleCollection(_difficulty, _type);
+            this.loadRiddleCollection(_difficulty);
         }
-        async loadRiddleCollection(difficulty, type) {
+        async loadRiddleCollection(difficulty) {
             this.riddleCollection = await (await fetch("RiddleCollection.json")).json();
-            switch (type) {
-                case "text": {
-                    this.textRiddle(difficulty);
-                    break;
-                }
-                case "labyrinth": {
-                    this.labyrinthRiddle(difficulty);
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
+            this.textRiddle(difficulty);
         }
         textRiddle(difficulty) {
             if (difficulty == "easy") {
@@ -54,19 +42,6 @@ var RoboGameNamespace;
             }
             else {
                 console.log(difficulty);
-                console.log("wrong input");
-            }
-        }
-        labyrinthRiddle(difficulty) {
-            if (difficulty == "easy") {
-                console.log("laby");
-                console.log("easy");
-            }
-            if (difficulty == "hard") {
-                console.log("laby");
-                console.log("hard");
-            }
-            else {
                 console.log("wrong input");
             }
         }

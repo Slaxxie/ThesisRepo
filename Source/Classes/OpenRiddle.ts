@@ -42,7 +42,7 @@ namespace RoboGameNamespace {
             this.submit.addEventListener("click", () => {
                 riddleUI.removeChild(this);
                 document.getElementById("RiddleMenu").removeChild(this.riddleUI);
-                let newRiddle: Riddles = new Riddles(this.tempDiff, this.tempType);
+                let newRiddle: Riddles = new Riddles(this.tempDiff);
                 riddleHandler.addChild(newRiddle);
             });
             this.submit.id = "submitRiddle";

@@ -7,6 +7,8 @@ var RoboGameNamespace;
         storyImage = document.createElement("img");
         story;
         chapter;
+        header = document.createElement("div");
+        image = document.createElement("img");
         constructor() {
             this.loadStory();
         }
@@ -18,7 +20,8 @@ var RoboGameNamespace;
         }
         playStory() {
             this.buildStory();
-            this.storyUI.style.display = "inline";
+            this.storyUI.style.display = "block";
+            this.saveStoryIntoLog();
         }
         buildStory() {
             this.storyUI.style.display = "none";
@@ -33,6 +36,29 @@ var RoboGameNamespace;
             closeButton.textContent = "X";
             closeButton.addEventListener("click", () => {
                 this.storyUI.style.display = "none";
+            });
+        }
+        saveStoryIntoLog() {
+            let newChapter = document.createElement("div");
+            newChapter.appendChild(this.header);
+            newChapter.appendChild(this.image);
+            document.getElementById("logbook-story").appendChild(newChapter);
+            let showHide = document.createElement("button");
+            newChapter.appendChild(showHide);
+            showHide.textContent = "Show/Hide";
+            let imageContainer = document.createElement("div");
+            imageContainer.id = "ImageContainer";
+            imageContainer.style.display = "none";
+            imageContainer.appendChild(this.image);
+            newChapter.appendChild(imageContainer);
+            showHide.addEventListener("click", () => {
+                console.log("click");
+                if (imageContainer.style.display == "none") {
+                    imageContainer.style.display = "block";
+                }
+                else if (imageContainer.style.display == "block") {
+                    imageContainer.style.display = "none";
+                }
             });
         }
         progressStoryChapter(questStage) {
@@ -71,15 +97,22 @@ var RoboGameNamespace;
             this.storyUI.innerHTML = this.story.prologue.chapterContent;
             this.storyImage.src = this.story.prologue.chapterImage;
             this.playStory();
+            this.header.innerHTML = this.story.prologue.chapterContent;
+            this.image.src = this.story.prologue.chapterImage;
         }
         playStoryChapter() {
             this.storyUI.innerHTML = this.chapter.chapterContent;
             this.storyImage.src = this.chapter.chapterImage;
             this.playStory();
+            this.header.innerHTML = this.chapter.chapterContent;
+            this.image.src = this.chapter.chapterImage;
         }
         playStoryEpilogue() {
             this.storyUI.innerHTML = this.story.epilogue.chapterContent;
             this.storyImage.src = this.story.epilogue.chapterImage;
+            this.playStory();
+            this.header.innerHTML = this.story.epilogue.chapterContent;
+            this.image.src = this.story.epilogue.chapterImage;
         }
     }
     RoboGameNamespace.StoryHandler = StoryHandler;

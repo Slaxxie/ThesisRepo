@@ -41,7 +41,7 @@ var RoboGameNamespace;
             this.submit.addEventListener("click", () => {
                 RoboGameNamespace.riddleUI.removeChild(this);
                 document.getElementById("RiddleMenu").removeChild(this.riddleUI);
-                let newRiddle = new RoboGameNamespace.Riddles(this.tempDiff, this.tempType);
+                let newRiddle = new RoboGameNamespace.Riddles(this.tempDiff);
                 RoboGameNamespace.riddleHandler.addChild(newRiddle);
             });
             this.submit.id = "submitRiddle";

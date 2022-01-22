@@ -33,10 +33,20 @@ namespace RoboGameNamespace {
 
             let submitButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
             textRiddleCenter.appendChild(submitButton);
+            submitButton.textContent = "submit";
+            submitButton.id = "riddleSubmit";
             submitButton.addEventListener("click", () => {
                 this.solveTextRiddle();
             });
-            submitButton.textContent = "submit";
+
+            let closeButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            textRiddleCenter.appendChild(closeButton);
+            closeButton.textContent = "close";
+            closeButton.id = "riddleClose";
+            closeButton.addEventListener("click", () => {
+                document.getElementById("textRiddleFrame").remove();
+            });
+
             let messageBox: HTMLDivElement = <HTMLDivElement>document.createElement("div");
             messageBox.id = "messageBox";
             textRiddleCenter.appendChild(messageBox);
@@ -67,12 +77,12 @@ namespace RoboGameNamespace {
                 }
             }
             if (correctAnswersHelper == correctAnswers.length) {
-                this.message.innerHTML = "Quest complete!";
+                this.message.innerHTML = "Riddle complete!";
                 riddleCounter++;
                 //Belohnung vergeben und Rätselobjekt löschen
                 let closeRiddle: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
                 this.textRiddleFrame.appendChild(closeRiddle);
-                closeRiddle.textContent = "close";
+                closeRiddle.textContent = "close Riddle";
                 closeRiddle.addEventListener("click", () => {
                     riddleHandler.removeAllChildren();
                     document.getElementById("Riddles").removeChild(this.textRiddleFrame);   

@@ -11,12 +11,15 @@
     <script src='../FudgeCore/FudgeCore.js'></script>
     <script src='./Build/Classes/QuadNode.js'></script>
     <script src='./Build/Classes/Player.js'></script>
+    <script src='./Build/Classes/GameFunctions.js'></script>
+    <script src='./Build/Classes/ButtonHandler.js'></script>
     <script src='./Build/Classes/RessourceHandler.js'></script>
     <script src='./Build/Classes/SFX.js'></script>
     <script src='./Build/Classes/FieldAttribute.js'></script>
     <script src='./Build/Classes/TextureLoader.js'></script>
     <script src='./Build/Classes/WorldMapTile.js'></script>
     <script src='./Build/Classes/Robot.js'></script>
+    <script src='./Build/Classes/RobotFunctions.js'></script>
     <script src='./Build/Classes/Enemy.js'></script>
     <script src='./Build/Classes/OpenRiddle.js'></script>
     <script src='./Build/Classes/Riddles.js'></script>
@@ -31,10 +34,27 @@
 
 <body>
     <canvas width="1600" height="900" id="game_canvas"></canvas>
+
+    <div id="mainMenuBack">
+        <img src="./Art/background_thesis_scaled.png">
+    </div>
+
     <div class="hidden" id="mainMenu">
         <button id="newGame">new game</button>
-        <button id="loadGame">load game</button>
+        <br>
+        <button id="loadGame">continue</button>
+        <br>
         <button id="option">options</button>
+    </div>
+
+    <div id="optionMenu">
+        <input id="MasterVolume" type="range" step="10" value="50">
+        <div id="MasterVolumeTag">
+            Master Volume
+            <br>
+            <br>
+        </div>
+        <button id="backOption"></button>
     </div>
 
     <div class="hidden" id="worldCreation">
@@ -42,7 +62,7 @@
         <button id="createWorldButton">Create</button>
     </div>
 
-    <div class="hidden" id="options">
+    <div class="hidden" id="backToMain">
         <button id="toMainMenu">to main menu</button>
     </div>
 
@@ -51,6 +71,9 @@
 
     </div>
     <div id="Sidebar">
+        <div id="robotMapMenu">
+            <button id="closeRobotMap">close Map</button>
+        </div>
         <div id="Robots">
 
         </div>
@@ -58,6 +81,7 @@
     <div id="ingameMenu">
         <button id="startRiddle">Start Riddle</button>
         <button id="showQuest">Show Quest</button>
+        <button id="openLog">Show Logs</button>
     </div>
     <div id="robotCustomizer">
         <button id="createRobot">Create Robot</button>
@@ -65,9 +89,7 @@
     <div id="robotMap">
         <button id="showRobotMap">Robot Map</button>
     </div>
-    <div id="robotMapMenu">
-        <button id="closeRobotMap">close Map</button>
-    </div>
+
 
     <div id="ressourceBar">
         <div id="UI-Biomass-outer">
@@ -75,20 +97,38 @@
         </div>
         <div id="UI-Biomass">
         </div>
-        <div id="UI-Scrap-outer">
-            Scrap
+        <div id="UI-Metal-outer">
+            Metal:
         </div>
-        <div id="UI-Scrap">
+        <div id="UI-Metal">
         </div>
         <div id="UI-Oil-outer">
             Oil:
         </div>
         <div id="UI-Oil">
         </div>
-        <div id="UI-Metal-outer">
-            Metal:
+        <div id="UI-Scrap-outer">
+            Scrap
         </div>
-        <div id="UI-Metal">
+        <div id="UI-Scrap">
+        </div>
+    </div>
+
+    <div id="logbook">
+        <button id="closeLog">close</button>
+        <button id="storyLogs">Story</button>
+        <button id="questLogs">Quests</button>
+
+        <div id="logbook-story">
+            <br> Story-Kapitel:
+            <br>
+            <br>
+
+        </div>
+        <div id="logbook-quest">
+            <br> Quest-Beschreibungen:
+            <br>
+            <br>
         </div>
     </div>
 

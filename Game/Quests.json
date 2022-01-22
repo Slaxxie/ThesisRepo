@@ -15,7 +15,6 @@
         "evaluateReward": "Reward code",
         "chapterFinal": true
     }],
-
     "earlyGame": [{
             "questTitle": "Erste Schritte",
             "instruction": "Bla bla bla",
@@ -32,7 +31,6 @@
             "evaluateReward": "Reward code",
             "chapterFinal": true
         },
-
         {
             "questTitle": "Weiter So",
             "instruction": "Bla bla bla",

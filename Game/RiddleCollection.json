@@ -2,37 +2,94 @@
     "text": {
         "easy": [{
                 "header": "1",
-                "wordbank": "3 - 4 - 5",
-                "textBeforeInput": ["davor ", "auch davor ", "sdfhj", "dfgdfh"],
-                "answers": ["3", "4", "5", "6"],
-                "textAfterInput": [" danach", " auch danach", "fdgh", "sdfgdsg"]
+                "wordbank": "3 - 4 - 5 - 6",
+                "textBeforeInput": [
+                    "davor ",
+                    "auch davor ",
+                    "sdfhj",
+                    "dfgdfh"
+                ],
+                "answers": [
+                    "3",
+                    "4",
+                    "5",
+                    "6"
+                ],
+                "textAfterInput": [
+                    " danach",
+                    " auch danach",
+                    "fdgh",
+                    "sdfgdsg"
+                ],
+                "riddleImage": "Art/plainsTest.png",
+                "finalRiddle": false
             },
-
             {
                 "header": "2",
                 "wordbank": "3 - 4 - 5",
-                "textBeforeInput": ["davor ", "auch davor ", "sdfhj"],
-                "answers": ["3", "4", "5"],
-                "textAfterInput": [" danach", " auch danach", "fdgh"]
-            }
-        ],
-
-        "hard": [{
+                "textBeforeInput": [
+                    "davor ",
+                    "auch davor ",
+                    "sdfhj"
+                ],
+                "answers": [
+                    "3",
+                    "4",
+                    "5"
+                ],
+                "textAfterInput": [
+                    " danach",
+                    " auch danach",
+                    "fdgh"
+                ],
+                "riddleImage": "Art/plainsTest.png",
+                "finalRiddle": false
+            },
+            {
                 "header": "3",
                 "wordbank": "3 - 4 - 5",
-                "textBeforeInput": ["davor ", "auch davor ", "sdfhj", "dfgdfh"],
-                "answers": ["3", "4", "5", "6"],
-                "textAfterInput": [" danach", " auch danach", "fdgh", "sdfgdsg"]
+                "textBeforeInput": [
+                    "davor ",
+                    "auch davor ",
+                    "sdfhj",
+                    "dfgdfh"
+                ],
+                "answers": [
+                    "3",
+                    "4",
+                    "5",
+                    "6"
+                ],
+                "textAfterInput": [
+                    " danach",
+                    " auch danach",
+                    "fdgh",
+                    "sdfgdsg"
+                ],
+                "riddleImage": "Art/plainsTest.png",
+                "finalRiddle": false
             },
-
             {
                 "header": "4",
                 "wordbank": "3 - 4 - 5",
-                "textBeforeInput": ["davor ", "auch davor ", "sdfhj"],
-                "answers": ["3", "4", "5"],
-                "textAfterInput": [" danach", " auch danach", "fdgh"]
+                "textBeforeInput": [
+                    "davor ",
+                    "auch davor ",
+                    "sdfhj"
+                ],
+                "answers": [
+                    "3",
+                    "4",
+                    "5"
+                ],
+                "textAfterInput": [
+                    " danach",
+                    " auch danach",
+                    "fdgh"
+                ],
+                "riddleImage": "Art/plainsTest.png",
+                "finalRiddle": false
             }
         ]
     }
-
 }

@@ -5,9 +5,9 @@ var RoboGameNamespace;
     RoboGameNamespace.movementTimer = 0;
     RoboGameNamespace.harvestTimer = 0;
     class Robot extends RoboGameNamespace.QuadNode {
-        static scale = new ƒ.Vector2(1, 1);
+        static scale = new ƒ.Vector2(1.5, 1.5);
+        activeModuleString = "lumberer";
         previousField;
-        moduleMovement = true;
         moduleHovering = false;
         moduleLumberjack = true;
         moduleMiner = false;
@@ -27,6 +27,10 @@ var RoboGameNamespace;
         isWaiting = true;
         isFighting = false;
         fieldOfView = 1; //switch case für andere köpfe einbauen
+        costBioMass = 600;
+        costMetal = 0;
+        costOil = 0;
+        costScrap = 100;
         robotUI = document.createElement("div");
         activateRobot = document.createElement("button");
         callRobotBack = document.createElement("button");
@@ -37,6 +41,13 @@ var RoboGameNamespace;
         collectsOre = false;
         collectsOil = false;
         collectsScrap = false;
+        stats = document.createElement("div");
+        hp = document.createElement("div");
+        mods = document.createElement("div");
+        flying = document.createElement("div");
+        automated = document.createElement("div");
+        interaction = document.createElement("div");
+        cargo = document.createElement("div");
         constructor(_name, _pos) {
             super(_name, _pos, Robot.scale);
             this.robotID = RoboGameNamespace.robots.getChildren().length + 1;
@@ -44,7 +55,7 @@ var RoboGameNamespace;
             document.getElementById("Robots").appendChild(this.robotUI);
             this.robotUI.appendChild(this.activateRobot);
             this.activateRobot.addEventListener("click", () => {
-                activateRobot(this);
+                RoboGameNamespace.activateRobot(this);
             });
             this.activateRobot.id = "activateRobot";
             this.activateRobot.textContent = "activate";
@@ -56,19 +67,38 @@ var RoboGameNamespace;
             this.callRobotBack.textContent = "call back";
             this.robotUI.appendChild(this.disassembleRobot);
             this.disassembleRobot.addEventListener("click", () => {
-                disassembleRobot(this);
+                RoboGameNamespace.disassembleRobot(this);
             });
             this.disassembleRobot.id = "disassembleRobot";
             this.disassembleRobot.textContent = "disassemble";
             this.robotUI.appendChild(this.automateRobot);
             this.automateRobot.addEventListener("click", () => {
-                setAutoMode(this);
+                RoboGameNamespace.setAutoMode(this);
             });
             this.automateRobot.id = "automateRobot";
             this.automateRobot.textContent = "automate";
-            let robotMaterial = new ƒ.Material("MaterialName", ƒ.ShaderTexture, new ƒ.CoatTextured(ƒ.Color.CSS("White"), RoboGameNamespace.textureRobot));
-            this.addComponent(new ƒ.ComponentMaterial(robotMaterial));
-            console.log(this);
+            this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.lumbererMaterial));
+            this.stats.appendChild(this.hp);
+            this.stats.appendChild(this.mods);
+            this.stats.appendChild(this.flying);
+            this.stats.appendChild(this.automated);
+            this.stats.appendChild(this.interaction);
+            this.stats.appendChild(this.cargo);
+            this.hp.textContent = "Health: " + String(this.robotHealth) + " / " + String(this.robotMaxHealth);
+            this.mods.textContent = "Profession: " + String(this.activeModuleString);
+            this.flying.textContent = "Flying activated: " + String(this.moduleHovering);
+            this.automated.textContent = "Automation activated: " + String(this.isAutomated);
+            this.interaction.textContent = "Harvesting: " + String(this.isInteracting);
+            this.cargo.textContent = "Cargo loaded: " + String(this.ressourceLoaded) + " / " + String(this.ressourceCapacity);
+            this.robotUI.appendChild(this.stats);
+        }
+        renewStats() {
+            this.hp.textContent = "Health: " + String(this.robotHealth) + " / " + String(this.robotMaxHealth);
+            this.mods.textContent = "Profession: " + String(this.activeModuleString);
+            this.flying.textContent = "Flying activated: " + String(this.moduleHovering);
+            this.automated.textContent = "Automation activated: " + String(this.isAutomated);
+            this.interaction.textContent = "Harvesting: " + String(this.isInteracting);
+            this.cargo.textContent = "Cargo loaded: " + String(this.ressourceLoaded) + " / " + String(this.ressourceCapacity);
         }
         moveToNewField() {
             let thisX = this.mtxLocal.translation.x;
@@ -78,64 +108,62 @@ var RoboGameNamespace;
             if (!this.isWaiting) {
                 if (!this.isFighting) {
                     if (!this.isInteracting) {
-                        if (this.moduleMovement || this.moduleHovering) {
-                            nextDirection = Math.floor((Math.random() * 8)) + 1;
-                            switch (nextDirection) {
-                                case 1: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateX(-1);
-                                        this.mtxLocal.translateY(+1);
-                                    }
-                                    break;
+                        nextDirection = Math.floor((Math.random() * 8)) + 1;
+                        switch (nextDirection) {
+                            case 1: {
+                                if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(-1);
+                                    this.mtxLocal.translateY(+1);
                                 }
-                                case 2: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateY(+1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 2: {
+                                if (RoboGameNamespace.mapHelperArray[thisX][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateY(+1);
                                 }
-                                case 3: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateX(+1);
-                                        this.mtxLocal.translateY(+1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 3: {
+                                if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY + 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(+1);
+                                    this.mtxLocal.translateY(+1);
                                 }
-                                case 4: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateX(-1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 4: {
+                                if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(-1);
                                 }
-                                case 5: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateX(+1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 5: {
+                                if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(+1);
                                 }
-                                case 6: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateX(-1);
-                                        this.mtxLocal.translateY(-1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 6: {
+                                if (RoboGameNamespace.mapHelperArray[thisX - 1][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(-1);
+                                    this.mtxLocal.translateY(-1);
                                 }
-                                case 7: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateY(-1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 7: {
+                                if (RoboGameNamespace.mapHelperArray[thisX][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateY(-1);
                                 }
-                                case 8: {
-                                    if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
-                                        this.mtxLocal.translateX(+1);
-                                        this.mtxLocal.translateY(-1);
-                                    }
-                                    break;
+                                break;
+                            }
+                            case 8: {
+                                if (RoboGameNamespace.mapHelperArray[thisX + 1][thisY - 1].attribute != RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER) {
+                                    this.mtxLocal.translateX(+1);
+                                    this.mtxLocal.translateY(-1);
                                 }
-                                default: {
-                                    break;
-                                }
+                                break;
+                            }
+                            default: {
+                                break;
                             }
                         }
                     }
@@ -171,7 +199,10 @@ var RoboGameNamespace;
                         break;
                     }
                     case RoboGameNamespace.FIELDATTRIBUTE.OIL: {
-                        if (this.moduleOil) {
+                        if (!this.moduleHovering) {
+                            this.moveToPreviousField();
+                        }
+                        else if (this.moduleOil) {
                             this.isInteracting = true;
                             this.collectsOil = true;
                         }
@@ -347,115 +378,5 @@ var RoboGameNamespace;
     }
     RoboGameNamespace.Robot = Robot;
     // Robot Management
-    function createRobot() {
-        let newRobot = new Robot("Robot #" + (RoboGameNamespace.robots.getChildren().length + 1), new ƒ.Vector2(RoboGameNamespace.worldSize / 2, RoboGameNamespace.worldSize / 2));
-        RoboGameNamespace.robots.addChild(newRobot);
-    }
-    RoboGameNamespace.createRobot = createRobot;
-    function spawnRobot(robot) {
-        if (RoboGameNamespace.ressourceScrap >= 30 && RoboGameNamespace.ressourceBioMass >= 300) {
-            RoboGameNamespace.ressourceScrap -= 30;
-            RoboGameNamespace.ressourceBioMass -= 300;
-        }
-        else {
-            removeRobot(robot);
-        }
-    }
-    RoboGameNamespace.spawnRobot = spawnRobot;
-    function removeRobot(robot) {
-        RoboGameNamespace.robots.removeChild(robot);
-        document.getElementById("Robots").removeChild(robot.robotUI);
-    }
-    RoboGameNamespace.removeRobot = removeRobot;
-    function activateRobot(robot) {
-        robot.isWaiting = false;
-    }
-    function disassembleRobot(robot) {
-        removeRobot(robot);
-        RoboGameNamespace.ressourceScrap += 25;
-    }
-    //Module settings
-    function setCollectionModule(robot, module) {
-        switch (module) {
-            case "lumberer": {
-                robot.moduleLumberjack = true;
-                robot.moduleMiner = false;
-                robot.moduleOil = false;
-                robot.moduleScrapper = false;
-                robot.damageValue = 4;
-                break;
-            }
-            case "miner": {
-                robot.moduleLumberjack = false;
-                robot.moduleMiner = true;
-                robot.moduleOil = false;
-                robot.moduleScrapper = false;
-                robot.damageValue = 6;
-                break;
-            }
-            case "oiler": {
-                robot.moduleLumberjack = false;
-                robot.moduleMiner = false;
-                robot.moduleOil = true;
-                robot.moduleScrapper = false;
-                robot.damageValue = 2;
-                break;
-            }
-            case "scrapper": {
-                robot.moduleLumberjack = false;
-                robot.moduleMiner = false;
-                robot.moduleOil = false;
-                robot.moduleScrapper = true;
-                robot.damageValue = 8;
-                break;
-            }
-            case "none": {
-                robot.moduleLumberjack = false;
-                robot.moduleMiner = false;
-                robot.moduleOil = false;
-                robot.moduleScrapper = false;
-                robot.damageValue = 15;
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    RoboGameNamespace.setCollectionModule = setCollectionModule;
-    function setFightMode(robot, module) {
-        switch (module) {
-            case "fight": {
-                robot.moduleFighter = true;
-                robot.moduleRetreat = false;
-                break;
-            }
-            case "retreat": {
-                robot.moduleFighter = false;
-                robot.moduleRetreat = true;
-                break;
-            }
-        }
-    }
-    RoboGameNamespace.setFightMode = setFightMode;
-    function setAutoMode(robot) {
-        if (robot.isAutomated == true) {
-            robot.isAutomated = false;
-            console.log("i am in non-auto mode");
-        }
-        else if (robot.isAutomated == false) {
-            robot.isAutomated = true;
-            console.log("i am in auto mode");
-        }
-    }
-    RoboGameNamespace.setAutoMode = setAutoMode;
-    function setHoverMode(robot) {
-        if (robot.moduleHovering) {
-            robot.moduleHovering = false;
-        }
-        if (!robot.moduleHovering) {
-            robot.moduleHovering = true;
-        }
-    }
-    RoboGameNamespace.setHoverMode = setHoverMode;
 })(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=Robot.js.map

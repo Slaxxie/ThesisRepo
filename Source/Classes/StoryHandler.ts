@@ -5,6 +5,8 @@ namespace RoboGameNamespace {
         public storyImage: HTMLImageElement = <HTMLImageElement>document.createElement("img");
         public story: any;
         public chapter: any;
+        public header: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        public image: HTMLImageElement = <HTMLImageElement>document.createElement("img");
         constructor() {
             this.loadStory();
             
@@ -18,7 +20,8 @@ namespace RoboGameNamespace {
 
         playStory(): void {
             this.buildStory();
-            this.storyUI.style.display = "inline";
+            this.storyUI.style.display = "block";
+            this.saveStoryIntoLog();
         }
 
         buildStory(): void {
@@ -34,6 +37,30 @@ namespace RoboGameNamespace {
             closeButton.textContent = "X";
             closeButton.addEventListener("click", () => { 
                 this.storyUI.style.display = "none";
+            });
+            
+        }
+        
+        saveStoryIntoLog(): void {
+            let newChapter: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+            newChapter.appendChild(this.header);
+            newChapter.appendChild(this.image);
+            document.getElementById("logbook-story").appendChild(newChapter);
+            let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            newChapter.appendChild(showHide);
+            showHide.textContent = "Show/Hide";
+            let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+            imageContainer.id = "ImageContainer";
+            imageContainer.style.display = "none";
+            imageContainer.appendChild(this.image);
+            newChapter.appendChild(imageContainer);
+            showHide.addEventListener("click", () => {
+                console.log("click");
+                if (imageContainer.style.display == "none") {
+                    imageContainer.style.display = "block";
+                } else if (imageContainer.style.display == "block") {
+                    imageContainer.style.display = "none";
+                }
             });
         }
 
@@ -74,17 +101,27 @@ namespace RoboGameNamespace {
             this.storyUI.innerHTML = this.story.prologue.chapterContent;
             this.storyImage.src = this.story.prologue.chapterImage;
             this.playStory();
+            this.header.innerHTML = this.story.prologue.chapterContent;
+            this.image.src = this.story.prologue.chapterImage;
+            
         }
-
+        
         playStoryChapter(): void {
             this.storyUI.innerHTML = this.chapter.chapterContent;
             this.storyImage.src = this.chapter.chapterImage;
             this.playStory();
+            this.header.innerHTML = this.chapter.chapterContent;
+            this.image.src = this.chapter.chapterImage;
+            
         }
-
+        
         playStoryEpilogue(): void {
             this.storyUI.innerHTML = this.story.epilogue.chapterContent;
             this.storyImage.src = this.story.epilogue.chapterImage;
+            this.playStory();
+            this.header.innerHTML = this.story.epilogue.chapterContent;
+            this.image.src = this.story.epilogue.chapterImage;
+            
         }
     }
 }

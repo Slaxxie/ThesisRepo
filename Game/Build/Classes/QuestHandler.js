@@ -17,6 +17,9 @@ var RoboGameNamespace;
         index = 0; //hochzählen, wenn quest abgeschlossen
         quests;
         questArray;
+        questTitleTemp = document.createElement("div");
+        questInstructionTemp = document.createElement("div");
+        questImageTemp = document.createElement("img");
         constructor() {
             this.loadQuests();
         }
@@ -30,9 +33,11 @@ var RoboGameNamespace;
         }
         buildQuestHTML(currentQuest) {
             console.log(currentQuest);
-            this.questUI.className = "QuestUI";
+            this.questUI.id = "QuestUI";
             this.questImage.id = "QuestImage";
             this.questImage.src = currentQuest.learningTopic;
+            this.questImageTemp.src = currentQuest.learningTopic;
+            this.questImageTemp.id = "tempQuestImage";
             document.getElementById("QuestMenu").appendChild(this.questUI);
             this.questUI.innerHTML = currentQuest.questTitle;
             this.questUI.innerHTML += "<br/>";
@@ -42,6 +47,9 @@ var RoboGameNamespace;
             this.questUI.innerHTML += "<br/>";
             this.questUI.innerHTML += "Belohnung: " + currentQuest.reward;
             this.questUI.innerHTML += "<br/>";
+            this.questUI.innerHTML += "<br/>";
+            this.questTitleTemp.innerHTML = currentQuest.questTitle;
+            this.questInstructionTemp.innerHTML = currentQuest.instruction;
             let finishQuest = document.createElement("button");
             this.questUI.appendChild(finishQuest);
             finishQuest.textContent = "finish Quest";
@@ -57,7 +65,7 @@ var RoboGameNamespace;
             let showHide = document.createElement("button");
             this.questUI.appendChild(showHide);
             let imageContainer = document.createElement("div");
-            imageContainer.className = "ImageContainer";
+            imageContainer.id = "ImageContainer";
             imageContainer.style.display = "none";
             showHide.textContent = "Show/Hide";
             this.questUI.appendChild(imageContainer);
@@ -77,6 +85,31 @@ var RoboGameNamespace;
             hideQuest.id = "HideQuestButton";
             hideQuest.addEventListener("click", () => {
                 document.getElementById("QuestMenu").style.display = "none";
+            });
+            this.saveQuestIntoLog();
+        }
+        saveQuestIntoLog() {
+            let newChapter = document.createElement("div");
+            newChapter.appendChild(this.questTitleTemp);
+            newChapter.appendChild(this.questInstructionTemp);
+            newChapter.appendChild(this.questImageTemp);
+            document.getElementById("logbook-quest").appendChild(newChapter);
+            let showHide = document.createElement("button");
+            newChapter.appendChild(showHide);
+            showHide.textContent = "Show/Hide";
+            let imageContainer = document.createElement("div");
+            imageContainer.id = "ImageContainer";
+            imageContainer.style.display = "none";
+            imageContainer.appendChild(this.questImageTemp);
+            newChapter.appendChild(imageContainer);
+            showHide.addEventListener("click", () => {
+                console.log("click");
+                if (imageContainer.style.display == "none") {
+                    imageContainer.style.display = "block";
+                }
+                else if (imageContainer.style.display == "block") {
+                    imageContainer.style.display = "none";
+                }
             });
         }
         finishQuest() {

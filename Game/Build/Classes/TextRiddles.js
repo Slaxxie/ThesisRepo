@@ -30,10 +30,18 @@ var RoboGameNamespace;
             textRiddleCenter.innerHTML += "blub <br/> ";
             let submitButton = document.createElement("button");
             textRiddleCenter.appendChild(submitButton);
+            submitButton.textContent = "submit";
+            submitButton.id = "riddleSubmit";
             submitButton.addEventListener("click", () => {
                 this.solveTextRiddle();
             });
-            submitButton.textContent = "submit";
+            let closeButton = document.createElement("button");
+            textRiddleCenter.appendChild(closeButton);
+            closeButton.textContent = "close";
+            closeButton.id = "riddleClose";
+            closeButton.addEventListener("click", () => {
+                document.getElementById("textRiddleFrame").remove();
+            });
             let messageBox = document.createElement("div");
             messageBox.id = "messageBox";
             textRiddleCenter.appendChild(messageBox);
@@ -63,12 +71,12 @@ var RoboGameNamespace;
                 }
             }
             if (correctAnswersHelper == correctAnswers.length) {
-                this.message.innerHTML = "Quest complete!";
+                this.message.innerHTML = "Riddle complete!";
                 RoboGameNamespace.riddleCounter++;
                 //Belohnung vergeben und Rätselobjekt löschen
                 let closeRiddle = document.createElement("button");
                 this.textRiddleFrame.appendChild(closeRiddle);
-                closeRiddle.textContent = "close";
+                closeRiddle.textContent = "close Riddle";
                 closeRiddle.addEventListener("click", () => {
                     RoboGameNamespace.riddleHandler.removeAllChildren();
                     document.getElementById("Riddles").removeChild(this.textRiddleFrame);

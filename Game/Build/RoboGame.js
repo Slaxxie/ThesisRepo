@@ -3,30 +3,28 @@ var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
     window.addEventListener("load", init);
-    let gameNode = new ƒ.Node("Game");
-    let viewportNode = new ƒ.Node("Viewport");
-    let roboGameNode = new ƒ.Node("RoboGame");
-    let viewport = new ƒ.Viewport();
     let player;
-    let harvestModuleIndex;
     let questHandler;
-    let newRiddle;
+    let gameNode = new ƒ.Node("Game");
+    let viewport = new ƒ.Viewport();
+    let viewportNode = new ƒ.Node("Viewport");
+    RoboGameNamespace.roboGameNode = new ƒ.Node("RoboGame");
     RoboGameNamespace.movementSpeed = 10;
     RoboGameNamespace.robots = new ƒ.Node("Robots");
     RoboGameNamespace.worldTilesNode = new ƒ.Node("Worldmap");
     RoboGameNamespace.mapHelperArray = [];
     RoboGameNamespace.riddleUI = new ƒ.Node("Riddle UI");
     RoboGameNamespace.riddleHandler = new ƒ.Node("Riddle Handler");
-    RoboGameNamespace.currentQuestStage = RoboGameNamespace.QUESTSTAGE.TUTORIAL; //bei gespeicherten spielen auf aktuellen gamestate ändern (localstorage)
+    RoboGameNamespace.currentQuestStage = RoboGameNamespace.QUESTSTAGE.TUTORIAL;
     gameNode.appendChild(viewportNode);
     function init(_event) {
         const canvas = document.querySelector("canvas");
         player = RoboGameNamespace.Player.getInstance();
-        roboGameNode.addChild(RoboGameNamespace.robots);
-        roboGameNode.addChild(RoboGameNamespace.worldTilesNode);
+        RoboGameNamespace.roboGameNode.addChild(RoboGameNamespace.robots);
+        RoboGameNamespace.roboGameNode.addChild(RoboGameNamespace.worldTilesNode);
         viewportNode.addChild(player);
-        viewportNode.addChild(roboGameNode);
-        roboGameNode.activate(false);
+        viewportNode.addChild(RoboGameNamespace.roboGameNode);
+        RoboGameNamespace.roboGameNode.activate(false);
         questHandler = new RoboGameNamespace.QuestHandler;
         RoboGameNamespace.storyHandler = new RoboGameNamespace.StoryHandler;
         RoboGameNamespace.createRobot();
@@ -39,61 +37,6 @@ var RoboGameNamespace;
         console.log(questHandler);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
-        document.getElementById("newGame").addEventListener("click", () => {
-            newGame();
-        });
-        document.getElementById("toMainMenu").addEventListener("click", () => {
-            document.getElementById("mainMenu").style.display = "inline";
-            document.getElementById("robotCustomizer").style.display = "none";
-            document.getElementById("robotMap").style.display = "none";
-            document.getElementById("ressourceBar").style.display = "none";
-            document.getElementById("QuestMenu").style.display = "none";
-            document.getElementById("ingameMenu").style.display = "none";
-            document.getElementById("RiddleMenu").style.display = "none";
-            document.getElementById("textRiddleFrame").remove();
-            //document.getElementById("RiddleMenu").removeChild(document.getElementById("RiddleUI"));
-            document.getElementById("RiddleUI").remove();
-            newRiddle = null;
-            roboGameNode.activate(false);
-        });
-        document.getElementById("loadGame").addEventListener("click", () => {
-            loadGame();
-        });
-        document.getElementById("showQuest").addEventListener("click", () => {
-            document.getElementById("QuestMenu").style.display = "inline";
-        });
-        document.getElementById("startRiddle").addEventListener("click", () => {
-            document.getElementById("RiddleMenu").style.display = "inline";
-            newRiddle = new RoboGameNamespace.OpenRiddle();
-            console.log(newRiddle);
-        });
-        document.getElementById("showRobotMap").addEventListener("click", () => {
-            roboGameNode.activate(true);
-            document.getElementById("Sidebar").style.display = "inline";
-            document.getElementById("robotMapMenu").style.display = "inline";
-            document.getElementById("ingameMenu").style.display = "none";
-            document.getElementById("robotCustomizer").style.display = "none";
-            document.getElementById("robotMap").style.display = "none";
-            document.getElementById("ressourceBar").style.display = "none";
-        });
-        document.getElementById("closeRobotMap").addEventListener("click", () => {
-            roboGameNode.activate(false);
-            document.getElementById("Sidebar").style.display = "none";
-            document.getElementById("robotMapMenu").style.display = "none";
-            document.getElementById("ingameMenu").style.display = "inline";
-            document.getElementById("robotCustomizer").style.display = "inline";
-            document.getElementById("robotMap").style.display = "inline";
-            document.getElementById("ressourceBar").style.display = "inline";
-        });
-        document.getElementById("saveWorld").addEventListener("click", () => {
-            RoboGameNamespace.saveNoisemap();
-            //create image from noisemap and show
-        });
-        document.getElementById("createRobot").addEventListener("click", () => {
-            RoboGameNamespace.createRobot();
-            chooseHarvestModule(harvestModuleIndex);
-            openRobotCustomization();
-        });
         document.getElementById("worldCreation").style.display = "none";
         document.getElementById("ingameMenu").style.display = "none";
         document.getElementById("robotCustomizer").style.display = "none";
@@ -101,6 +44,7 @@ var RoboGameNamespace;
         document.getElementById("ressourceBar").style.display = "none";
         document.getElementById("Sidebar").style.display = "none";
         document.getElementById("robotMapMenu").style.display = "none";
+        RoboGameNamespace.initializeButtons();
         viewport.draw();
     }
     function hndKey() {
@@ -132,30 +76,6 @@ var RoboGameNamespace;
             RoboGameNamespace.worldTilesNode.activate(false);
         }
     }
-    function newGame() {
-        document.getElementById("worldCreation").style.display = "inline";
-        document.getElementById("mainMenu").style.display = "none";
-        RoboGameNamespace.level = 1;
-        document.getElementById("createWorldButton").addEventListener("click", () => {
-            startGameLoop();
-            document.getElementById("worldCreation").style.display = "none";
-            RoboGameNamespace.storyHandler.playStoryPrologue();
-        });
-    }
-    function loadGame() {
-        startGameLoop();
-        console.log("loaded");
-    }
-    function startGameLoop() {
-        RoboGameNamespace.createWorld();
-        document.getElementById("mainMenu").style.display = "none";
-        document.getElementById("ingameMenu").style.display = "inline";
-        document.getElementById("ressourceBar").style.display = "inline";
-        document.getElementById("robotCustomizer").style.display = "inline";
-        document.getElementById("robotMap").style.display = "inline";
-        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
-    }
     function update(_event) {
         hndKey();
         RoboGameNamespace.movementTimer++;
@@ -174,6 +94,7 @@ var RoboGameNamespace;
         if (RoboGameNamespace.movementTimer == 90) {
             RoboGameNamespace.movementTimer = 0;
             for (let robotEntity of RoboGameNamespace.robots.getChildren()) {
+                robotEntity.renewStats();
                 if (!robotEntity.isInteracting) {
                     robotEntity.moveToNewField();
                     let minX = robotEntity.mtxLocal.translation.x - robotEntity.fieldOfView;
@@ -210,104 +131,17 @@ var RoboGameNamespace;
         RoboGameNamespace.metalToHTML(RoboGameNamespace.ressourceOre);
         viewport.draw();
     }
-    function openRobotCustomization() {
-        let customizationUI = document.createElement("div");
-        customizationUI.id = "Customizer";
-        document.getElementById("CustomizeWindow").appendChild(customizationUI);
-        //Declare harvesting module
-        let buttonLeftHarvesting = document.createElement("button");
-        customizationUI.appendChild(buttonLeftHarvesting);
-        buttonLeftHarvesting.addEventListener("click", () => {
-            harvestModuleIndex -= 1;
-            chooseHarvestModule(harvestModuleIndex);
-        });
-        buttonLeftHarvesting.id = "buttonLeftHarvesting";
-        let buttonRightHarvesting = document.createElement("button");
-        customizationUI.appendChild(buttonRightHarvesting);
-        buttonRightHarvesting.addEventListener("click", () => {
-            harvestModuleIndex += 1;
-            chooseHarvestModule(harvestModuleIndex);
-        });
-        buttonRightHarvesting.id = "buttonRightHarvesting";
-        //Declare fightmode
-        let buttonFighting = document.createElement("button");
-        customizationUI.appendChild(buttonFighting);
-        buttonFighting.addEventListener("click", () => {
-            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "fight");
-        });
-        buttonFighting.id = "buttonFighting";
-        let buttonRetreat = document.createElement("button");
-        customizationUI.appendChild(buttonRetreat);
-        buttonRetreat.addEventListener("click", () => {
-            RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "retreat");
-        });
-        buttonRetreat.id = "buttonRetreat";
-        //Declare hovering
-        let buttonHovering = document.createElement("button");
-        customizationUI.appendChild(buttonHovering);
-        buttonHovering.addEventListener("click", () => {
-            RoboGameNamespace.setHoverMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
-        });
-        buttonHovering.id = "buttonHovering";
-        //Spawn Robot into world
-        let spawnNewRobot = document.createElement("button");
-        customizationUI.appendChild(spawnNewRobot);
-        spawnNewRobot.addEventListener("click", () => {
-            RoboGameNamespace.spawnRobot(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
-            document.getElementById("CustomizeWindow").removeChild(customizationUI);
-        });
-        spawnNewRobot.id = "spawnNewRobot";
+    function startGameLoop() {
+        RoboGameNamespace.createWorld();
+        document.getElementById("mainMenu").style.display = "none";
+        document.getElementById("ingameMenu").style.display = "block";
+        document.getElementById("ressourceBar").style.display = "block";
+        document.getElementById("robotCustomizer").style.display = "block";
+        document.getElementById("robotMap").style.display = "block";
+        ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
+        ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
     }
-    function chooseHarvestModule(index) {
-        switch (index) {
-            case 1: {
-                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "lumberer");
-                break;
-            }
-            case 2: {
-                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "miner");
-                break;
-            }
-            case 3: {
-                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "oiler");
-                break;
-            }
-            case 4: {
-                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "scrapper");
-                break;
-            }
-            case 5: {
-                RoboGameNamespace.setCollectionModule(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "none");
-                break;
-            }
-            case 6: {
-                harvestModuleIndex = 1;
-                chooseHarvestModule(harvestModuleIndex);
-                break;
-            }
-            default: {
-                harvestModuleIndex = 1;
-                break;
-            }
-        }
-    }
-    /* export function allowDrop(ev: DragEvent): void {
-        console.log("test allow");
-        ev.preventDefault();
-    }
-
-    export function drag(ev: DragEvent): void {
-        console.log("test drag");
-        console.log(ev.target);
-        ev.dataTransfer.setData("text", (<HTMLImageElement>ev.target).id);
-    }
-
-    export function drop(ev: DragEvent): void {
-        console.log("test drop");
-        ev.preventDefault();
-        let data: string = ev.dataTransfer.getData("text");
-        (<HTMLDivElement>ev.target).appendChild(document.getElementById(data));
-    } */
+    RoboGameNamespace.startGameLoop = startGameLoop;
 })(RoboGameNamespace || (RoboGameNamespace = {}));
 /*
 Alt+Shift+F = auto-format

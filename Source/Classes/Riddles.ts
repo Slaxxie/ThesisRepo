@@ -4,26 +4,14 @@ namespace RoboGameNamespace {
     export class Riddles extends ƒ.Node {
         // tslint:disable-next-line: no-any
         public riddleCollection: any;
-        constructor(_difficulty: string, _type: string) {
+        constructor(_difficulty: string) {
             super("Riddle");
-            this.loadRiddleCollection(_difficulty, _type);
+            this.loadRiddleCollection(_difficulty);
             
         }
-        async loadRiddleCollection(difficulty: string, type: string): Promise<void> {
+        async loadRiddleCollection(difficulty: string): Promise<void> {
             this.riddleCollection = await(await fetch("RiddleCollection.json")).json();
-            switch (type) {
-                case "text": {
                     this.textRiddle(difficulty);
-                    break;
-                }
-                case "labyrinth": {
-                    this.labyrinthRiddle(difficulty);
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
         }
 
         textRiddle(difficulty: string): void {
@@ -54,20 +42,6 @@ namespace RoboGameNamespace {
             }
             else {
                 console.log(difficulty);
-                console.log("wrong input");
-            }
-        }
-
-        labyrinthRiddle(difficulty: string): void {
-            if (difficulty == "easy") {
-                console.log("laby");
-                console.log("easy");
-            }
-            if (difficulty == "hard") {
-                console.log("laby");
-                console.log("hard");
-            }
-            else {
                 console.log("wrong input");
             }
         }

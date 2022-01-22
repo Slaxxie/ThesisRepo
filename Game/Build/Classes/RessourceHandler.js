@@ -1,13 +1,13 @@
 "use strict";
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
-    RoboGameNamespace.ressourceBioMass = 5800;
+    RoboGameNamespace.ressourceBioMass = 2000;
     RoboGameNamespace.increaseBioMass = 10;
-    RoboGameNamespace.ressourceScrap = 5000;
+    RoboGameNamespace.ressourceScrap = 500;
     RoboGameNamespace.increaseScrap = 5;
-    RoboGameNamespace.ressourceOil = 5000;
+    RoboGameNamespace.ressourceOil = 200;
     RoboGameNamespace.increaseOil = 3;
-    RoboGameNamespace.ressourceOre = 5000;
+    RoboGameNamespace.ressourceOre = 800;
     RoboGameNamespace.increaseRessource = 7;
     function bioMassToHTML(bioMass) {
         let div = document.getElementById("UI-Biomass");

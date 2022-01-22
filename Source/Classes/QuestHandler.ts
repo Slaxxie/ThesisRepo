@@ -16,6 +16,9 @@ namespace RoboGameNamespace {
         public index: number = 0; //hochzählen, wenn quest abgeschlossen
         public quests: any;
         public questArray: any[];
+        public questTitleTemp: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        public questInstructionTemp: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        public questImageTemp: HTMLImageElement = <HTMLImageElement>document.createElement("img");
         constructor() {
             this.loadQuests();
         }
@@ -45,9 +48,11 @@ namespace RoboGameNamespace {
 
         buildQuestHTML(currentQuest: Quest): void {
             console.log(currentQuest);
-            this.questUI.className = "QuestUI";
+            this.questUI.id = "QuestUI";
             this.questImage.id = "QuestImage";
             this.questImage.src = currentQuest.learningTopic;
+            this.questImageTemp.src = currentQuest.learningTopic;
+            this.questImageTemp.id = "tempQuestImage";
             document.getElementById("QuestMenu").appendChild(this.questUI);
             this.questUI.innerHTML = currentQuest.questTitle;
             this.questUI.innerHTML += "<br/>";
@@ -57,6 +62,9 @@ namespace RoboGameNamespace {
             this.questUI.innerHTML += "<br/>";
             this.questUI.innerHTML += "Belohnung: " + currentQuest.reward;
             this.questUI.innerHTML += "<br/>";
+            this.questUI.innerHTML += "<br/>";
+            this.questTitleTemp.innerHTML = currentQuest.questTitle;
+            this.questInstructionTemp.innerHTML = currentQuest.instruction;
             let finishQuest: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
             this.questUI.appendChild(finishQuest);
             finishQuest.textContent = "finish Quest";
@@ -71,7 +79,7 @@ namespace RoboGameNamespace {
             let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
             this.questUI.appendChild(showHide);
             let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
-            imageContainer.className = "ImageContainer";
+            imageContainer.id = "ImageContainer";
             imageContainer.style.display = "none";
             showHide.textContent = "Show/Hide";
             this.questUI.appendChild(imageContainer);
@@ -91,8 +99,31 @@ namespace RoboGameNamespace {
             hideQuest.addEventListener("click", () => {
                 document.getElementById("QuestMenu").style.display = "none";
             });
+            this.saveQuestIntoLog();
+        }
 
-
+        saveQuestIntoLog(): void {
+            let newChapter: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+            newChapter.appendChild(this.questTitleTemp);
+            newChapter.appendChild(this.questInstructionTemp);
+            newChapter.appendChild(this.questImageTemp);
+            document.getElementById("logbook-quest").appendChild(newChapter);
+            let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            newChapter.appendChild(showHide);
+            showHide.textContent = "Show/Hide";
+            let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+            imageContainer.id = "ImageContainer";
+            imageContainer.style.display = "none";
+            imageContainer.appendChild(this.questImageTemp);
+            newChapter.appendChild(imageContainer);
+            showHide.addEventListener("click", () => {
+                console.log("click");
+                if (imageContainer.style.display == "none") {
+                    imageContainer.style.display = "block";
+                } else if (imageContainer.style.display == "block") {
+                    imageContainer.style.display = "none";
+                }
+            });
         }
 
         finishQuest(): void {
