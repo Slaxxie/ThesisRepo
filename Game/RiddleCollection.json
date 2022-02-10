@@ -1,6 +1,29 @@
 {
     "riddles": {
         "chapterOne": [{
+                "header": "An error in the database!",
+                "wordbank": "There has been an error in the database! <br> Help figuring out the meanings of those symbols. <br><br>Wordbank: lesser than, equals, greater than, not<br>",
+                "textBeforeInput": [
+                    "!= &nbsp;: ",
+                    ">= : ",
+                    "== : ",
+                    "<= : "
+                ],
+                "answers": [
+                    "not",
+                    "greater than",
+                    "equals",
+                    "lesser than"
+                ],
+                "textAfterInput": [
+                    "&emsp;",
+                    "&emsp;",
+                    "&emsp;",
+                    "&emsp;<br><br>"
+                ],
+                "riddleImage": " ",
+                "finalRiddle": false
+            }, {
                 "header": "Operators 101",
                 "wordbank": "Given are a few conditional statements. <br>Fill in the correct operator symbols<br>",
                 "textBeforeInput": [
@@ -24,6 +47,7 @@
                 "riddleImage": " ",
                 "finalRiddle": false
             },
+
             {
                 "header": "Help the robot sorting",
                 "wordbank": "The robot will take the ressouce from the depot. <br> Its goal is to filter out metal from the ressouces. <br><br>Wordbank: movetoexit, storagechest, returntodepot, ==, if<br>",
