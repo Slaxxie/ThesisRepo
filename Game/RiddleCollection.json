@@ -47,6 +47,7 @@
                 "riddleImage": " ",
                 "finalRiddle": false
             },
+
             {
                 "header": "Help the robot sorting",
                 "wordbank": "The robot will take the ressouce from the depot. <br> Its goal is to filter out metal from the ressouces. <br><br>Wordbank: movetoexit, storagechest, returntodepot, ==, if<br>",
