@@ -1,2 +1,1 @@
-# Thesis_CM
-https://github.com/Slaxxie/ThesisRepo/blob/main/Game/RoboGame.html
+https://slaxxie.github.io/ThesisRepo/Game/RoboGame.html
