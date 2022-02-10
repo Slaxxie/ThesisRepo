@@ -21,7 +21,7 @@
                     "&emsp;",
                     "&emsp;<br><br>"
                 ],
-                "riddleImage": " ",
+                "riddleImage": "",
                 "finalRiddle": false
             }, {
                 "header": "Operators 101",
@@ -44,7 +44,7 @@
                     " currentlyWorking) &emsp; If Robot2 is not working at the moment, we can use it otherwise",
                     " Robot3.isFarming == false) &emsp; Make sure, that if we run out <br>of ressources and noone is working, they all activate<br><br>"
                 ],
-                "riddleImage": " ",
+                "riddleImage": "",
                 "finalRiddle": false
             },
 
