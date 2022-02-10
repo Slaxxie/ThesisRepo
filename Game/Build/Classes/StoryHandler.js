@@ -15,28 +15,29 @@ var RoboGameNamespace;
         //tester
         async loadStory() {
             this.story = await (await fetch("Story.json")).json();
-            console.log("Story loaded");
             this.buildStory();
         }
         playStory() {
             this.buildStory();
             this.storyUI.style.display = "block";
-            this.saveStoryIntoLog();
         }
         buildStory() {
             this.storyUI.style.display = "none";
-            this.storyUI.id = "StoryUI";
-            document.getElementById("StoryBox").appendChild(this.storyUI);
-            this.storyImage.id = "StoryImage";
-            //console.log(this.story);
-            this.storyUI.appendChild(this.storyImage);
+            this.storyUI.id = "storyUI";
+            document.getElementById("storyBox").appendChild(this.storyUI);
+            let imageContainer = document.createElement("div");
+            imageContainer.id = "storyImageContainer";
+            this.storyImage.id = "storyImage";
+            this.storyUI.appendChild(imageContainer);
+            imageContainer.appendChild(this.storyImage);
             let closeButton = document.createElement("button");
             this.storyUI.appendChild(closeButton);
-            closeButton.id = "CloseStory";
+            closeButton.id = "closeStory";
             closeButton.textContent = "X";
             closeButton.addEventListener("click", () => {
                 this.storyUI.style.display = "none";
             });
+            this.saveStoryIntoLog();
         }
         saveStoryIntoLog() {
             let newChapter = document.createElement("div");
@@ -46,19 +47,26 @@ var RoboGameNamespace;
             let showHide = document.createElement("button");
             newChapter.appendChild(showHide);
             showHide.textContent = "Show/Hide";
+            showHide.id = "showHideStory";
             let imageContainer = document.createElement("div");
-            imageContainer.id = "ImageContainer";
+            imageContainer.id = "storyImageContainerLog";
             imageContainer.style.display = "none";
+            let closeImage = document.createElement("button");
+            closeImage.id = "storyCloseImage";
+            imageContainer.appendChild(closeImage);
+            closeImage.textContent = "close image";
             imageContainer.appendChild(this.image);
             newChapter.appendChild(imageContainer);
             showHide.addEventListener("click", () => {
-                console.log("click");
                 if (imageContainer.style.display == "none") {
                     imageContainer.style.display = "block";
                 }
                 else if (imageContainer.style.display == "block") {
                     imageContainer.style.display = "none";
                 }
+            });
+            closeImage.addEventListener("click", () => {
+                imageContainer.style.display = "none";
             });
         }
         progressStoryChapter(questStage) {
@@ -94,14 +102,27 @@ var RoboGameNamespace;
             }
         }
         playStoryPrologue() {
-            this.storyUI.innerHTML = this.story.prologue.chapterContent;
-            this.storyImage.src = this.story.prologue.chapterImage;
-            this.playStory();
-            this.header.innerHTML = this.story.prologue.chapterContent;
-            this.image.src = this.story.prologue.chapterImage;
+            document.getElementById("prologueDiv").style.display = "block";
+            document.getElementById("nextPage").addEventListener("click", () => {
+                document.getElementById("prologueImage1").style.display = "none";
+                document.getElementById("prologueImage2").style.display = "block";
+                document.getElementById("nextPage").style.display = "none";
+                document.getElementById("closePrologue").style.display = "block";
+            });
+            document.getElementById("closePrologue").addEventListener("click", () => {
+                document.getElementById("prologueDiv").style.display = "none";
+                document.getElementById("prologueDiv").style.zIndex = "-1";
+                this.storyUI.innerHTML = this.story.prologue.chapterContent;
+                this.storyImage.src = this.story.prologue.chapterImage;
+                this.playStory();
+                this.header.innerHTML = this.story.prologue.chapterContent;
+                this.image.src = this.story.prologue.chapterImage;
+            });
         }
         playStoryChapter() {
             this.storyUI.innerHTML = this.chapter.chapterContent;
+            this.storyUI.innerHTML = "<br>";
+            this.storyUI.innerHTML = "<br>";
             this.storyImage.src = this.chapter.chapterImage;
             this.playStory();
             this.header.innerHTML = this.chapter.chapterContent;

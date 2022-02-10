@@ -3,21 +3,19 @@ namespace RoboGameNamespace {
 
     window.addEventListener("load", init);
     let player: Player;
-    let questHandler: QuestHandler;
     let gameNode: ƒ.Node = new ƒ.Node("Game");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
-    export let newRiddle: OpenRiddle;
     export let roboGameNode: ƒ.Node = new ƒ.Node("RoboGame");
     export let harvestModuleIndex: number;
+    export let questHandler: QuestHandler;
     export let storyHandler: StoryHandler;
-    export let movementSpeed: number = 10;
     export let robots: ƒ.Node = new ƒ.Node("Robots");
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
     export let mapHelperArray: WorldMapTile[][] = [];
+    export let newRiddle: Riddles;
     export let riddleUI: ƒ.Node = new ƒ.Node("Riddle UI");
     export let riddleHandler: ƒ.Node = new ƒ.Node("Riddle Handler");
-    export let level: number;
     export let currentQuestStage: QUESTSTAGE = QUESTSTAGE.TUTORIAL; 
 
     gameNode.appendChild(viewportNode);
@@ -32,6 +30,7 @@ namespace RoboGameNamespace {
 
         roboGameNode.activate(false);
         questHandler = new QuestHandler;
+        console.log(questHandler);
         storyHandler = new StoryHandler;
         createRobot();
         
@@ -42,7 +41,6 @@ namespace RoboGameNamespace {
         cmpCamera.mtxPivot.rotateY(180);
         
         player.addComponent(cmpCamera);
-        console.log(questHandler);
         
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
@@ -54,7 +52,7 @@ namespace RoboGameNamespace {
         document.getElementById("robotCustomizer").style.display = "none";
         document.getElementById("robotMap").style.display = "none";
         document.getElementById("ressourceBar").style.display = "none";
-        document.getElementById("Sidebar").style.display = "none";
+        document.getElementById("sidebar").style.display = "none";
         document.getElementById("robotMapMenu").style.display = "none";
         
         initializeButtons();
@@ -81,7 +79,6 @@ namespace RoboGameNamespace {
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
             player.moveCameraDown();
-            console.log(<Robot>robots.getChild(robots.getChildren().length - 1));
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.C])) {
             robots.activate(true);
@@ -136,11 +133,12 @@ namespace RoboGameNamespace {
                     if (maxY > worldSize) {
                         maxY = worldSize;
                     }
-
+                    robotEntity.surroundingFields = [];
                     for (let x: number = minX; x <= maxX; x++) {
                         for (let y: number = minY; y <= maxY; y++) {
                             let tile: WorldMapTile = mapHelperArray[x][y];
                             tile.activate(true);
+                            robotEntity.surroundingFields.push(tile);
                             if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
                                 robotEntity.interactWithField(tile);
                             }
@@ -152,7 +150,7 @@ namespace RoboGameNamespace {
         bioMassToHTML(ressourceBioMass);
         scrapToHTML(ressourceScrap);
         oilToHTML(ressourceOil);
-        metalToHTML(ressourceOre);
+        metalToHTML(ressourceMetal);
         viewport.draw();
     }
     export function startGameLoop(): void {

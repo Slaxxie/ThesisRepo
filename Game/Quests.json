@@ -1,7 +1,27 @@
 {
     "tutorial": [{
         "questTitle": "Tutorial",
-        "instruction": "Schließ mich ab, wenn du in der Story weiterkommen willst!",
+        "instruction": "Finish all the basic riddles about if-conditions",
+        "learningTopic": "Art/ifconditions.png",
+        "requirements": "4000 Biomass, all riddles",
+        "evaluateRequirement": [{
+            "ressource": "biomass",
+            "ressourceAmountRequired": 4000,
+            "robotAmountRequired": 0,
+            "riddleAmountRequired": 0,
+            "moduleRequired": "notRequired"
+        }],
+        "reward": "Reward: 200 Biomass, 100 Metal, 200 Oil, 150 Scrap, robots can have intelligent wayfinding",
+        "evaluateReward": [{
+            "biomass": 200,
+            "metal": 100,
+            "oil": 200,
+            "scrap": 150
+        }]
+    }],
+    "earlyGame": [{
+        "questTitle": "Erste Schritte",
+        "instruction": "Bla bla bla",
         "learningTopic": "Art/plainsTest.png",
         "requirements": "6000 Biomasse",
         "evaluateRequirement": [{
@@ -12,40 +32,11 @@
             "moduleRequired": "notRequired"
         }],
         "reward": "Belohnung",
-        "evaluateReward": "Reward code",
-        "chapterFinal": true
-    }],
-    "earlyGame": [{
-            "questTitle": "Erste Schritte",
-            "instruction": "Bla bla bla",
-            "learningTopic": "Art/plainsTest.png",
-            "requirements": "6000 Biomasse",
-            "evaluateRequirement": [{
-                "ressource": "biomass",
-                "ressourceAmountRequired": 6000,
-                "robotAmountRequired": 0,
-                "riddleAmountRequired": 0,
-                "moduleRequired": "notRequired"
-            }],
-            "reward": "Belohnung",
-            "evaluateReward": "Reward code",
-            "chapterFinal": true
-        },
-        {
-            "questTitle": "Weiter So",
-            "instruction": "Bla bla bla",
-            "learningTopic": "Art/plainsTest.png",
-            "requirements": "6000 Biomasse",
-            "evaluateRequirement": [{
-                "ressource": "biomass",
-                "ressourceAmountRequired": 6000,
-                "robotAmountRequired": 0,
-                "riddleAmountRequired": 0,
-                "moduleRequired": "notRequired"
-            }],
-            "reward": "Belohnung",
-            "evaluateReward": "Reward code",
-            "chapterFinal": true
-        }
-    ]
+        "evaluateReward": [{
+            "biomass": 200,
+            "metal": 100,
+            "oil": 200,
+            "scrap": 150
+        }]
+    }]
 }

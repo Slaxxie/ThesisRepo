@@ -4,12 +4,10 @@ var RoboGameNamespace;
     var ƒ = FudgeCore;
     window.addEventListener("load", init);
     let player;
-    let questHandler;
     let gameNode = new ƒ.Node("Game");
     let viewport = new ƒ.Viewport();
     let viewportNode = new ƒ.Node("Viewport");
     RoboGameNamespace.roboGameNode = new ƒ.Node("RoboGame");
-    RoboGameNamespace.movementSpeed = 10;
     RoboGameNamespace.robots = new ƒ.Node("Robots");
     RoboGameNamespace.worldTilesNode = new ƒ.Node("Worldmap");
     RoboGameNamespace.mapHelperArray = [];
@@ -25,7 +23,8 @@ var RoboGameNamespace;
         viewportNode.addChild(player);
         viewportNode.addChild(RoboGameNamespace.roboGameNode);
         RoboGameNamespace.roboGameNode.activate(false);
-        questHandler = new RoboGameNamespace.QuestHandler;
+        RoboGameNamespace.questHandler = new RoboGameNamespace.QuestHandler;
+        console.log(RoboGameNamespace.questHandler);
         RoboGameNamespace.storyHandler = new RoboGameNamespace.StoryHandler;
         RoboGameNamespace.createRobot();
         let cmpCamera = new ƒ.ComponentCamera();
@@ -34,7 +33,6 @@ var RoboGameNamespace;
         cmpCamera.mtxPivot.translateX(16);
         cmpCamera.mtxPivot.rotateY(180);
         player.addComponent(cmpCamera);
-        console.log(questHandler);
         viewport.initialize("Viewport", viewportNode, cmpCamera, canvas);
         console.log(gameNode);
         document.getElementById("worldCreation").style.display = "none";
@@ -42,7 +40,7 @@ var RoboGameNamespace;
         document.getElementById("robotCustomizer").style.display = "none";
         document.getElementById("robotMap").style.display = "none";
         document.getElementById("ressourceBar").style.display = "none";
-        document.getElementById("Sidebar").style.display = "none";
+        document.getElementById("sidebar").style.display = "none";
         document.getElementById("robotMapMenu").style.display = "none";
         RoboGameNamespace.initializeButtons();
         viewport.draw();
@@ -65,7 +63,6 @@ var RoboGameNamespace;
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.SPACE])) {
             player.moveCameraDown();
-            console.log(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
         }
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.C])) {
             RoboGameNamespace.robots.activate(true);
@@ -113,10 +110,12 @@ var RoboGameNamespace;
                     if (maxY > RoboGameNamespace.worldSize) {
                         maxY = RoboGameNamespace.worldSize;
                     }
+                    robotEntity.surroundingFields = [];
                     for (let x = minX; x <= maxX; x++) {
                         for (let y = minY; y <= maxY; y++) {
                             let tile = RoboGameNamespace.mapHelperArray[x][y];
                             tile.activate(true);
+                            robotEntity.surroundingFields.push(tile);
                             if (tile.mtxLocal.translation.x == robotEntity.mtxLocal.translation.x && tile.mtxLocal.translation.y == robotEntity.mtxLocal.translation.y) {
                                 robotEntity.interactWithField(tile);
                             }
@@ -128,7 +127,7 @@ var RoboGameNamespace;
         RoboGameNamespace.bioMassToHTML(RoboGameNamespace.ressourceBioMass);
         RoboGameNamespace.scrapToHTML(RoboGameNamespace.ressourceScrap);
         RoboGameNamespace.oilToHTML(RoboGameNamespace.ressourceOil);
-        RoboGameNamespace.metalToHTML(RoboGameNamespace.ressourceOre);
+        RoboGameNamespace.metalToHTML(RoboGameNamespace.ressourceMetal);
         viewport.draw();
     }
     function startGameLoop() {

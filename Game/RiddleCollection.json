@@ -1,8 +1,60 @@
 {
-    "text": {
-        "easy": [{
-                "header": "1",
-                "wordbank": "3 - 4 - 5 - 6",
+    "riddles": {
+        "chapterOne": [{
+                "header": "Operators 101",
+                "wordbank": "Given are a few conditional statements. <br>Fill in the correct operator symbols<br>",
+                "textBeforeInput": [
+                    "(Robot1 == lumberjack",
+                    "(ressourceMetal ",
+                    "(Robot2 ",
+                    "(ressourceDepot >= 0"
+                ],
+                "answers": [
+                    "||",
+                    ">=",
+                    "!=",
+                    "&&"
+                ],
+                "textAfterInput": [
+                    " Robot3 == lumberjack) &emsp; Check, if one of the robots i cappable of chopping wood.",
+                    " 200) &emsp; Check, if there is more than enough or the needed amount of metal left, to create a new robot.",
+                    " currentlyWorking) &emsp; If Robot2 is not working at the moment, we can use it otherwise",
+                    " Robot3.isFarming == false) &emsp; Make sure, that if we run out <br>of ressources and noone is working, they all activate<br><br>"
+                ],
+                "riddleImage": " ",
+                "finalRiddle": false
+            },
+            {
+                "header": "Help the robot sorting",
+                "wordbank": "The robot will take the ressouce from the depot. <br> Its goal is to filter out metal from the ressouces. <br><br>Wordbank: movetoexit, storagechest, returntodepot, ==, if<br>",
+                "textBeforeInput": [
+                    "Fill in the blanks: <br><br> robot.takeRessourceFromDepot(); <br>  if (depot ",
+                    " &emsp;",
+                    "} <br>",
+                    "&emsp; dropRessourceInto(metalChest); <br> &emsp;",
+                    "} else { <br> &emsp; moveToStorageChest(); <br> &emsp; dropRessourceInto("
+                ],
+                "answers": [
+                    "==",
+                    "movetoexit",
+                    "if",
+                    "returntodepot",
+                    "storagechest"
+                ],
+                "textAfterInput": [
+                    "  0) { ",
+                    " ();",
+                    " (chestID == metal) { <br> &emsp; moveToChest(metalChest);",
+                    " ();",
+                    ");<br> &emsp; returnToDepot;<br>}<br><br>"
+                ],
+                "riddleImage": "Art/riddle1.png",
+                "finalRiddle": true
+            }
+        ],
+        "chapterTwo": [{
+                "header": "Looping around",
+                "wordbank": "for, while, i, ++",
                 "textBeforeInput": [
                     "davor ",
                     "auch davor ",

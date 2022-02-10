@@ -8,11 +8,6 @@ var RoboGameNamespace;
     }
     RoboGameNamespace.createRobot = createRobot;
     function setRobotCost(robot) {
-        /* robot.costBioMass = 600;
-        robot.costMetal = 0;
-        robot.costOil = 0;
-        robot.costScrap = 100; */
-        console.log(robot.activeModuleString);
         switch (robot.activeModuleString) {
             case "lumberer": {
                 robot.costBioMass = 600;
@@ -62,6 +57,12 @@ var RoboGameNamespace;
             robot.costOil += 200;
             robot.costScrap += 0;
         }
+        if (robot.improvedWayfinding == true) {
+            robot.costBioMass += 0;
+            robot.costMetal += 100;
+            robot.costOil += 250;
+            robot.costScrap += 200;
+        }
         document.getElementById("costSpanBioMass").textContent = robot.costBioMass.toString();
         document.getElementById("costSpanMetal").textContent = robot.costMetal.toString();
         document.getElementById("costSpanOil").textContent = robot.costOil.toString();
@@ -69,39 +70,29 @@ var RoboGameNamespace;
     }
     RoboGameNamespace.setRobotCost = setRobotCost;
     function spawnRobot(robot) {
-        console.log(RoboGameNamespace.ressourceBioMass);
-        console.log(RoboGameNamespace.ressourceOre);
-        console.log(RoboGameNamespace.ressourceOil);
-        console.log(RoboGameNamespace.ressourceScrap);
-        console.log(robot.costBioMass);
-        console.log(robot.costMetal);
-        console.log(robot.costOil);
-        console.log(robot.costScrap);
         if (RoboGameNamespace.ressourceScrap >= robot.costScrap &&
             RoboGameNamespace.ressourceBioMass >= robot.costBioMass &&
-            RoboGameNamespace.ressourceOre >= robot.costMetal &&
+            RoboGameNamespace.ressourceMetal >= robot.costMetal &&
             RoboGameNamespace.ressourceOil >= robot.costOil) {
             //werte anpassen //Kosten anzeigen
             RoboGameNamespace.ressourceBioMass -= robot.costBioMass;
-            RoboGameNamespace.ressourceOre -= robot.costMetal;
+            RoboGameNamespace.ressourceMetal -= robot.costMetal;
             RoboGameNamespace.ressourceOil -= robot.costOil;
             RoboGameNamespace.ressourceScrap -= robot.costScrap;
-            console.log("enough");
-            document.getElementById("CustomizeWindow").removeChild(document.getElementById("Customizer"));
-            document.getElementById("CustomizeWindow").style.display = "none";
-            document.getElementById("CustomizeWindow").style.zIndex = "-1";
+            document.getElementById("customizeWindow").removeChild(document.getElementById("customizer"));
+            document.getElementById("customizeWindow").style.display = "none";
+            document.getElementById("customizeWindow").style.zIndex = "-1";
             document.getElementById("createRobot").style.zIndex = "0";
         }
         else {
             //removeRobot(robot);
             document.getElementById("warningSpan").textContent = "Not enough ressources";
-            console.log("not enough");
         }
     }
     RoboGameNamespace.spawnRobot = spawnRobot;
     function removeRobot(robot) {
         RoboGameNamespace.robots.removeChild(robot);
-        document.getElementById("Robots").removeChild(robot.robotUI);
+        document.getElementById("robots").removeChild(robot.robotUI);
     }
     RoboGameNamespace.removeRobot = removeRobot;
     function activateRobot(robot) {
@@ -110,7 +101,10 @@ var RoboGameNamespace;
     RoboGameNamespace.activateRobot = activateRobot;
     function disassembleRobot(robot) {
         removeRobot(robot);
-        RoboGameNamespace.ressourceScrap += 25;
+        RoboGameNamespace.ressourceBioMass += (robot.costBioMass) * 0.7;
+        RoboGameNamespace.ressourceMetal += (robot.costMetal) * 0.7;
+        RoboGameNamespace.ressourceOil += (robot.costOil) * 0.7;
+        RoboGameNamespace.ressourceScrap += (robot.costScrap) * 0.7;
     }
     RoboGameNamespace.disassembleRobot = disassembleRobot;
     //Module settings
@@ -179,11 +173,9 @@ var RoboGameNamespace;
     function setAutoMode(robot) {
         if (robot.isAutomated == true) {
             robot.isAutomated = false;
-            console.log("i am in non-auto mode");
         }
         else if (robot.isAutomated == false) {
             robot.isAutomated = true;
-            console.log("i am in auto mode");
         }
     }
     RoboGameNamespace.setAutoMode = setAutoMode;

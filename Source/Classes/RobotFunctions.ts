@@ -3,14 +3,9 @@ namespace RoboGameNamespace {
     export function createRobot(): void {
         let newRobot: Robot = new Robot("Robot #" + (robots.getChildren().length + 1), new ƒ.Vector2(worldSize / 2, worldSize / 2));
         robots.addChild(newRobot);
-        
+
     }
     export function setRobotCost(robot: Robot): void {
-        /* robot.costBioMass = 600;
-        robot.costMetal = 0;
-        robot.costOil = 0;
-        robot.costScrap = 100; */
-        console.log(robot.activeModuleString);
         switch (robot.activeModuleString) {
             case "lumberer": {
                 robot.costBioMass = 600;
@@ -32,7 +27,7 @@ namespace RoboGameNamespace {
                 robot.costOil = 200;
                 robot.costScrap = 150;
                 break;
-                
+
             }
             case "scrapper": {
                 robot.costBioMass = 600;
@@ -61,50 +56,45 @@ namespace RoboGameNamespace {
             robot.costOil += 200;
             robot.costScrap += 0;
         }
+        if (robot.improvedWayfinding == true) {
+            robot.costBioMass += 0;
+            robot.costMetal += 100;
+            robot.costOil += 250;
+            robot.costScrap += 200;
+        }
         document.getElementById("costSpanBioMass").textContent = robot.costBioMass.toString();
         document.getElementById("costSpanMetal").textContent = robot.costMetal.toString();
         document.getElementById("costSpanOil").textContent = robot.costOil.toString();
         document.getElementById("costSpanScrap").textContent = robot.costScrap.toString();
-        
+
     }
 
 
     export function spawnRobot(robot: Robot): void {
-
-        console.log(ressourceBioMass)
-        console.log(ressourceOre)
-        console.log(ressourceOil)
-        console.log(ressourceScrap)
-        console.log(robot.costBioMass)
-        console.log(robot.costMetal)
-        console.log(robot.costOil)
-        console.log(robot.costScrap)
         if (
-            ressourceScrap >= robot.costScrap && 
-            ressourceBioMass >= robot.costBioMass && 
-            ressourceOre >= robot.costMetal && 
+            ressourceScrap >= robot.costScrap &&
+            ressourceBioMass >= robot.costBioMass &&
+            ressourceMetal >= robot.costMetal &&
             ressourceOil >= robot.costOil
-            ) {
+        ) {
             //werte anpassen //Kosten anzeigen
             ressourceBioMass -= robot.costBioMass;
-            ressourceOre -= robot.costMetal;
+            ressourceMetal -= robot.costMetal;
             ressourceOil -= robot.costOil
             ressourceScrap -= robot.costScrap;
-            console.log("enough");
-            document.getElementById("CustomizeWindow").removeChild(document.getElementById("Customizer"));
-            document.getElementById("CustomizeWindow").style.display = "none";
-            document.getElementById("CustomizeWindow").style.zIndex = "-1";
+            document.getElementById("customizeWindow").removeChild(document.getElementById("customizer"));
+            document.getElementById("customizeWindow").style.display = "none";
+            document.getElementById("customizeWindow").style.zIndex = "-1";
             document.getElementById("createRobot").style.zIndex = "0";
         } else {
             //removeRobot(robot);
             document.getElementById("warningSpan").textContent = "Not enough ressources";
-            console.log("not enough");
         }
     }
 
     export function removeRobot(robot: Robot): void {
         robots.removeChild(robot);
-        document.getElementById("Robots").removeChild(robot.robotUI);
+        document.getElementById("robots").removeChild(robot.robotUI);
     }
 
     export function activateRobot(robot: Robot): void {
@@ -113,7 +103,10 @@ namespace RoboGameNamespace {
 
     export function disassembleRobot(robot: Robot): void {
         removeRobot(robot);
-        ressourceScrap += 25;
+        ressourceBioMass += (robot.costBioMass) * 0.7;
+        ressourceMetal += (robot.costMetal) * 0.7;
+        ressourceOil += (robot.costOil) * 0.7;
+        ressourceScrap += (robot.costScrap) * 0.7;
     }
 
     //Module settings
@@ -182,10 +175,8 @@ namespace RoboGameNamespace {
     export function setAutoMode(robot: Robot): void {
         if (robot.isAutomated == true) {
             robot.isAutomated = false;
-            console.log("i am in non-auto mode");
         } else if (robot.isAutomated == false) {
             robot.isAutomated = true;
-            console.log("i am in auto mode");
         }
     }
 

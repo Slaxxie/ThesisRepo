@@ -1,5 +1,7 @@
 namespace RoboGameNamespace {
     import ƒ = FudgeCore;
+    
+    let movementSpeed: number = 10;
 
     export class Player extends QuadNode {
         static instance: Player;

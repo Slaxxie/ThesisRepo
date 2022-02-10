@@ -3,23 +3,23 @@ namespace RoboGameNamespace {
     export function newGame(): void {
         document.getElementById("worldCreation").style.display = "block";
         document.getElementById("mainMenu").style.display = "none";
-        level = 1;
         document.getElementById("createWorldButton").addEventListener("click", () => {
             startGameLoop();
             document.getElementById("worldCreation").style.display = "none";
             storyHandler.playStoryPrologue();
+            document.getElementById("blocker").style.display = "none";
         });
 
     }
     export function loadGame(): void {
         startGameLoop();
-        console.log("loaded");
     }
 
     export function openRobotCustomization(): void {
+        document.getElementById("ressourceBar").style.zIndex= "4";
         let customizationUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
-        customizationUI.id = "Customizer";
-        document.getElementById("CustomizeWindow").appendChild(customizationUI);
+        customizationUI.id = "customizer";
+        document.getElementById("customizeWindow").appendChild(customizationUI);
         //Declare harvesting module
         let buttonLeftHarvesting: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         customizationUI.appendChild(buttonLeftHarvesting);
@@ -38,7 +38,6 @@ namespace RoboGameNamespace {
             harvestModuleIndex += 1;
             chooseHarvestModule(harvestModuleIndex);
             setRobotCost(<Robot>robots.getChild(robots.getChildren().length - 1));
-            console.log(harvestModuleIndex);
         });
         buttonRightHarvesting.id = "buttonRightHarvesting";
         buttonRightHarvesting.textContent = ">";
@@ -52,11 +51,34 @@ namespace RoboGameNamespace {
         activeFightMode.id = "activeFightMode";
         activeFightMode.textContent = "Fighting";
         customizationUI.appendChild(activeFightMode);
-
+        
+        
         let activeHover: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         activeHover.id = "activeHover";
         activeHover.textContent = ((<Robot>robots.getChild(robots.getChildren().length - 1)).moduleHovering).toString();
         customizationUI.appendChild(activeHover);
+        
+        let improvedMovementDiv: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+        improvedMovementDiv.id = "improvedMovementDiv";
+        improvedMovementDiv.textContent = "inactive";
+        customizationUI.appendChild(improvedMovementDiv);
+
+
+        let toggleImprovedWayfinding: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        customizationUI.appendChild(toggleImprovedWayfinding);
+        toggleImprovedWayfinding.addEventListener("click", () => {
+            let rob: Robot = <Robot>robots.getChild(robots.getChildren().length - 1);
+            if (rob.improvedWayfinding == false){
+                rob.improvedWayfinding = true; 
+                improvedMovementDiv.textContent = "active";
+            } else {
+                rob.improvedWayfinding = false;
+                improvedMovementDiv.textContent = "inactive";
+            }
+            setRobotCost(<Robot>robots.getChild(robots.getChildren().length - 1));
+        });
+        toggleImprovedWayfinding.id = "activateImprovedWayfinding";
+        toggleImprovedWayfinding.textContent = "Wayfinding";
 
 
 
@@ -131,7 +153,7 @@ namespace RoboGameNamespace {
         spawnNewRobot.addEventListener("click", () => {
             setRobotCost(<Robot>robots.getChild(robots.getChildren().length - 1));
             spawnRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
-            
+            document.getElementById("blocker").style.display = "none";
             
         });
         spawnNewRobot.id = "spawnNewRobot";
@@ -141,10 +163,12 @@ namespace RoboGameNamespace {
         customizationUI.appendChild(closeCustomization);
         closeCustomization.addEventListener("click", () => {
             removeRobot(<Robot>robots.getChild(robots.getChildren().length - 1));
-            document.getElementById("CustomizeWindow").removeChild(customizationUI);
-            document.getElementById("CustomizeWindow").style.display = "none";
-            document.getElementById("CustomizeWindow").style.zIndex = "-1";
+            document.getElementById("customizeWindow").removeChild(customizationUI);
+            document.getElementById("blocker").style.display = "none";
+            document.getElementById("customizeWindow").style.display = "none";
+            document.getElementById("customizeWindow").style.zIndex = "-1";
             document.getElementById("createRobot").style.zIndex = "0";
+            document.getElementById("ressourceBar").style.zIndex= "1";
         });
         closeCustomization.id = "closeCustomization";
         closeCustomization.textContent = "Cancel";

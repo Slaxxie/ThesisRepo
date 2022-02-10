@@ -1,6 +1,3 @@
-belohnung für quests und Rätsel
-kistenrätsel
-imagecontainer riddles
-alle riddles eines kapitels
-questvoraussetzung = abschluss aller riddles
-
+logbuch bei neuem kapitel (bilder)
+mehr Rätsel
+kapitel 2 ausführlich

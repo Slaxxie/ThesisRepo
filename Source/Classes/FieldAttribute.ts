@@ -1,7 +1,7 @@
 namespace RoboGameNamespace {
     export enum FIELDATTRIBUTE {
         PLAINS,
-        ORE,
+        METAL,
         OIL,
         FOREST,
         MOUNTAIN,

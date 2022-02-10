@@ -46,8 +46,8 @@ var RoboGameNamespace;
                             this.attribute = RoboGameNamespace.FIELDATTRIBUTE.PLAINS;
                         }
                         else if (randomizedInt > 0.85 && randomizedInt <= 0.92) {
-                            this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.oreMaterial));
-                            this.attribute = RoboGameNamespace.FIELDATTRIBUTE.ORE;
+                            this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.metalMaterial));
+                            this.attribute = RoboGameNamespace.FIELDATTRIBUTE.METAL;
                             this.ressourceAmount = Math.floor(Math.random() * 100) * RoboGameNamespace.increaseRessource;
                         }
                         else if (randomizedInt > 0.92) {
@@ -81,7 +81,7 @@ var RoboGameNamespace;
         }
         refreshTile() {
             switch (this.attribute) {
-                case RoboGameNamespace.FIELDATTRIBUTE.ORE: {
+                case RoboGameNamespace.FIELDATTRIBUTE.METAL: {
                     this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
                     this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.plainsMaterial));
                     break;

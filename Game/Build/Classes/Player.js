@@ -2,6 +2,7 @@
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
+    let movementSpeed = 10;
     class Player extends RoboGameNamespace.QuadNode {
         static instance;
         constructor() {
@@ -16,27 +17,27 @@ var RoboGameNamespace;
         }
         moveCameraRight() {
             this.setRectPosition();
-            Player.getInstance().mtxLocal.translateX((RoboGameNamespace.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+            Player.getInstance().mtxLocal.translateX((movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
         moveCameraLeft() {
             this.setRectPosition();
-            Player.getInstance().mtxLocal.translateX((-RoboGameNamespace.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+            Player.getInstance().mtxLocal.translateX((-movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
         moveCameraTop() {
             this.setRectPosition();
-            Player.getInstance().mtxLocal.translateY((RoboGameNamespace.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+            Player.getInstance().mtxLocal.translateY((movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
         moveCameraBottom() {
             this.setRectPosition();
-            Player.getInstance().mtxLocal.translateY((-RoboGameNamespace.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+            Player.getInstance().mtxLocal.translateY((-movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
         moveCameraDown() {
             this.setRectPosition();
-            Player.getInstance().mtxLocal.translateZ((-RoboGameNamespace.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+            Player.getInstance().mtxLocal.translateZ((-movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
         moveCameraUp() {
             this.setRectPosition();
-            Player.getInstance().mtxLocal.translateZ((RoboGameNamespace.movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
+            Player.getInstance().mtxLocal.translateZ((movementSpeed * ƒ.Loop.timeFrameReal) / 1000);
         }
     }
     RoboGameNamespace.Player = Player;

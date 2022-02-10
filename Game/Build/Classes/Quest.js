@@ -13,8 +13,7 @@ var RoboGameNamespace;
         reqModule;
         evaluateReward;
         reward;
-        chapterFinal;
-        constructor(_questTitle, _instruction, _learningTopic, _requirements, _reqRessource, _reqRessourceAmount, _reqRobotAmount, _reqRiddleAmount, _reqModule, _evaluateReward, _reward, _chapterFinal) {
+        constructor(_questTitle, _instruction, _learningTopic, _requirements, _reqRessource, _reqRessourceAmount, _reqRobotAmount, _reqRiddleAmount, _reqModule, _reward, _evaluateReward) {
             this.questTitle = _questTitle;
             this.instruction = _instruction;
             this.learningTopic = _learningTopic;
@@ -24,9 +23,8 @@ var RoboGameNamespace;
             this.reqRobotAmount = _reqRobotAmount;
             this.reqRiddleAmount = _reqRiddleAmount;
             this.reqModule = _reqModule;
-            this.evaluateReward = _evaluateReward;
             this.reward = _reward;
-            this.chapterFinal = _chapterFinal;
+            this.evaluateReward = _evaluateReward;
         }
         checkCollectedRessource(_ressource, _amountRequired) {
             let checker = false;
@@ -40,8 +38,8 @@ var RoboGameNamespace;
                         checker = false;
                     }
                 }
-                case "ore": {
-                    if (RoboGameNamespace.ressourceOre >= _amountRequired) {
+                case "metal": {
+                    if (RoboGameNamespace.ressourceMetal >= _amountRequired) {
                         checker = true;
                         break;
                     }

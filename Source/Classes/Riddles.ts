@@ -1,49 +1,45 @@
 namespace RoboGameNamespace {
     export let riddleCounter: number = 0;
+    export let questIndex: number = 0;
+    export let riddleIndex: number = 0;
+    export let questContentFinished: boolean = false;
     import ƒ = FudgeCore;
     export class Riddles extends ƒ.Node {
         // tslint:disable-next-line: no-any
         public riddleCollection: any;
-        constructor(_difficulty: string) {
+        constructor() {
             super("Riddle");
-            this.loadRiddleCollection(_difficulty);
-            
+            this.loadRiddleCollection();
+
         }
-        async loadRiddleCollection(difficulty: string): Promise<void> {
-            this.riddleCollection = await(await fetch("RiddleCollection.json")).json();
-                    this.textRiddle(difficulty);
+        async loadRiddleCollection(): Promise<void> {
+            this.riddleCollection = await (await fetch("RiddleCollection.json")).json();
+            this.createRiddle();
         }
 
-        textRiddle(difficulty: string): void {
-            if (difficulty == "easy") {
-                console.log("easy");
-                //Erstellung von HTML
-                // tslint:disable-next-line: no-any
-                let helperArray: any = this.riddleCollection.text.easy[Math.floor(Math.random() * this.riddleCollection.text.easy.length)];
-                let header: string = helperArray.header;
-                let wordbank: string = helperArray.wordbank;
-                let textBeforeInput: string[] = helperArray.textBeforeInput;
-                let answers: string[] = helperArray.answers;
-                let textAfterInput: string[] = helperArray.textAfterInput;
-                let textRiddle1: TextRiddles = new TextRiddles(header, wordbank, textBeforeInput, answers, textAfterInput);
-                console.log(textRiddle1);
-                
-            } else if (difficulty == "hard") {
-                console.log("hard");
-                // tslint:disable-next-line: no-any
-                let helperArray: any = this.riddleCollection.text.hard[Math.floor(Math.random() * this.riddleCollection.text.hard.length)];
-                let header: string = helperArray.header;
-                let wordbank: string = helperArray.wordbank;
-                let textBeforeInput: string[] = helperArray.textBeforeInput;
-                let answers: string[] = helperArray.answers;
-                let textAfterInput: string[] = helperArray.textAfterInput;
-                let textRiddle1: TextRiddles = new TextRiddles(header, wordbank, textBeforeInput, answers, textAfterInput);
-                console.log(textRiddle1);
-            }
-            else {
-                console.log(difficulty);
-                console.log("wrong input");
-            }
+        createRiddle(): void {
+
+            //Erstellung von HTML
+            // tslint:disable-next-line: no-any
+            let questArray: any = this.riddleCollection.riddles;
+            let questKey: any = Object.keys(questArray)[questIndex];
+            console.log(questArray[questKey]);
+            let riddleKey: any = Object.keys(questArray[questKey])[riddleIndex];
+            let currentRiddle: any = questArray[questKey][riddleKey];
+            console.log(currentRiddle); 
+
+            // Rätsel abschließen = riddleKey++ ; Funktion schreiben, die checkt, ob es das letzte Riddle im Objekt war, dann Quest abschließbar machen, sonst nächstes Riddle öffnen
+
+            let header: string = currentRiddle.header;
+            let wordbank: string = currentRiddle.wordbank;
+            let textBeforeInput: string[] = currentRiddle.textBeforeInput;
+            let answers: string[] = currentRiddle.answers;
+            let textAfterInput: string[] = currentRiddle.textAfterInput;
+            let currentRiddleImage: string = currentRiddle.riddleImage;
+            let lastRiddle: boolean = currentRiddle.finalRiddle;
+            let riddle: TextRiddles = new TextRiddles(header, wordbank, textBeforeInput, answers, textAfterInput, currentRiddleImage, lastRiddle);
+            console.log(riddle);
+
         }
     }
 }

@@ -1,20 +1,31 @@
 namespace RoboGameNamespace {
 
-
-
+    export let riddleBooleanTemp: boolean = false;
     export class TextRiddles {
         public textRiddleFrame: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         public message: HTMLParagraphElement = <HTMLParagraphElement>document.createElement("p");
+        
+        public riddleImageTemp: HTMLImageElement = <HTMLImageElement>document.createElement("img");
+        public finalRiddle: boolean;
         private answerHelperArray: string[];
 
-        constructor(header: string, wordbank: string, textBeforeInput: string[], answers: string[], textAfterInput: string[]) {
+        constructor(header: string, wordbank: string, textBeforeInput: string[], answers: string[], textAfterInput: string[], riddleImage: string, lastRiddle: boolean) {
             this.answerHelperArray = answers;
+            this.finalRiddle = lastRiddle;
             this.textRiddleFrame.id = "textRiddleFrame";
-            document.getElementById("Riddles").appendChild(this.textRiddleFrame);
+            document.getElementById("riddles").appendChild(this.textRiddleFrame);
+            let textRiddleHeader: HTMLDivElement = <HTMLDivElement>document.createElement("div");
             let textRiddleCenter: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+            textRiddleHeader.id = "textRiddleHeader";
             textRiddleCenter.id = "textRiddleCenter";
+            this.riddleImageTemp.src = riddleImage;
+            this.riddleImageTemp.id = "riddleImage";
+            this.textRiddleFrame.appendChild(textRiddleHeader);
+            this.textRiddleFrame.appendChild(this.riddleImageTemp);
             this.textRiddleFrame.appendChild(textRiddleCenter);
-            textRiddleCenter.innerHTML = header;
+
+
+            textRiddleHeader.innerHTML = header;
             textRiddleCenter.innerHTML += "<br/>";
             textRiddleCenter.innerHTML += wordbank;
             for (let i: number = 0; i < answers.length; i++) {
@@ -22,14 +33,12 @@ namespace RoboGameNamespace {
                 textRiddleCenter.innerHTML += textBeforeInput[i];
                 let input: HTMLInputElement = <HTMLInputElement>document.createElement("input");
                 input.id = "input" + i;
+                input.className = "inputRiddle";
                 textRiddleCenter.appendChild(input);
                 input.size = 15;
                 textRiddleCenter.innerHTML += "<span id = 'check" + i + "' ></span>";
                 textRiddleCenter.innerHTML += textAfterInput[i];
             }
-            textRiddleCenter.innerHTML += "<br/> blub <br/> ";
-            textRiddleCenter.innerHTML += "blab <br/> ";
-            textRiddleCenter.innerHTML += "blub <br/> ";
 
             let submitButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
             textRiddleCenter.appendChild(submitButton);
@@ -37,6 +46,7 @@ namespace RoboGameNamespace {
             submitButton.id = "riddleSubmit";
             submitButton.addEventListener("click", () => {
                 this.solveTextRiddle();
+                document.getElementById("blocker").style.display = "none";
             });
 
             let closeButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
@@ -44,7 +54,9 @@ namespace RoboGameNamespace {
             closeButton.textContent = "close";
             closeButton.id = "riddleClose";
             closeButton.addEventListener("click", () => {
+                riddleHandler.removeAllChildren();
                 document.getElementById("textRiddleFrame").remove();
+                document.getElementById("blocker").style.display = "none";
             });
 
             let messageBox: HTMLDivElement = <HTMLDivElement>document.createElement("div");
@@ -54,7 +66,10 @@ namespace RoboGameNamespace {
         }
 
         solveTextRiddle(): void {
-            console.log("worked");
+            if (this.finalRiddle == true) {
+                riddleBooleanTemp = true;
+                questContentFinished = true;
+            }
             let correctAnswers: boolean[] = [];
             for (let i: number = 0; i < this.answerHelperArray.length; i++) {
                 let input: string = (document.getElementById("input" + i) as HTMLInputElement).value.toLowerCase();
@@ -68,7 +83,6 @@ namespace RoboGameNamespace {
                     (document.getElementById("input" + i) as HTMLInputElement).value = input;
                     document.getElementById("check" + i).textContent = "✖";
                 }
-                console.log(input == this.answerHelperArray[i]);
             }
             let correctAnswersHelper: number = 0;
             for (let i: number = 0; i < correctAnswers.length; i++) {
@@ -77,20 +91,14 @@ namespace RoboGameNamespace {
                 }
             }
             if (correctAnswersHelper == correctAnswers.length) {
+                
                 this.message.innerHTML = "Riddle complete!";
                 riddleCounter++;
+                riddleIndex++;
                 //Belohnung vergeben und Rätselobjekt löschen
-                let closeRiddle: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-                this.textRiddleFrame.appendChild(closeRiddle);
-                closeRiddle.textContent = "close Riddle";
-                closeRiddle.addEventListener("click", () => {
-                    riddleHandler.removeAllChildren();
-                    document.getElementById("Riddles").removeChild(this.textRiddleFrame);   
-                });
+               
 
             } else {
-                console.log(correctAnswers.length);
-                console.log(correctAnswersHelper);
                 this.message.innerHTML = "Wrong answers!";
             }
 

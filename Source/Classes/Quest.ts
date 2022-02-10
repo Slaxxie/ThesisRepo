@@ -11,8 +11,7 @@ namespace RoboGameNamespace {
         public reqModule: string;
         public evaluateReward: string;
         public reward: string;
-        public chapterFinal: boolean;
-        constructor(_questTitle: string, _instruction: string, _learningTopic: string, _requirements: string, _reqRessource: string, _reqRessourceAmount: number, _reqRobotAmount: number, _reqRiddleAmount: number, _reqModule: string, _evaluateReward: string, _reward: string, _chapterFinal: boolean) {
+        constructor(_questTitle: string, _instruction: string, _learningTopic: string, _requirements: string, _reqRessource: string, _reqRessourceAmount: number, _reqRobotAmount: number, _reqRiddleAmount: number, _reqModule: string, _reward: string, _evaluateReward: string) {
             this.questTitle = _questTitle;
             this.instruction = _instruction;
             this.learningTopic = _learningTopic;
@@ -22,9 +21,8 @@ namespace RoboGameNamespace {
             this.reqRobotAmount = _reqRobotAmount;
             this.reqRiddleAmount = _reqRiddleAmount;
             this.reqModule = _reqModule;
-            this.evaluateReward = _evaluateReward;
             this.reward = _reward;
-            this.chapterFinal = _chapterFinal;
+            this.evaluateReward = _evaluateReward;
         }
 
         checkCollectedRessource(_ressource: string, _amountRequired: number): boolean {
@@ -38,8 +36,8 @@ namespace RoboGameNamespace {
                         checker = false;
                     }
                 }
-                case "ore": {
-                    if (ressourceOre >= _amountRequired) {
+                case "metal": {
+                    if (ressourceMetal >= _amountRequired) {
                         checker = true;
                         break;
                     } else {

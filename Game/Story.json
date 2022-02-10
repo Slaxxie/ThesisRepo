@@ -1,7 +1,7 @@
 {
     "prologue": {
-        "chapterContent": "Hallo, ich bin das erste Kapitel der Story",
-        "chapterImage": "Art/waterTest.png"
+        "chapterContent": " ",
+        "chapterImage": "Art/tutorial.png"
     },
     "tutorial": {
         "chapterContent": "Servus, ich bin Kapitel zwei!",

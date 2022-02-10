@@ -21,7 +21,6 @@
     <script src='./Build/Classes/Robot.js'></script>
     <script src='./Build/Classes/RobotFunctions.js'></script>
     <script src='./Build/Classes/Enemy.js'></script>
-    <script src='./Build/Classes/OpenRiddle.js'></script>
     <script src='./Build/Classes/Riddles.js'></script>
     <script src='./Build/Classes/TextRiddles.js'></script>
     <script src='./Build/Classes/Quest.js'></script>
@@ -32,24 +31,28 @@
 
 </head>
 
-<body>
+<body id="body">
     <canvas width="1600" height="900" id="game_canvas"></canvas>
 
     <div id="mainMenuBack">
-        <img src="./Art/background_thesis_scaled.png">
+        <img src="./Art/background_thesis2_scaled.png">
     </div>
 
     <div class="hidden" id="mainMenu">
+        Main Menu
+        <br><br>
         <button id="newGame">new game</button>
         <br>
+        <br>
         <button id="loadGame">continue</button>
+        <br>
         <br>
         <button id="option">options</button>
     </div>
 
     <div id="optionMenu">
-        <input id="MasterVolume" type="range" step="10" value="50">
-        <div id="MasterVolumeTag">
+        <input id="masterVolume" type="range" step="10" value="50">
+        <div id="masterVolumeTag">
             Master Volume
             <br>
             <br>
@@ -58,7 +61,11 @@
     </div>
 
     <div class="hidden" id="worldCreation">
+        <br> World Creation
+        <br>
+        <br>
         <button id="saveWorld">generate world</button>
+        <br><br>
         <button id="createWorldButton">Create</button>
     </div>
 
@@ -67,14 +74,14 @@
     </div>
 
 
-    <div id="CustomizeWindow">
+    <div id="customizeWindow">
 
     </div>
-    <div id="Sidebar">
+    <div id="sidebar">
         <div id="robotMapMenu">
             <button id="closeRobotMap">close Map</button>
         </div>
-        <div id="Robots">
+        <div id="robots">
 
         </div>
     </div>
@@ -92,25 +99,33 @@
 
 
     <div id="ressourceBar">
-        <div id="UI-Biomass-outer">
-            Biomass:
+        <div id="ressourceNames">
+            <div id="UI-Biomass-outer">
+                Biomass:
+            </div>
+            <div id="UI-Metal-outer">
+                Metal:
+            </div>
+            <div id="UI-Oil-outer">
+                Oil:
+            </div>
+            <div id="UI-Scrap-outer">
+                Scrap:
+            </div>
         </div>
-        <div id="UI-Biomass">
-        </div>
-        <div id="UI-Metal-outer">
-            Metal:
-        </div>
-        <div id="UI-Metal">
-        </div>
-        <div id="UI-Oil-outer">
-            Oil:
-        </div>
-        <div id="UI-Oil">
-        </div>
-        <div id="UI-Scrap-outer">
-            Scrap
-        </div>
-        <div id="UI-Scrap">
+        <div id="ressourceValues">
+
+            <div id="UI-Biomass">
+            </div>
+
+            <div id="UI-Metal">
+            </div>
+
+            <div id="UI-Oil">
+            </div>
+
+            <div id="UI-Scrap">
+            </div>
         </div>
     </div>
 
@@ -120,7 +135,8 @@
         <button id="questLogs">Quests</button>
 
         <div id="logbook-story">
-            <br> Story-Kapitel:
+            <br><button id="reviewPrologue">Review prologue</button>
+            <br><br> Story-Chapter:
             <br>
             <br>
 
@@ -132,29 +148,43 @@
         </div>
     </div>
 
-    <div id="EnemyWarning">
+    <div id="enemyWarning">
 
     </div>
-    <div id="RobotStatus">
+    <div id="robotStatus">
 
     </div>
-    <div id="RiddleMenu">
+    <div id="riddleMenu">
 
     </div>
-    <div id="Riddles">
+    <div id="riddles">
 
     </div>
-    <div id="QuestMenu">
+    <div id="questMenu">
 
     </div>
-    <div id="StoryBox">
+    <div id="storyBox">
 
     </div>
-    <div id="Log">
-        <div id="StoryLog">
+    <div id="log">
+        <div id="storyLog">
 
         </div>
-        <div id="QuestLog">
+        <div id="questLog">
+
+        </div>
+    </div>
+
+    <div id="blocker">
+
+    </div>
+
+    <div id="prologueDiv">
+        <button id="nextPage">next page</button>
+        <button id="closePrologue">close</button>
+        <div id="prologueContent">
+            <img id="prologueImage1" src="Art/prolog1.png">
+            <img id="prologueImage2" src="Art/prolog2.png">
 
         </div>
     </div>

@@ -5,23 +5,23 @@ var RoboGameNamespace;
     function newGame() {
         document.getElementById("worldCreation").style.display = "block";
         document.getElementById("mainMenu").style.display = "none";
-        RoboGameNamespace.level = 1;
         document.getElementById("createWorldButton").addEventListener("click", () => {
             RoboGameNamespace.startGameLoop();
             document.getElementById("worldCreation").style.display = "none";
             RoboGameNamespace.storyHandler.playStoryPrologue();
+            document.getElementById("blocker").style.display = "none";
         });
     }
     RoboGameNamespace.newGame = newGame;
     function loadGame() {
         RoboGameNamespace.startGameLoop();
-        console.log("loaded");
     }
     RoboGameNamespace.loadGame = loadGame;
     function openRobotCustomization() {
+        document.getElementById("ressourceBar").style.zIndex = "4";
         let customizationUI = document.createElement("div");
-        customizationUI.id = "Customizer";
-        document.getElementById("CustomizeWindow").appendChild(customizationUI);
+        customizationUI.id = "customizer";
+        document.getElementById("customizeWindow").appendChild(customizationUI);
         //Declare harvesting module
         let buttonLeftHarvesting = document.createElement("button");
         customizationUI.appendChild(buttonLeftHarvesting);
@@ -38,7 +38,6 @@ var RoboGameNamespace;
             RoboGameNamespace.harvestModuleIndex += 1;
             chooseHarvestModule(RoboGameNamespace.harvestModuleIndex);
             RoboGameNamespace.setRobotCost(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
-            console.log(RoboGameNamespace.harvestModuleIndex);
         });
         buttonRightHarvesting.id = "buttonRightHarvesting";
         buttonRightHarvesting.textContent = ">";
@@ -54,6 +53,26 @@ var RoboGameNamespace;
         activeHover.id = "activeHover";
         activeHover.textContent = (RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1).moduleHovering).toString();
         customizationUI.appendChild(activeHover);
+        let improvedMovementDiv = document.createElement("div");
+        improvedMovementDiv.id = "improvedMovementDiv";
+        improvedMovementDiv.textContent = "inactive";
+        customizationUI.appendChild(improvedMovementDiv);
+        let toggleImprovedWayfinding = document.createElement("button");
+        customizationUI.appendChild(toggleImprovedWayfinding);
+        toggleImprovedWayfinding.addEventListener("click", () => {
+            let rob = RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1);
+            if (rob.improvedWayfinding == false) {
+                rob.improvedWayfinding = true;
+                improvedMovementDiv.textContent = "active";
+            }
+            else {
+                rob.improvedWayfinding = false;
+                improvedMovementDiv.textContent = "inactive";
+            }
+            RoboGameNamespace.setRobotCost(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
+        });
+        toggleImprovedWayfinding.id = "activateImprovedWayfinding";
+        toggleImprovedWayfinding.textContent = "Wayfinding";
         //Declare fightmode
         let buttonFighting = document.createElement("button");
         customizationUI.appendChild(buttonFighting);
@@ -121,6 +140,7 @@ var RoboGameNamespace;
         spawnNewRobot.addEventListener("click", () => {
             RoboGameNamespace.setRobotCost(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
             RoboGameNamespace.spawnRobot(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
+            document.getElementById("blocker").style.display = "none";
         });
         spawnNewRobot.id = "spawnNewRobot";
         spawnNewRobot.textContent = "Spawn Robot";
@@ -128,10 +148,12 @@ var RoboGameNamespace;
         customizationUI.appendChild(closeCustomization);
         closeCustomization.addEventListener("click", () => {
             RoboGameNamespace.removeRobot(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
-            document.getElementById("CustomizeWindow").removeChild(customizationUI);
-            document.getElementById("CustomizeWindow").style.display = "none";
-            document.getElementById("CustomizeWindow").style.zIndex = "-1";
+            document.getElementById("customizeWindow").removeChild(customizationUI);
+            document.getElementById("blocker").style.display = "none";
+            document.getElementById("customizeWindow").style.display = "none";
+            document.getElementById("customizeWindow").style.zIndex = "-1";
             document.getElementById("createRobot").style.zIndex = "0";
+            document.getElementById("ressourceBar").style.zIndex = "1";
         });
         closeCustomization.id = "closeCustomization";
         closeCustomization.textContent = "Cancel";

@@ -31,6 +31,8 @@ namespace RoboGameNamespace {
         public costMetal: number = 0;
         public costOil: number = 0;
         public costScrap: number = 100;
+        public surroundingFields: WorldMapTile[];
+        public improvedWayfinding: boolean = false;
 
         public robotUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         private activateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
@@ -39,7 +41,7 @@ namespace RoboGameNamespace {
         private automateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private ressourceLoaded: number = 0;
         private collectsBioMass: boolean = false;
-        private collectsOre: boolean = false;
+        private collectsMetal: boolean = false;
         private collectsOil: boolean = false;
         private collectsScrap: boolean = false;
 
@@ -54,26 +56,30 @@ namespace RoboGameNamespace {
         constructor(_name: string, _pos: ƒ.Vector2) {
             super(_name, _pos, Robot.scale);
             this.robotID = robots.getChildren().length + 1;
-            this.robotUI.id = "RobotUI";
-            document.getElementById("Robots").appendChild(this.robotUI);
+            this.robotUI.id = "robotUI";
+            document.getElementById("robots").appendChild(this.robotUI);
             this.robotUI.appendChild(this.activateRobot);
             this.activateRobot.addEventListener("click", () => {
                 activateRobot(this);
+                console.log(this);
             });
             this.activateRobot.id = "activateRobot";
             this.activateRobot.textContent = "activate";
+
             this.robotUI.appendChild(this.callRobotBack);
             this.callRobotBack.addEventListener("click", () => {
                 this.returnTimer();
             });
             this.callRobotBack.id = "callRobotBack";
             this.callRobotBack.textContent = "call back";
+
             this.robotUI.appendChild(this.disassembleRobot);
             this.disassembleRobot.addEventListener("click", () => {
                 disassembleRobot(this);
             });
             this.disassembleRobot.id = "disassembleRobot";
             this.disassembleRobot.textContent = "disassemble";
+
             this.robotUI.appendChild(this.automateRobot);
             this.automateRobot.addEventListener("click", () => {
                 setAutoMode(this);
@@ -109,7 +115,7 @@ namespace RoboGameNamespace {
             this.interaction.textContent = "Harvesting: " + String(this.isInteracting);
             this.cargo.textContent = "Cargo loaded: " + String(this.ressourceLoaded) + " / " + String(this.ressourceCapacity);
         }
-
+        
         moveToNewField(): void {
             let thisX: number = this.mtxLocal.translation.x;
             let thisY: number = this.mtxLocal.translation.y;
@@ -119,65 +125,80 @@ namespace RoboGameNamespace {
             if (!this.isWaiting) {
                 if (!this.isFighting) {
                     if (!this.isInteracting) {
-                        nextDirection = Math.floor((Math.random() * 8)) + 1;
-                        switch (nextDirection) {
-                            case 1: {
-                                if (mapHelperArray[thisX - 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(-1);
-                                    this.mtxLocal.translateY(+1);
+                            nextDirection = Math.floor((Math.random() * 8)) + 1;
+                            if (this.improvedWayfinding == true) {
+                                for  (let i: number = 0; i < this.surroundingFields.length; i++){
+                                    if (this.activeModuleString == "lumberer" && this.surroundingFields[i].attribute == FIELDATTRIBUTE.FOREST) {
+                                        nextDirection = i+1;
+                                    } else if (this.activeModuleString == "miner" && this.surroundingFields[i].attribute == FIELDATTRIBUTE.METAL) {
+                                        nextDirection = i+1;
+                                    } else if (this.activeModuleString == "oiler" && this.surroundingFields[i].attribute == FIELDATTRIBUTE.OIL) {
+                                        nextDirection = i+1;
+                                    } else if (this.activeModuleString == "scrapper" && this.surroundingFields[i].attribute == FIELDATTRIBUTE.WRECKAGE) {
+                                        nextDirection = i+1;
+                                    }
                                 }
-                                break;
                             }
-                            case 2: {
-                                if (mapHelperArray[thisX][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateY(+1);
+                            switch (nextDirection) {
+                                 case 1: {
+                                    if (mapHelperArray[thisX - 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(-1);
+                                        this.mtxLocal.translateY(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 3: {
-                                if (mapHelperArray[thisX + 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(+1);
-                                    this.mtxLocal.translateY(+1);
+                                case 2: {
+                                    if (mapHelperArray[thisX - 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 4: {
-                                if (mapHelperArray[thisX - 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(-1);
+                                case 3: {
+                                    if (mapHelperArray[thisX - 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(-1);
+                                        this.mtxLocal.translateY(+1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 5: {
-                                if (mapHelperArray[thisX + 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(+1);
+                                case 4: {
+                                    if (mapHelperArray[thisX][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateY(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 6: {
-                                if (mapHelperArray[thisX - 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(-1);
-                                    this.mtxLocal.translateY(-1);
+                                case 5: {
+                                    break;
                                 }
-                                break;
-                            }
-                            case 7: {
-                                if (mapHelperArray[thisX][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateY(-1);
+                                case 6: {
+                                    if (mapHelperArray[thisX][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateY(+1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            case 8: {
-                                if (mapHelperArray[thisX + 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
-                                    this.mtxLocal.translateX(+1);
-                                    this.mtxLocal.translateY(-1);
+                                case 7: {
+                                    if (mapHelperArray[thisX + 1][thisY - 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(+1);
+                                        this.mtxLocal.translateY(-1);
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
+                                case 8: {
+                                    if (mapHelperArray[thisX + 1][thisY].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(+1);
+                                    }
+                                    break;
+                                }
+                                case 9: {
+                                    if (mapHelperArray[thisX + 1][thisY + 1].attribute != FIELDATTRIBUTE.WORLDBORDER) {
+                                        this.mtxLocal.translateX(+1);
+                                        this.mtxLocal.translateY(+1);
+                                    }
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
                         }
-
                     }
                 }
             }
@@ -205,10 +226,10 @@ namespace RoboGameNamespace {
                         }
                         break;
                     }
-                    case FIELDATTRIBUTE.ORE: {
+                    case FIELDATTRIBUTE.METAL: {
                         if (this.moduleMiner) {
                             this.isInteracting = true;
-                            this.collectsOre = true;
+                            this.collectsMetal = true;
                         }
                         break;
                     }
@@ -255,22 +276,21 @@ namespace RoboGameNamespace {
                     this.returnTimer();
                 }
                 if (_tile.ressourceAmount <= 0) {
-                    console.log("im empty");
                     this.isInteracting = false;
                     this.collectsBioMass = false;
                     _tile.refreshTile();
                 }
             }
-            if (this.collectsOre == true) {
+            if (this.collectsMetal == true) {
                 this.ressourceLoaded += increaseRessource;
                 _tile.ressourceAmount -= increaseRessource;
                 if (this.ressourceLoaded >= this.ressourceCapacity) {
-                    this.collectsOre = false;
+                    this.collectsMetal = false;
                     this.returnTimer();
                 }
                 if (_tile.ressourceAmount <= 0) {
                     this.isInteracting = false;
-                    this.collectsOre = false;
+                    this.collectsMetal = false;
                     _tile.refreshTile();
                 }
             }
@@ -307,6 +327,7 @@ namespace RoboGameNamespace {
             this.isWaiting = true;
             ƒ.Time.game.setTimer(6000, 1, () => {
                 this.returnToBase();
+                this.isInteracting = false;
             });
         }
 
@@ -318,7 +339,7 @@ namespace RoboGameNamespace {
                 this.ressourceLoaded = 0;
             }
             if (this.moduleMiner) {
-                ressourceOre += this.ressourceLoaded;
+                ressourceMetal += this.ressourceLoaded;
                 this.ressourceLoaded = 0;
             }
             if (this.moduleOil) {
@@ -346,17 +367,16 @@ namespace RoboGameNamespace {
                 this.isFighting = false;
             } else {
                 let enemyMessage: HTMLDivElement = <HTMLDivElement>document.createElement("div");
-                enemyMessage.id = "EnemyEncountered";
-                document.getElementById("EnemyWarning").appendChild(enemyMessage);
+                enemyMessage.id = "enemyEncountered";
+                document.getElementById("enemyWarning").appendChild(enemyMessage);
                 enemyMessage.textContent = String("Robot Nr.:" + this.robotID + " encountered an enemy!");
                 ƒ.Time.game.setTimer(20000, 1, () => {
                     if (this.isCalledBack) {
                         this.isCalledBack = false;
                     } else {
-                        console.log("fight started");
                         this.startFight(mapHelperArray[this.mtxLocal.translation.x][this.mtxLocal.translation.y], enemy);
                         ƒ.Time.game.setTimer(15000, 1, () => {
-                            document.getElementById("EnemyWarning").removeChild(enemyMessage);
+                            document.getElementById("enemyWarning").removeChild(enemyMessage);
                         });
                     }
                 });
@@ -364,12 +384,9 @@ namespace RoboGameNamespace {
         }
 
         startFight(tile: WorldMapTile, enemy: Enemy): void {
-            console.log("test" + tile + this + enemy);
             while (this.isAlive && enemy.isAlive) {
                 enemy.healthOfEnemy -= this.damageValue;
-                console.log("Enemy has " + enemy.healthOfEnemy + "HP left!");
                 this.robotHealth -= enemy.damageOfEnemy;
-                console.log("Robot Nr.:" + this.robotID + " has " + this.robotHealth + "HP left!");
                 if (enemy.healthOfEnemy <= 0) {
                     tile.hasEnemy = false;
                     tile.removeComponent(tile.getComponent(ƒ.ComponentMaterial));
@@ -382,11 +399,11 @@ namespace RoboGameNamespace {
                 if (this.robotHealth <= 0) {
                     this.isAlive = false;
                     let deathMessage: HTMLDivElement = <HTMLDivElement>document.createElement("div");
-                    deathMessage.id = "RobotDestroyed";
-                    document.getElementById("RobotStatus").appendChild(deathMessage);
+                    deathMessage.id = "robotDestroyed";
+                    document.getElementById("robotStatus").appendChild(deathMessage);
                     deathMessage.textContent = String("Robot Nr.:" + this.robotID + " was destroyed!");
                     ƒ.Time.game.setTimer(15000, 1, () => {
-                        document.getElementById("RobotStatus").removeChild(deathMessage);
+                        document.getElementById("robotStatus").removeChild(deathMessage);
                     });
                     break;
                 }
@@ -399,5 +416,5 @@ namespace RoboGameNamespace {
 
 
     // Robot Management
-   
+
 }

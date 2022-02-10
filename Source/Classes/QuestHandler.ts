@@ -13,9 +13,8 @@ namespace RoboGameNamespace {
     export class QuestHandler {
         public questUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         public questImage: HTMLImageElement = <HTMLImageElement>document.createElement("img");
-        public index: number = 0; //hochzählen, wenn quest abgeschlossen
         public quests: any;
-        public questArray: any[];
+        public chapterQuest: any;
         public questTitleTemp: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         public questInstructionTemp: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         public questImageTemp: HTMLImageElement = <HTMLImageElement>document.createElement("img");
@@ -30,30 +29,29 @@ namespace RoboGameNamespace {
 
         createCurrentQuest(): void {
             currentQuest = new Quest(
-                this.questArray[this.index].questTitle,
-                this.questArray[this.index].instruction,
-                this.questArray[this.index].learningTopic,
-                this.questArray[this.index].requirements,
-                this.questArray[this.index].evaluateRequirement[0].ressource,
-                this.questArray[this.index].evaluateRequirement[0].ressourceAmountRequired,
-                this.questArray[this.index].evaluateRequirement[0].robotAmountRequired,
-                this.questArray[this.index].evaluateRequirement[0].riddleAmountRequired,
-                this.questArray[this.index].evaluateRequirement[0].moduleRequired,
-                this.questArray[this.index].reward,
-                this.questArray[this.index].evaluateReward,
-                this.questArray[this.index].chapterFinal
+                this.chapterQuest[0].questTitle,
+                this.chapterQuest[0].instruction,
+                this.chapterQuest[0].learningTopic,
+                this.chapterQuest[0].requirements,
+                this.chapterQuest[0].evaluateRequirement[0].ressource,
+                this.chapterQuest[0].evaluateRequirement[0].ressourceAmountRequired,
+                this.chapterQuest[0].evaluateRequirement[0].robotAmountRequired,
+                this.chapterQuest[0].evaluateRequirement[0].riddleAmountRequired,
+                this.chapterQuest[0].evaluateRequirement[0].moduleRequired,
+                this.chapterQuest[0].reward,
+                this.chapterQuest[0].evaluateReward
             );
             this.buildQuestHTML(currentQuest);
         }
 
         buildQuestHTML(currentQuest: Quest): void {
-            console.log(currentQuest);
-            this.questUI.id = "QuestUI";
-            this.questImage.id = "QuestImage";
+
+            this.questUI.id = "questUI";
+            this.questImage.id = "questImage";
             this.questImage.src = currentQuest.learningTopic;
             this.questImageTemp.src = currentQuest.learningTopic;
             this.questImageTemp.id = "tempQuestImage";
-            document.getElementById("QuestMenu").appendChild(this.questUI);
+            document.getElementById("questMenu").appendChild(this.questUI);
             this.questUI.innerHTML = currentQuest.questTitle;
             this.questUI.innerHTML += "<br/>";
             this.questUI.innerHTML += currentQuest.instruction;
@@ -69,35 +67,48 @@ namespace RoboGameNamespace {
             this.questUI.appendChild(finishQuest);
             finishQuest.textContent = "finish Quest";
             finishQuest.id = "finishQuest";
-            document.getElementById("finishQuest").addEventListener("click", () => { 
-                if (this.checkQuest()) {
+            document.getElementById("finishQuest").addEventListener("click", () => {
+                console.log(questContentFinished);
+                console.log(this.checkQuest());
+                console.log("works1");
+                if (this.checkQuest() == true) {
+                    console.log("works2");
                     this.finishQuest();
-                } else {
-                    console.log("noch mehr biomasse");
+                    document.getElementById("blocker").style.display = "none";
                 }
+                console.log("works3");
             });
             let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
             this.questUI.appendChild(showHide);
             let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
-            imageContainer.id = "ImageContainer";
+            imageContainer.id = "questImageContainer";
             imageContainer.style.display = "none";
             showHide.textContent = "Show/Hide";
+            showHide.id = "showHideQuest";
+            let hideQuest: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            hideQuest.textContent = "X";
+            hideQuest.id = "hideQuestButton";
+            this.questUI.appendChild(hideQuest);
+            let closeImage: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            closeImage.id = "questCloseImage";
+            closeImage.textContent = "close image";
+            imageContainer.appendChild(closeImage);
             this.questUI.appendChild(imageContainer);
             imageContainer.appendChild(this.questImage);
             showHide.addEventListener("click", () => {
-                console.log("click");
                 if (imageContainer.style.display == "none") {
                     imageContainer.style.display = "block";
                 } else if (imageContainer.style.display == "block") {
                     imageContainer.style.display = "none";
                 }
             });
-            let hideQuest: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
-            this.questUI.appendChild(hideQuest);
-            hideQuest.textContent = "X";
-            hideQuest.id = "HideQuestButton";
             hideQuest.addEventListener("click", () => {
-                document.getElementById("QuestMenu").style.display = "none";
+                document.getElementById("questMenu").style.display = "none";
+                document.getElementById("blocker").style.display = "none";
+            });
+            closeImage.addEventListener("click", () => {
+                imageContainer.style.display = "none";
+
             });
             this.saveQuestIntoLog();
         }
@@ -110,60 +121,77 @@ namespace RoboGameNamespace {
             document.getElementById("logbook-quest").appendChild(newChapter);
             let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
             newChapter.appendChild(showHide);
+            showHide.id = "showHideQuest";
             showHide.textContent = "Show/Hide";
             let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
-            imageContainer.id = "ImageContainer";
+            imageContainer.id = "questImageContainerLog";
             imageContainer.style.display = "none";
-            imageContainer.appendChild(this.questImageTemp);
             newChapter.appendChild(imageContainer);
+            let closeImage: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            imageContainer.appendChild(closeImage);
+            imageContainer.appendChild(this.questImageTemp);
+            closeImage.id = "questCloseImage";
+            closeImage.textContent = "close image";
             showHide.addEventListener("click", () => {
-                console.log("click");
                 if (imageContainer.style.display == "none") {
                     imageContainer.style.display = "block";
                 } else if (imageContainer.style.display == "block") {
                     imageContainer.style.display = "none";
                 }
             });
+            closeImage.addEventListener("click", () => {
+                imageContainer.style.display = "none";
+
+            });
+
         }
 
         finishQuest(): void {
-            if (currentQuest.chapterFinal && currentQuestStage == QUESTSTAGE.ENDGAME) {
+            if (currentQuestStage == QUESTSTAGE.ENDGAME) {
                 this.playEpilogue();
-            } else if (currentQuest.chapterFinal) {
-                currentQuestStage++;
-                this.index = 0;
-                this.progressQuestChapter(currentQuestStage);
-                storyHandler.progressStoryChapter(currentQuestStage);
             } else {
-                this.index++;
-                this.createCurrentQuest();
+                currentQuestStage++;
+                this.progressQuestChapter(currentQuestStage);
+                questIndex++;
+                storyHandler.progressStoryChapter(currentQuestStage);
+                this.rewardQuest();
             }
+        }
+        rewardQuest(): void {
+            let ressourceKey: any = Object.keys(currentQuest.evaluateReward[0]);
+            ressourceBioMass += parseInt(currentQuest.evaluateReward[0][ressourceKey[0]]);
+            ressourceMetal += parseInt(currentQuest.evaluateReward[0][ressourceKey[1]]);
+            ressourceOil += parseInt(currentQuest.evaluateReward[0][ressourceKey[2]]);
+            ressourceScrap += parseInt(currentQuest.evaluateReward[0][ressourceKey[3]]);
         }
 
         progressQuestChapter(questStage: QUESTSTAGE): void {
+            riddleBooleanTemp = false;
             switch (questStage) {
                 case QUESTSTAGE.TUTORIAL: {
-                    this.questArray = this.quests.tutorial; 
+                    this.chapterQuest = this.quests.tutorial;
                     this.createCurrentQuest();
                     break;
                 }
                 case QUESTSTAGE.EARLYGAME: {
-                    this.questArray = this.quests.earlyGame;
+                    this.chapterQuest = this.quests.earlyGame;
                     this.createCurrentQuest();
+                    document.getElementById("improvedMovementDiv").style.zIndex = "5";
+                    document.getElementById("activateImprovedWayfinding").style.zIndex = "5";
                     break;
                 }
                 case QUESTSTAGE.MIDGAME: {
-                    this.questArray = this.quests.midGame;
+                    this.chapterQuest = this.quests.midGame;
                     this.createCurrentQuest();
                     break;
                 }
                 case QUESTSTAGE.LATEGAME: {
-                    this.questArray = this.quests.lateGame;
+                    this.chapterQuest = this.quests.lateGame;
                     this.createCurrentQuest();
                     break;
                 }
                 case QUESTSTAGE.ENDGAME: {
-                    this.questArray = this.quests.endGame;
+                    this.chapterQuest = this.quests.endGame;
                     this.createCurrentQuest();
                     break;
                 }
@@ -182,7 +210,8 @@ namespace RoboGameNamespace {
                 currentQuest.checkCollectedRessource(currentQuest.reqRessource, currentQuest.reqRessourceAmount) &&
                 currentQuest.checkInstalledModule(currentQuest.reqModule) &&
                 currentQuest.checkAmountOfRobots(currentQuest.reqRobotAmount) &&
-                currentQuest.checkAmountOfRiddlesSolved(currentQuest.reqRiddleAmount)
+                currentQuest.checkAmountOfRiddlesSolved(currentQuest.reqRiddleAmount) &&
+                questContentFinished == true
             ) {
                 return true;
             } else

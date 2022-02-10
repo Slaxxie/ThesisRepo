@@ -1,13 +1,13 @@
 "use strict";
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
-    RoboGameNamespace.ressourceBioMass = 2000;
+    RoboGameNamespace.ressourceBioMass = 3800;
     RoboGameNamespace.increaseBioMass = 10;
     RoboGameNamespace.ressourceScrap = 500;
     RoboGameNamespace.increaseScrap = 5;
-    RoboGameNamespace.ressourceOil = 200;
+    RoboGameNamespace.ressourceOil = 100;
     RoboGameNamespace.increaseOil = 3;
-    RoboGameNamespace.ressourceOre = 800;
+    RoboGameNamespace.ressourceMetal = 800;
     RoboGameNamespace.increaseRessource = 7;
     function bioMassToHTML(bioMass) {
         let div = document.getElementById("UI-Biomass");
@@ -24,9 +24,9 @@ var RoboGameNamespace;
         div.textContent = String(oil);
     }
     RoboGameNamespace.oilToHTML = oilToHTML;
-    function metalToHTML(ore) {
+    function metalToHTML(metal) {
         let div = document.getElementById("UI-Metal");
-        div.textContent = String(ore);
+        div.textContent = String(metal);
     }
     RoboGameNamespace.metalToHTML = metalToHTML;
 })(RoboGameNamespace || (RoboGameNamespace = {}));

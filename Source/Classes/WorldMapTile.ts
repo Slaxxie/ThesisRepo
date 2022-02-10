@@ -44,8 +44,8 @@ namespace RoboGameNamespace {
                             this.addComponent(new ƒ.ComponentMaterial(plainsMaterial));
                             this.attribute = FIELDATTRIBUTE.PLAINS;
                         } else if (randomizedInt > 0.85 && randomizedInt <= 0.92) {
-                            this.addComponent(new ƒ.ComponentMaterial(oreMaterial));
-                            this.attribute = FIELDATTRIBUTE.ORE;
+                            this.addComponent(new ƒ.ComponentMaterial(metalMaterial));
+                            this.attribute = FIELDATTRIBUTE.METAL;
                             this.ressourceAmount = Math.floor(Math.random() * 100) * increaseRessource;
                         } else if (randomizedInt > 0.92) {
                             this.addComponent(new ƒ.ComponentMaterial(wreckageMaterial));
@@ -80,7 +80,7 @@ namespace RoboGameNamespace {
         }
         refreshTile(): void {
             switch (this.attribute) {
-                case FIELDATTRIBUTE.ORE: {
+                case FIELDATTRIBUTE.METAL: {
                     this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
                     this.addComponent(new ƒ.ComponentMaterial(plainsMaterial));
                     break;
