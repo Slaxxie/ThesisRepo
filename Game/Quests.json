@@ -22,7 +22,7 @@
     "earlyGame": [{
         "questTitle": "Finished the Prototype",
         "instruction": "Please write a review",
-        "learningTopic": "",
+        "learningTopic": " ",
         "requirements": "",
         "evaluateRequirement": [{
             "ressource": "biomass",
