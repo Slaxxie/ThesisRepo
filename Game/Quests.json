@@ -20,10 +20,10 @@
         }]
     }],
     "earlyGame": [{
-        "questTitle": "Erste Schritte",
-        "instruction": "Bla bla bla",
-        "learningTopic": "Art/plainsTest.png",
-        "requirements": "6000 Biomasse",
+        "questTitle": "Finished the Prototype",
+        "instruction": "Please write a review",
+        "learningTopic": "",
+        "requirements": "",
         "evaluateRequirement": [{
             "ressource": "biomass",
             "ressourceAmountRequired": 6000,

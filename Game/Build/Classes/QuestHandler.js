@@ -68,7 +68,7 @@ var RoboGameNamespace;
             let imageContainer = document.createElement("div");
             imageContainer.id = "questImageContainer";
             imageContainer.style.display = "none";
-            showHide.textContent = "Show/Hide";
+            showHide.textContent = "Topic Content";
             showHide.id = "showHideQuest";
             let hideQuest = document.createElement("button");
             hideQuest.textContent = "X";
