@@ -24,10 +24,8 @@ var RoboGameNamespace;
             RoboGameNamespace.newRiddle = null;
             RoboGameNamespace.roboGameNode.activate(false);
         });
-        document.getElementById("loadGame").addEventListener("click", () => {
-            RoboGameNamespace.loadGame();
-            document.getElementById("optionMenu").style.display = "none";
-            document.getElementById("blocker").style.display = "none";
+        document.getElementById("soundMenu").addEventListener("click", () => {
+            document.getElementById("optionMenu").style.display = "block";
         });
         document.getElementById("showQuest").addEventListener("click", () => {
             document.getElementById("blocker").style.display = "block";
@@ -86,15 +84,14 @@ var RoboGameNamespace;
         });
         document.getElementById("saveWorld").addEventListener("click", () => {
             RoboGameNamespace.saveNoisemap();
-            //create image from noisemap and show
         });
         document.getElementById("createRobot").addEventListener("click", () => {
             document.getElementById("blocker").style.display = "block";
             RoboGameNamespace.openRobotCustomization();
             RoboGameNamespace.createRobot();
-            document.getElementById("customizeWindow").style.display = "block"; //change z index
+            document.getElementById("customizeWindow").style.display = "block";
             document.getElementById("customizeWindow").style.zIndex = "2";
-            document.getElementById("createRobot").style.zIndex = "-1"; //change z index
+            document.getElementById("createRobot").style.zIndex = "-1";
             RoboGameNamespace.chooseHarvestModule(RoboGameNamespace.harvestModuleIndex);
         });
         document.getElementById("reviewPrologue").addEventListener("click", () => {

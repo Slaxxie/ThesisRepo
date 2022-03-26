@@ -7,6 +7,7 @@ var RoboGameNamespace;
     let gameNode = new ƒ.Node("Game");
     let viewport = new ƒ.Viewport();
     let viewportNode = new ƒ.Node("Viewport");
+    let questHandler = new RoboGameNamespace.QuestHandler;
     RoboGameNamespace.roboGameNode = new ƒ.Node("RoboGame");
     RoboGameNamespace.robots = new ƒ.Node("Robots");
     RoboGameNamespace.worldTilesNode = new ƒ.Node("Worldmap");
@@ -14,6 +15,7 @@ var RoboGameNamespace;
     RoboGameNamespace.riddleUI = new ƒ.Node("Riddle UI");
     RoboGameNamespace.riddleHandler = new ƒ.Node("Riddle Handler");
     RoboGameNamespace.currentQuestStage = RoboGameNamespace.QUESTSTAGE.TUTORIAL;
+    RoboGameNamespace.sfxPlayer = new RoboGameNamespace.SFX();
     gameNode.appendChild(viewportNode);
     function init(_event) {
         const canvas = document.querySelector("canvas");
@@ -23,8 +25,7 @@ var RoboGameNamespace;
         viewportNode.addChild(player);
         viewportNode.addChild(RoboGameNamespace.roboGameNode);
         RoboGameNamespace.roboGameNode.activate(false);
-        RoboGameNamespace.questHandler = new RoboGameNamespace.QuestHandler;
-        console.log(RoboGameNamespace.questHandler);
+        console.log(questHandler);
         RoboGameNamespace.storyHandler = new RoboGameNamespace.StoryHandler;
         RoboGameNamespace.createRobot();
         let cmpCamera = new ƒ.ComponentCamera();
@@ -44,6 +45,8 @@ var RoboGameNamespace;
         document.getElementById("robotMapMenu").style.display = "none";
         RoboGameNamespace.initializeButtons();
         viewport.draw();
+        RoboGameNamespace.sfxPlayer.soundTrack(true);
+        document.getElementById("masterVolume").addEventListener("input", RoboGameNamespace.changeMasterVolume);
     }
     function hndKey() {
         if (ƒ.Keyboard.isPressedOne([ƒ.KEYBOARD_CODE.D])) {
@@ -142,17 +145,4 @@ var RoboGameNamespace;
     }
     RoboGameNamespace.startGameLoop = startGameLoop;
 })(RoboGameNamespace || (RoboGameNamespace = {}));
-/*
-Alt+Shift+F = auto-format
-Koordinatensystem = Rechtshändig
-x = links (-) - rechts (+)
-y = unten (-) - oben (+)
-z = vorne (-) - honten (+)
-F2 = refactor
-Strg + D = Mehrere Cursor
-Strg + # = ein/auskommentieren
-Alt + Shift + A = Block ein/auskommentieren
-Alt + Shift + Pfeil oben/unten = Zeile kopieren
-Alt + Pfeil oben/unten = Zeile verschieben
-*/ 
 //# sourceMappingURL=RoboGame.js.map

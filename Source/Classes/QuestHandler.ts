@@ -56,14 +56,15 @@ namespace RoboGameNamespace {
             this.questUI.innerHTML += "<br/>";
             this.questUI.innerHTML += currentQuest.instruction;
             this.questUI.innerHTML += "<br/>";
-            this.questUI.innerHTML += "Bedingungen: " + currentQuest.requirements;
+            this.questUI.innerHTML += "Conditions: " + currentQuest.requirements;
             this.questUI.innerHTML += "<br/>";
-            this.questUI.innerHTML += "Belohnung: " + currentQuest.reward;
+            this.questUI.innerHTML += "Reward: " + currentQuest.reward;
             this.questUI.innerHTML += "<br/>";
             this.questUI.innerHTML += "<br/>";
             this.questTitleTemp.innerHTML = currentQuest.questTitle;
             this.questInstructionTemp.innerHTML = currentQuest.instruction;
             let finishQuest: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            finishQuest.className = "buttonDesignClass";
             this.questUI.appendChild(finishQuest);
             finishQuest.textContent = "finish Quest";
             finishQuest.id = "finishQuest";
@@ -79,6 +80,7 @@ namespace RoboGameNamespace {
                 console.log("works3");
             });
             let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            showHide.className = "buttonDesignClass";
             this.questUI.appendChild(showHide);
             let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
             imageContainer.id = "questImageContainer";
@@ -86,10 +88,12 @@ namespace RoboGameNamespace {
             showHide.textContent = "Topic Content";
             showHide.id = "showHideQuest";
             let hideQuest: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            hideQuest.className = "buttonDesignClass";
             hideQuest.textContent = "X";
             hideQuest.id = "hideQuestButton";
             this.questUI.appendChild(hideQuest);
             let closeImage: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            closeImage.className = "buttonDesignClass";
             closeImage.id = "questCloseImage";
             closeImage.textContent = "close image";
             imageContainer.appendChild(closeImage);
@@ -120,6 +124,7 @@ namespace RoboGameNamespace {
             newChapter.appendChild(this.questImageTemp);
             document.getElementById("logbook-quest").appendChild(newChapter);
             let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            showHide.className = "buttonDesignClass";
             newChapter.appendChild(showHide);
             showHide.id = "showHideQuest";
             showHide.textContent = "Show/Hide";
@@ -128,6 +133,7 @@ namespace RoboGameNamespace {
             imageContainer.style.display = "none";
             newChapter.appendChild(imageContainer);
             let closeImage: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            closeImage.className = "buttonDesignClass";
             imageContainer.appendChild(closeImage);
             imageContainer.appendChild(this.questImageTemp);
             closeImage.id = "questCloseImage";
@@ -176,8 +182,6 @@ namespace RoboGameNamespace {
                 case QUESTSTAGE.EARLYGAME: {
                     this.chapterQuest = this.quests.earlyGame;
                     this.createCurrentQuest();
-                    document.getElementById("improvedMovementDiv").style.zIndex = "5";
-                    document.getElementById("activateImprovedWayfinding").style.zIndex = "5";
                     break;
                 }
                 case QUESTSTAGE.MIDGAME: {

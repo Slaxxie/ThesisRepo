@@ -18,7 +18,6 @@ var RoboGameNamespace;
             this.createRiddle();
         }
         createRiddle() {
-            //Erstellung von HTML
             // tslint:disable-next-line: no-any
             let questArray = this.riddleCollection.riddles;
             let questKey = Object.keys(questArray)[RoboGameNamespace.questIndex];
@@ -26,7 +25,7 @@ var RoboGameNamespace;
             let riddleKey = Object.keys(questArray[questKey])[RoboGameNamespace.riddleIndex];
             let currentRiddle = questArray[questKey][riddleKey];
             console.log(currentRiddle);
-            // Rätsel abschließen = riddleKey++ ; Funktion schreiben, die checkt, ob es das letzte Riddle im Objekt war, dann Quest abschließbar machen, sonst nächstes Riddle öffnen
+            console.log(questKey);
             let header = currentRiddle.header;
             let wordbank = currentRiddle.wordbank;
             let textBeforeInput = currentRiddle.textBeforeInput;

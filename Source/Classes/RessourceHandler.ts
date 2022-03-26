@@ -1,5 +1,5 @@
 namespace RoboGameNamespace {
-    export let ressourceBioMass: number = 3800;
+    export let ressourceBioMass: number = 3600;
     export let increaseBioMass: number = 10;
     export let ressourceScrap: number = 500;
     export let increaseScrap: number = 5;

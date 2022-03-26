@@ -2,8 +2,8 @@
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
     var ƒ = FudgeCore;
+    let noiseMap = new ƒ.Noise2(Math.random);
     RoboGameNamespace.worldSize = 32;
-    RoboGameNamespace.noiseMap = new ƒ.Noise2(Math.random);
     RoboGameNamespace.playerBase = new ƒ.Vector3(Math.floor(RoboGameNamespace.worldSize / 2), Math.floor(RoboGameNamespace.worldSize / 2), 0);
     class WorldMapTile extends RoboGameNamespace.QuadNode {
         static scale = new ƒ.Vector2(1, 1);
@@ -22,7 +22,6 @@ var RoboGameNamespace;
                 this.attribute = RoboGameNamespace.FIELDATTRIBUTE.WORLDBORDER;
             }
             else if (this.mtxLocal.translation.x == Math.floor(RoboGameNamespace.worldSize / 2) && this.mtxLocal.translation.y == Math.floor(RoboGameNamespace.worldSize / 2)) {
-                //} else if (this.mtxLocal.translation == playerBase) {
                 this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.factoryMaterial));
                 this.attribute = RoboGameNamespace.FIELDATTRIBUTE.FACTORY;
             }
@@ -72,11 +71,11 @@ var RoboGameNamespace;
                         break;
                     }
                 }
-                /* if (this.enemyRnd <= 0.03) {
+                if (this.enemyRnd <= 0.03) {
                     this.hasEnemy = true;
                     this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
-                    this.addComponent(new ƒ.ComponentMaterial(enemyMaterial));
-                } */
+                    this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.enemyMaterial));
+                }
             }
         }
         refreshTile() {
@@ -125,7 +124,7 @@ var RoboGameNamespace;
         for (let x = 0; x < RoboGameNamespace.worldSize; x++) {
             map[x] = [];
             for (let y = 0; y < RoboGameNamespace.worldSize; y++) {
-                map[x][y] = RoboGameNamespace.noiseMap.sample(x, y);
+                map[x][y] = noiseMap.sample(x, y);
             }
         }
         localStorage.setItem("Map", JSON.stringify(map));

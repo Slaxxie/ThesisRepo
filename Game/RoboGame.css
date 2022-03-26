@@ -16,6 +16,11 @@
 }
 
 #closeRobotMap {
+    background-color: rgb(34, 34, 34);
+    border-style: outset;
+    border-color: orangered;
+    border-width: 1px;
+    color: orangered;
     float: right;
     margin: 5px;
 }
@@ -281,12 +286,24 @@
     border-color: orangered;
 }
 
+#soundMenu {
+    background-color: rgb(44, 44, 44);
+    text-align: center;
+    color: orangered;
+    border: 2px;
+    border-style: outset;
+    border-color: orangered;
+    position: inherit;
+    left: 50px;
+    top: 25px;
+}
+
 #optionMenu {
     display: none;
     position: absolute;
     width: 200px;
-    top: 500px;
-    left: 690px;
+    top: 450px;
+    left: 715px;
     padding: 10px;
     background-color: rgb(44, 44, 44);
     text-align: center;
@@ -298,6 +315,16 @@
 
 #masterVolume {
     width: 190px;
+}
+
+#backOption {
+    height: 20px;
+    background-color: rgb(70, 70, 70);
+    color: orangered;
+    text-align: center;
+    border: 2px;
+    border-style: outset;
+    border-color: orangered;
 }
 
 #backOption::after {
@@ -329,21 +356,41 @@
 }
 
 #activateRobot {
+    background-color: rgb(34, 34, 34);
+    border-style: outset;
+    border-color: orangered;
+    border-width: 1px;
+    color: orangered;
     width: 50%;
     height: 20px;
 }
 
 #callRobotBack {
+    background-color: rgb(34, 34, 34);
+    border-style: outset;
+    border-color: orangered;
+    border-width: 1px;
+    color: orangered;
     width: 50%;
     height: 20px;
 }
 
 #disassembleRobot {
+    background-color: rgb(34, 34, 34);
+    border-style: outset;
+    border-color: orangered;
+    border-width: 1px;
+    color: orangered;
     width: 50%;
     height: 20px;
 }
 
 #automateRobot {
+    background-color: rgb(34, 34, 34);
+    border-style: outset;
+    border-color: orangered;
+    border-width: 1px;
+    color: orangered;
     width: 50%;
     height: 20px;
 }
@@ -378,8 +425,8 @@
     border-style: outset;
     border-color: orangered;
     position: absolute;
-    top: 50px;
-    left: 25%;
+    top: 10%;
+    left: 30%;
     padding: 30px;
     z-index: 4;
 }
@@ -1042,4 +1089,8 @@
 
 #prologueImage2 {
     display: none;
+}
+
+.buttonDesignClass:hover {
+    box-shadow: 0 0px 20px orangered;
 }

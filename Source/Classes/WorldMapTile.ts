@@ -1,8 +1,8 @@
 namespace RoboGameNamespace {
     import ƒ = FudgeCore;
+    
+    let noiseMap: ƒ.Noise2 = new ƒ.Noise2(Math.random);
     export let worldSize: number = 32;
-
-    export let noiseMap: ƒ.Noise2 = new ƒ.Noise2(Math.random);
     export let playerBase: ƒ.Vector3 = new ƒ.Vector3(Math.floor(worldSize / 2), Math.floor(worldSize / 2), 0);
 
     export class WorldMapTile extends QuadNode {
@@ -23,7 +23,6 @@ namespace RoboGameNamespace {
                 this.addComponent(new ƒ.ComponentMaterial(borderMaterial));
                 this.attribute = FIELDATTRIBUTE.WORLDBORDER;
             } else if (this.mtxLocal.translation.x == Math.floor(worldSize / 2) && this.mtxLocal.translation.y == Math.floor(worldSize / 2)) {
-                //} else if (this.mtxLocal.translation == playerBase) {
                 this.addComponent(new ƒ.ComponentMaterial(factoryMaterial));
                 this.attribute = FIELDATTRIBUTE.FACTORY;
             } else {
@@ -71,11 +70,11 @@ namespace RoboGameNamespace {
                         break;
                     }
                 }
-                /* if (this.enemyRnd <= 0.03) {
+                if (this.enemyRnd <= 0.03) {
                     this.hasEnemy = true;
                     this.removeComponent(this.getComponent(ƒ.ComponentMaterial));
                     this.addComponent(new ƒ.ComponentMaterial(enemyMaterial));
-                } */
+                }
             }
         }
         refreshTile(): void {

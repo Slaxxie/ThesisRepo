@@ -2,7 +2,7 @@
     "riddles": {
         "chapterOne": [{
                 "header": "An error in the database!",
-                "wordbank": "There has been an error in the database! <br> Help figuring out the meanings of those symbols. <br><br>Wordbank: lesser than, equals, greater than, not<br>",
+                "wordbank": "There has been an error in the database! <br> Help figuring out the meanings of those symbols. <br><br>Wordbank: less than, equals, greater than, not<br>",
                 "textBeforeInput": [
                     "!= &nbsp;: ",
                     ">= : ",
@@ -13,7 +13,7 @@
                     "not",
                     "greater than",
                     "equals",
-                    "lesser than"
+                    "less than"
                 ],
                 "textAfterInput": [
                     "&emsp;",
@@ -22,7 +22,7 @@
                     "&emsp;<br><br>"
                 ],
                 "riddleImage": "",
-                "finalRiddle": false
+                "finalRiddle": true
             }, {
                 "header": "Operators 101",
                 "wordbank": "Given are a few conditional statements. <br>Fill in the correct operator symbols<br>",
@@ -30,7 +30,7 @@
                     "(Robot1 == lumberjack",
                     "(ressourceMetal ",
                     "(Robot2 ",
-                    "(ressourceDepot >= 0"
+                    "(ressourceDepot <= 0"
                 ],
                 "answers": [
                     "||",
@@ -77,95 +77,13 @@
             }
         ],
         "chapterTwo": [{
-                "header": "Looping around",
-                "wordbank": "for, while, i, ++",
-                "textBeforeInput": [
-                    "davor ",
-                    "auch davor ",
-                    "sdfhj",
-                    "dfgdfh"
-                ],
-                "answers": [
-                    "3",
-                    "4",
-                    "5",
-                    "6"
-                ],
-                "textAfterInput": [
-                    " danach",
-                    " auch danach",
-                    "fdgh",
-                    "sdfgdsg"
-                ],
-                "riddleImage": "Art/plainsTest.png",
-                "finalRiddle": false
-            },
-            {
-                "header": "2",
-                "wordbank": "3 - 4 - 5",
-                "textBeforeInput": [
-                    "davor ",
-                    "auch davor ",
-                    "sdfhj"
-                ],
-                "answers": [
-                    "3",
-                    "4",
-                    "5"
-                ],
-                "textAfterInput": [
-                    " danach",
-                    " auch danach",
-                    "fdgh"
-                ],
-                "riddleImage": "Art/plainsTest.png",
-                "finalRiddle": false
-            },
-            {
-                "header": "3",
-                "wordbank": "3 - 4 - 5",
-                "textBeforeInput": [
-                    "davor ",
-                    "auch davor ",
-                    "sdfhj",
-                    "dfgdfh"
-                ],
-                "answers": [
-                    "3",
-                    "4",
-                    "5",
-                    "6"
-                ],
-                "textAfterInput": [
-                    " danach",
-                    " auch danach",
-                    "fdgh",
-                    "sdfgdsg"
-                ],
-                "riddleImage": "Art/plainsTest.png",
-                "finalRiddle": false
-            },
-            {
-                "header": "4",
-                "wordbank": "3 - 4 - 5",
-                "textBeforeInput": [
-                    "davor ",
-                    "auch davor ",
-                    "sdfhj"
-                ],
-                "answers": [
-                    "3",
-                    "4",
-                    "5"
-                ],
-                "textAfterInput": [
-                    " danach",
-                    " auch danach",
-                    "fdgh"
-                ],
-                "riddleImage": "Art/plainsTest.png",
-                "finalRiddle": false
-            }
-        ]
+            "header": "Congratulations, you finished the Prototype",
+            "wordbank": "",
+            "textBeforeInput": "",
+            "answers": "",
+            "textAfterInput": "",
+            "riddleImage": "Art/endscreen.png",
+            "finalRiddle": false
+        }]
     }
 }

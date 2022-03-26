@@ -1,7 +1,7 @@
 "use strict";
 var RoboGameNamespace;
 (function (RoboGameNamespace) {
-    RoboGameNamespace.ressourceBioMass = 3800;
+    RoboGameNamespace.ressourceBioMass = 3600;
     RoboGameNamespace.increaseBioMass = 10;
     RoboGameNamespace.ressourceScrap = 500;
     RoboGameNamespace.increaseScrap = 5;

@@ -11,7 +11,6 @@ namespace RoboGameNamespace {
             this.loadStory();
 
         }
-        //tester
         async loadStory(): Promise<void> {
             this.story = await (await fetch("Story.json")).json();
             this.buildStory();
@@ -29,15 +28,16 @@ namespace RoboGameNamespace {
             let imageContainer: HTMLDivElement = <HTMLDivElement>document.createElement("div");
             imageContainer.id = "storyImageContainer";
             this.storyImage.id = "storyImage";
-            this.storyUI.appendChild(imageContainer);
-            imageContainer.appendChild(this.storyImage);
             let closeButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            closeButton.className = "buttonDesignClass";
             this.storyUI.appendChild(closeButton);
             closeButton.id = "closeStory";
             closeButton.textContent = "X";
             closeButton.addEventListener("click", () => {
                 this.storyUI.style.display = "none";
             });
+            this.storyUI.appendChild(imageContainer);
+            imageContainer.appendChild(this.storyImage);
             this.saveStoryIntoLog();
         }
 
@@ -47,6 +47,7 @@ namespace RoboGameNamespace {
             newChapter.appendChild(this.image);
             document.getElementById("logbook-story").appendChild(newChapter);
             let showHide: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            showHide.className = "buttonDesignClass";
             newChapter.appendChild(showHide);
             showHide.textContent = "Show/Hide";
             showHide.id = "showHideStory"
@@ -54,6 +55,7 @@ namespace RoboGameNamespace {
             imageContainer.id = "storyImageContainerLog";
             imageContainer.style.display = "none";
             let closeImage: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            closeImage.className = "buttonDesignClass";
             closeImage.id = "storyCloseImage";
             imageContainer.appendChild(closeImage);
             closeImage.textContent = "close image";
@@ -75,7 +77,7 @@ namespace RoboGameNamespace {
         progressStoryChapter(questStage: QUESTSTAGE): void {
             switch (questStage) {
                 case QUESTSTAGE.TUTORIAL: {
-                    this.chapter = this.story.tutorial; //komplette Quests einfügen in json, dann komplette Objekte herausladen, inklusive Belohnung etc, statt stgingArray
+                    this.chapter = this.story.tutorial; 
                     this.playStoryChapter();
                     break;
                 }

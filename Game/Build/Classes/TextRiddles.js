@@ -37,6 +37,7 @@ var RoboGameNamespace;
                 textRiddleCenter.innerHTML += textAfterInput[i];
             }
             let submitButton = document.createElement("button");
+            submitButton.className = "buttonDesignClass";
             textRiddleCenter.appendChild(submitButton);
             submitButton.textContent = "submit";
             submitButton.id = "riddleSubmit";
@@ -45,6 +46,7 @@ var RoboGameNamespace;
                 document.getElementById("blocker").style.display = "none";
             });
             let closeButton = document.createElement("button");
+            closeButton.className = "buttonDesignClass";
             textRiddleCenter.appendChild(closeButton);
             closeButton.textContent = "close";
             closeButton.id = "riddleClose";
@@ -66,7 +68,7 @@ var RoboGameNamespace;
             let correctAnswers = [];
             for (let i = 0; i < this.answerHelperArray.length; i++) {
                 let input = document.getElementById("input" + i).value.toLowerCase();
-                if (input == this.answerHelperArray[i]) { //answers[i]
+                if (input == this.answerHelperArray[i]) {
                     correctAnswers[i] = true;
                     document.getElementById("input" + i).value = input;
                     document.getElementById("check" + i).textContent = "✔";
@@ -87,7 +89,6 @@ var RoboGameNamespace;
                 this.message.innerHTML = "Riddle complete!";
                 RoboGameNamespace.riddleCounter++;
                 RoboGameNamespace.riddleIndex++;
-                //Belohnung vergeben und Rätselobjekt löschen
             }
             else {
                 this.message.innerHTML = "Wrong answers!";

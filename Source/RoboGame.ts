@@ -6,9 +6,9 @@ namespace RoboGameNamespace {
     let gameNode: ƒ.Node = new ƒ.Node("Game");
     let viewport: ƒ.Viewport = new ƒ.Viewport();
     let viewportNode: ƒ.Node = new ƒ.Node("Viewport");
+    let questHandler: QuestHandler = new QuestHandler;
     export let roboGameNode: ƒ.Node = new ƒ.Node("RoboGame");
     export let harvestModuleIndex: number;
-    export let questHandler: QuestHandler;
     export let storyHandler: StoryHandler;
     export let robots: ƒ.Node = new ƒ.Node("Robots");
     export let worldTilesNode: ƒ.Node = new ƒ.Node("Worldmap");
@@ -17,6 +17,7 @@ namespace RoboGameNamespace {
     export let riddleUI: ƒ.Node = new ƒ.Node("Riddle UI");
     export let riddleHandler: ƒ.Node = new ƒ.Node("Riddle Handler");
     export let currentQuestStage: QUESTSTAGE = QUESTSTAGE.TUTORIAL; 
+    export let sfxPlayer: SFX = new SFX();
 
     gameNode.appendChild(viewportNode);
 
@@ -29,7 +30,6 @@ namespace RoboGameNamespace {
         viewportNode.addChild(roboGameNode);
 
         roboGameNode.activate(false);
-        questHandler = new QuestHandler;
         console.log(questHandler);
         storyHandler = new StoryHandler;
         createRobot();
@@ -58,6 +58,9 @@ namespace RoboGameNamespace {
         initializeButtons();
 
         viewport.draw();
+
+        sfxPlayer.soundTrack(true);
+        document.getElementById("masterVolume").addEventListener("input", changeMasterVolume);
 
     }
 
@@ -163,22 +166,5 @@ namespace RoboGameNamespace {
         ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
         ƒ.Loop.start(ƒ.LOOP_MODE.TIME_REAL, 60);
     }
-    
 
 }
-
-
-
-/*
-Alt+Shift+F = auto-format
-Koordinatensystem = Rechtshändig
-x = links (-) - rechts (+)
-y = unten (-) - oben (+)
-z = vorne (-) - honten (+)
-F2 = refactor
-Strg + D = Mehrere Cursor
-Strg + # = ein/auskommentieren
-Alt + Shift + A = Block ein/auskommentieren
-Alt + Shift + Pfeil oben/unten = Zeile kopieren
-Alt + Pfeil oben/unten = Zeile verschieben
-*/

@@ -31,7 +31,7 @@
             "riddleAmountRequired": 0,
             "moduleRequired": "notRequired"
         }],
-        "reward": "Belohnung",
+        "reward": "",
         "evaluateReward": [{
             "biomass": 200,
             "metal": 100,

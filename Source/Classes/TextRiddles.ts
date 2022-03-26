@@ -41,6 +41,7 @@ namespace RoboGameNamespace {
             }
 
             let submitButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            submitButton.className = "buttonDesignClass";
             textRiddleCenter.appendChild(submitButton);
             submitButton.textContent = "submit";
             submitButton.id = "riddleSubmit";
@@ -50,6 +51,7 @@ namespace RoboGameNamespace {
             });
 
             let closeButton: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+            closeButton.className = "buttonDesignClass";
             textRiddleCenter.appendChild(closeButton);
             closeButton.textContent = "close";
             closeButton.id = "riddleClose";
@@ -74,7 +76,7 @@ namespace RoboGameNamespace {
             for (let i: number = 0; i < this.answerHelperArray.length; i++) {
                 let input: string = (document.getElementById("input" + i) as HTMLInputElement).value.toLowerCase();
 
-                if (input == this.answerHelperArray[i]) { //answers[i]
+                if (input == this.answerHelperArray[i]) {
                     correctAnswers[i] = true;
                     (document.getElementById("input" + i) as HTMLInputElement).value = input;
                     document.getElementById("check" + i).textContent = "✔";
@@ -95,9 +97,6 @@ namespace RoboGameNamespace {
                 this.message.innerHTML = "Riddle complete!";
                 riddleCounter++;
                 riddleIndex++;
-                //Belohnung vergeben und Rätselobjekt löschen
-               
-
             } else {
                 this.message.innerHTML = "Wrong answers!";
             }

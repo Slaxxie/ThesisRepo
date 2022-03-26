@@ -74,7 +74,6 @@ var RoboGameNamespace;
             RoboGameNamespace.ressourceBioMass >= robot.costBioMass &&
             RoboGameNamespace.ressourceMetal >= robot.costMetal &&
             RoboGameNamespace.ressourceOil >= robot.costOil) {
-            //werte anpassen //Kosten anzeigen
             RoboGameNamespace.ressourceBioMass -= robot.costBioMass;
             RoboGameNamespace.ressourceMetal -= robot.costMetal;
             RoboGameNamespace.ressourceOil -= robot.costOil;
@@ -85,7 +84,6 @@ var RoboGameNamespace;
             document.getElementById("createRobot").style.zIndex = "0";
         }
         else {
-            //removeRobot(robot);
             document.getElementById("warningSpan").textContent = "Not enough ressources";
         }
     }

@@ -7,7 +7,6 @@ var RoboGameNamespace;
     class Robot extends RoboGameNamespace.QuadNode {
         static scale = new ƒ.Vector2(1.5, 1.5);
         activeModuleString = "lumberer";
-        previousField;
         moduleHovering = false;
         moduleLumberjack = true;
         moduleMiner = false;
@@ -16,16 +15,10 @@ var RoboGameNamespace;
         moduleFighter = true;
         moduleRetreat = false;
         isInteracting = false;
-        isCalledBack = false;
         isAlive = true;
-        robotMaxHealth = 50;
-        robotHealth = this.robotMaxHealth;
         isAutomated = false;
         damageValue = 4;
-        ressourceCapacity = 200;
-        robotID;
         isWaiting = true;
-        isFighting = false;
         fieldOfView = 1; //switch case für andere köpfe einbauen
         costBioMass = 600;
         costMetal = 0;
@@ -34,10 +27,17 @@ var RoboGameNamespace;
         surroundingFields;
         improvedWayfinding = false;
         robotUI = document.createElement("div");
+        robotID;
+        robotMaxHealth = 50;
+        robotHealth = this.robotMaxHealth;
+        isCalledBack = false;
+        isFighting = false;
+        previousField;
         activateRobot = document.createElement("button");
         callRobotBack = document.createElement("button");
         disassembleRobot = document.createElement("button");
         automateRobot = document.createElement("button");
+        ressourceCapacity = 200;
         ressourceLoaded = 0;
         collectsBioMass = false;
         collectsMetal = false;
@@ -61,24 +61,28 @@ var RoboGameNamespace;
                 console.log(this);
             });
             this.activateRobot.id = "activateRobot";
+            this.activateRobot.className = "buttonDesignClass";
             this.activateRobot.textContent = "activate";
             this.robotUI.appendChild(this.callRobotBack);
             this.callRobotBack.addEventListener("click", () => {
                 this.returnTimer();
             });
             this.callRobotBack.id = "callRobotBack";
+            this.callRobotBack.className = "buttonDesignClass";
             this.callRobotBack.textContent = "call back";
             this.robotUI.appendChild(this.disassembleRobot);
             this.disassembleRobot.addEventListener("click", () => {
                 RoboGameNamespace.disassembleRobot(this);
             });
             this.disassembleRobot.id = "disassembleRobot";
+            this.disassembleRobot.className = "buttonDesignClass";
             this.disassembleRobot.textContent = "disassemble";
             this.robotUI.appendChild(this.automateRobot);
             this.automateRobot.addEventListener("click", () => {
                 RoboGameNamespace.setAutoMode(this);
             });
             this.automateRobot.id = "automateRobot";
+            this.automateRobot.className = "buttonDesignClass";
             this.automateRobot.textContent = "automate";
             this.addComponent(new ƒ.ComponentMaterial(RoboGameNamespace.lumbererMaterial));
             this.stats.appendChild(this.hp);
@@ -395,6 +399,5 @@ var RoboGameNamespace;
         }
     }
     RoboGameNamespace.Robot = Robot;
-    // Robot Management
 })(RoboGameNamespace || (RoboGameNamespace = {}));
 //# sourceMappingURL=Robot.js.map

@@ -12,7 +12,6 @@ var RoboGameNamespace;
         constructor() {
             this.loadStory();
         }
-        //tester
         async loadStory() {
             this.story = await (await fetch("Story.json")).json();
             this.buildStory();
@@ -28,15 +27,16 @@ var RoboGameNamespace;
             let imageContainer = document.createElement("div");
             imageContainer.id = "storyImageContainer";
             this.storyImage.id = "storyImage";
-            this.storyUI.appendChild(imageContainer);
-            imageContainer.appendChild(this.storyImage);
             let closeButton = document.createElement("button");
+            closeButton.className = "buttonDesignClass";
             this.storyUI.appendChild(closeButton);
             closeButton.id = "closeStory";
             closeButton.textContent = "X";
             closeButton.addEventListener("click", () => {
                 this.storyUI.style.display = "none";
             });
+            this.storyUI.appendChild(imageContainer);
+            imageContainer.appendChild(this.storyImage);
             this.saveStoryIntoLog();
         }
         saveStoryIntoLog() {
@@ -45,6 +45,7 @@ var RoboGameNamespace;
             newChapter.appendChild(this.image);
             document.getElementById("logbook-story").appendChild(newChapter);
             let showHide = document.createElement("button");
+            showHide.className = "buttonDesignClass";
             newChapter.appendChild(showHide);
             showHide.textContent = "Show/Hide";
             showHide.id = "showHideStory";
@@ -52,6 +53,7 @@ var RoboGameNamespace;
             imageContainer.id = "storyImageContainerLog";
             imageContainer.style.display = "none";
             let closeImage = document.createElement("button");
+            closeImage.className = "buttonDesignClass";
             closeImage.id = "storyCloseImage";
             imageContainer.appendChild(closeImage);
             closeImage.textContent = "close image";
@@ -72,7 +74,7 @@ var RoboGameNamespace;
         progressStoryChapter(questStage) {
             switch (questStage) {
                 case RoboGameNamespace.QUESTSTAGE.TUTORIAL: {
-                    this.chapter = this.story.tutorial; //komplette Quests einfügen in json, dann komplette Objekte herausladen, inklusive Belohnung etc, statt stgingArray
+                    this.chapter = this.story.tutorial;
                     this.playStoryChapter();
                     break;
                 }

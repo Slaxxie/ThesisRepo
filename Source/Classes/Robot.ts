@@ -5,8 +5,8 @@ namespace RoboGameNamespace {
 
     export class Robot extends QuadNode {
         private static scale: ƒ.Vector2 = new ƒ.Vector2(1.5, 1.5);
+
         public activeModuleString: String = "lumberer";
-        public previousField: ƒ.Vector2;
         public moduleHovering: boolean = false;
         public moduleLumberjack: boolean = true;
         public moduleMiner: boolean = false;
@@ -15,30 +15,32 @@ namespace RoboGameNamespace {
         public moduleFighter: boolean = true;
         public moduleRetreat: boolean = false;
         public isInteracting: boolean = false;
-        public isCalledBack: boolean = false;
         public isAlive: boolean = true;
-        public robotMaxHealth: number = 50;
-        public robotHealth: number = this.robotMaxHealth;
         public isAutomated: boolean = false;
         public damageValue: number = 4;
-        public ressourceCapacity: number = 200;
-        public robotID: number;
         public isWaiting: boolean = true;
-        public isFighting: boolean = false;
         public fieldOfView: number = 1; //switch case für andere köpfe einbauen
-
         public costBioMass: number = 600;
         public costMetal: number = 0;
         public costOil: number = 0;
         public costScrap: number = 100;
         public surroundingFields: WorldMapTile[];
         public improvedWayfinding: boolean = false;
-
         public robotUI: HTMLDivElement = <HTMLDivElement>document.createElement("div");
+
+        private robotID: number;
+        private robotMaxHealth: number = 50;
+        private robotHealth: number = this.robotMaxHealth;
+        private isCalledBack: boolean = false;
+        private isFighting: boolean = false;
+        private previousField: ƒ.Vector2;
+        
         private activateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private callRobotBack: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private disassembleRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
         private automateRobot: HTMLButtonElement = <HTMLButtonElement>document.createElement("button");
+        
+        private ressourceCapacity: number = 200;
         private ressourceLoaded: number = 0;
         private collectsBioMass: boolean = false;
         private collectsMetal: boolean = false;
@@ -64,6 +66,7 @@ namespace RoboGameNamespace {
                 console.log(this);
             });
             this.activateRobot.id = "activateRobot";
+            this.activateRobot.className = "buttonDesignClass";
             this.activateRobot.textContent = "activate";
 
             this.robotUI.appendChild(this.callRobotBack);
@@ -71,6 +74,7 @@ namespace RoboGameNamespace {
                 this.returnTimer();
             });
             this.callRobotBack.id = "callRobotBack";
+            this.callRobotBack.className = "buttonDesignClass";
             this.callRobotBack.textContent = "call back";
 
             this.robotUI.appendChild(this.disassembleRobot);
@@ -78,6 +82,7 @@ namespace RoboGameNamespace {
                 disassembleRobot(this);
             });
             this.disassembleRobot.id = "disassembleRobot";
+            this.disassembleRobot.className = "buttonDesignClass";
             this.disassembleRobot.textContent = "disassemble";
 
             this.robotUI.appendChild(this.automateRobot);
@@ -85,6 +90,7 @@ namespace RoboGameNamespace {
                 setAutoMode(this);
             });
             this.automateRobot.id = "automateRobot";
+            this.automateRobot.className = "buttonDesignClass";
             this.automateRobot.textContent = "automate";
 
             this.addComponent(new ƒ.ComponentMaterial(lumbererMaterial));
@@ -410,11 +416,4 @@ namespace RoboGameNamespace {
             }
         }
     }
-
-
-
-
-
-    // Robot Management
-
 }

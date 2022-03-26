@@ -24,6 +24,7 @@ var RoboGameNamespace;
         document.getElementById("customizeWindow").appendChild(customizationUI);
         //Declare harvesting module
         let buttonLeftHarvesting = document.createElement("button");
+        buttonLeftHarvesting.className = "buttonDesignClass";
         customizationUI.appendChild(buttonLeftHarvesting);
         buttonLeftHarvesting.addEventListener("click", () => {
             RoboGameNamespace.harvestModuleIndex -= 1;
@@ -33,6 +34,7 @@ var RoboGameNamespace;
         buttonLeftHarvesting.id = "buttonLeftHarvesting";
         buttonLeftHarvesting.textContent = "<";
         let buttonRightHarvesting = document.createElement("button");
+        buttonRightHarvesting.className = "buttonDesignClass";
         customizationUI.appendChild(buttonRightHarvesting);
         buttonRightHarvesting.addEventListener("click", () => {
             RoboGameNamespace.harvestModuleIndex += 1;
@@ -58,6 +60,7 @@ var RoboGameNamespace;
         improvedMovementDiv.textContent = "inactive";
         customizationUI.appendChild(improvedMovementDiv);
         let toggleImprovedWayfinding = document.createElement("button");
+        toggleImprovedWayfinding.className = "buttonDesignClass";
         customizationUI.appendChild(toggleImprovedWayfinding);
         toggleImprovedWayfinding.addEventListener("click", () => {
             let rob = RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1);
@@ -75,6 +78,7 @@ var RoboGameNamespace;
         toggleImprovedWayfinding.textContent = "Wayfinding";
         //Declare fightmode
         let buttonFighting = document.createElement("button");
+        buttonFighting.className = "buttonDesignClass";
         customizationUI.appendChild(buttonFighting);
         buttonFighting.addEventListener("click", () => {
             RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "fight");
@@ -84,6 +88,7 @@ var RoboGameNamespace;
         buttonFighting.id = "buttonFighting";
         buttonFighting.textContent = "Fight Mode";
         let buttonRetreat = document.createElement("button");
+        buttonRetreat.className = "buttonDesignClass";
         customizationUI.appendChild(buttonRetreat);
         buttonRetreat.addEventListener("click", () => {
             RoboGameNamespace.setFightMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1), "retreat");
@@ -94,6 +99,7 @@ var RoboGameNamespace;
         buttonRetreat.textContent = "Retreat Mode";
         //Declare hovering
         let buttonHovering = document.createElement("button");
+        buttonHovering.className = "buttonDesignClass";
         customizationUI.appendChild(buttonHovering);
         buttonHovering.addEventListener("click", () => {
             RoboGameNamespace.setHoverMode(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
@@ -136,6 +142,7 @@ var RoboGameNamespace;
         RoboGameNamespace.setRobotCost(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
         //Spawn Robot into world
         let spawnNewRobot = document.createElement("button");
+        spawnNewRobot.className = "buttonDesignClass";
         customizationUI.appendChild(spawnNewRobot);
         spawnNewRobot.addEventListener("click", () => {
             RoboGameNamespace.setRobotCost(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));
@@ -145,6 +152,7 @@ var RoboGameNamespace;
         spawnNewRobot.id = "spawnNewRobot";
         spawnNewRobot.textContent = "Spawn Robot";
         let closeCustomization = document.createElement("button");
+        closeCustomization.className = "buttonDesignClass";
         customizationUI.appendChild(closeCustomization);
         closeCustomization.addEventListener("click", () => {
             RoboGameNamespace.removeRobot(RoboGameNamespace.robots.getChild(RoboGameNamespace.robots.getChildren().length - 1));

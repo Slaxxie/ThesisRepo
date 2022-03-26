@@ -77,7 +77,6 @@ namespace RoboGameNamespace {
             ressourceMetal >= robot.costMetal &&
             ressourceOil >= robot.costOil
         ) {
-            //werte anpassen //Kosten anzeigen
             ressourceBioMass -= robot.costBioMass;
             ressourceMetal -= robot.costMetal;
             ressourceOil -= robot.costOil
@@ -87,7 +86,6 @@ namespace RoboGameNamespace {
             document.getElementById("customizeWindow").style.zIndex = "-1";
             document.getElementById("createRobot").style.zIndex = "0";
         } else {
-            //removeRobot(robot);
             document.getElementById("warningSpan").textContent = "Not enough ressources";
         }
     }
