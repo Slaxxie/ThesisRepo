@@ -35,6 +35,7 @@ namespace RoboGameNamespace {
         });
 
         document.getElementById("startRiddle").addEventListener("click", () => {
+            console.log(riddleBooleanTemp);
             if (riddleBooleanTemp == false) {
                 document.getElementById("riddleMenu").style.display = "block";
                 document.getElementById("blocker").style.display = "block";
@@ -97,8 +98,8 @@ namespace RoboGameNamespace {
         });
         document.getElementById("createRobot").addEventListener("click", () => {
             document.getElementById("blocker").style.display = "block";
-            openRobotCustomization();
             createRobot();
+            openRobotCustomization();
 
             document.getElementById("customizeWindow").style.display = "block";
             document.getElementById("customizeWindow").style.zIndex = "2";

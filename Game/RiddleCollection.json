@@ -22,7 +22,7 @@
                     "&emsp;<br><br>"
                 ],
                 "riddleImage": "",
-                "finalRiddle": true
+                "finalRiddle": false
             }, {
                 "header": "Operators 101",
                 "wordbank": "Given are a few conditional statements. <br>Fill in the correct operator symbols<br>",

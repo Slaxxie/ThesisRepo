@@ -57,7 +57,8 @@ namespace RoboGameNamespace {
         
         let activeHover: HTMLDivElement = <HTMLDivElement>document.createElement("div");
         activeHover.id = "activeHover";
-        activeHover.textContent = ((<Robot>robots.getChild(robots.getChildren().length - 1)).moduleHovering).toString();
+        activeHover.textContent = "test";
+       // activeHover.textContent = ((<Robot>robots.getChild(robots.getChildren().length - 1)).moduleHovering).toString();
         customizationUI.appendChild(activeHover);
         
         let improvedMovementDiv: HTMLDivElement = <HTMLDivElement>document.createElement("div");

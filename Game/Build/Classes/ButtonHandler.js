@@ -32,6 +32,7 @@ var RoboGameNamespace;
             document.getElementById("questMenu").style.display = "block";
         });
         document.getElementById("startRiddle").addEventListener("click", () => {
+            console.log(RoboGameNamespace.riddleBooleanTemp);
             if (RoboGameNamespace.riddleBooleanTemp == false) {
                 document.getElementById("riddleMenu").style.display = "block";
                 document.getElementById("blocker").style.display = "block";
@@ -87,8 +88,8 @@ var RoboGameNamespace;
         });
         document.getElementById("createRobot").addEventListener("click", () => {
             document.getElementById("blocker").style.display = "block";
-            RoboGameNamespace.openRobotCustomization();
             RoboGameNamespace.createRobot();
+            RoboGameNamespace.openRobotCustomization();
             document.getElementById("customizeWindow").style.display = "block";
             document.getElementById("customizeWindow").style.zIndex = "2";
             document.getElementById("createRobot").style.zIndex = "-1";
